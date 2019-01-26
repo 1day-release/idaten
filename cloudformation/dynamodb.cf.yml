@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  BorderlessHouseMemeber:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: "idaten"
+      AttributeDefinitions:
+        - AttributeName: "slide_id"
+          AttributeType: "S"
+        - AttributeName: "email"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "slide_id"
+          KeyType: "HASH"
+        - AttributeName: "email"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
