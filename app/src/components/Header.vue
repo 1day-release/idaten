@@ -16,13 +16,15 @@
           <li>
             <PresentationButton />
           </li>
-          <li class="is_separate">
+          <li class="is_separate is_login">
             <LogoutButton />
           </li>
-          <li>
-            <UserIcon />
+          <li class="is_login">
+            <div class="user">
+              <UserIcon />
+            </div>
           </li>
-          <li class="is_separate">
+          <li class="is_separate is_logout">
             <LoginButton />
           </li>
         </ul>
@@ -78,12 +80,12 @@ export default {
     justify-content: center;
     align-items: center;
     width: 100px;
-    height: 30px;
     margin: auto;
 
     >a {
       display: block;
       overflow: hidden;
+      width: inherit;
     }
   }
 
@@ -138,6 +140,18 @@ export default {
           height: auto;
         }
       }
+
+      &.is_logout {
+        display: none;
+      }
+
+      @at-root #app.is_logout &.is_login {
+        display: none;
+      }
+
+      @at-root #app.is_logout &.is_logout {
+        display: block;
+      }
     }
 
     &:first-child {
@@ -154,5 +168,10 @@ export default {
       }
     }
   }
+}
+
+.user {
+  width: 30px;
+  height: 30px;
 }
 </style>

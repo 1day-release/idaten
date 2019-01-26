@@ -1,5 +1,6 @@
 <template>
-  <button class="login-button" href="#" target="_blank"></button>
+  <button class="login-button" href="#" target="_blank">
+  </button>
 </template>
 
 <script>
@@ -11,4 +12,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .login-button {
+  }
 </style>
