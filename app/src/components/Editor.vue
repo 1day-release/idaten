@@ -1,5 +1,5 @@
 <template>
-  <div class="l-editor">
+  <div>
     <div class="editor">
       <code></code>
     </div>
@@ -25,11 +25,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.l-editor {}
+  .editor {
 
-.editor {
-
-  code {
+    code {
+    }
   }
-}
 </style>
