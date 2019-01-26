@@ -1,11 +1,11 @@
-service: idaten # NOTE: update this with your service name
+service: idaten
 
 plugins:
   - serverless-domain-manager
 
 custom:
   customDomain:
-    domainName: idaten.1day-release.com
+    domainName: api-idaten.1day-release.com
     basePath: "api"
     stage: ${self:provider.stage}
     createRoute53Record: true
@@ -17,11 +17,10 @@ provider:
   stage: api
   region: ap-northeast-1
 
-# you can add statements to the Lambda function's IAM Role here
- iamRoleStatements:
+  iamRoleStatements:
     - Effect: "Allow"
       Resource: "arn:aws:dynamodb:ap-northeast-1:*:*"
-      Action: 
+      Action:
         - dynamodb:Query
         - dynamodb:Scan
         - dynamodb:GetItem
@@ -44,11 +43,18 @@ functions:
     handler: bin/hello
     events:
       - http:
-          path: login
+          path: auth/login
           method: get
   logout:
     handler: bin/world
     events:
       - http:
-          path: logout
+          path: auth/logout
           method: get
+  slideslist:
+    handler: bin/slides-list
+    events:
+      - http:
+          path: slides/{slide_id}
+          method: get
+          cors: true

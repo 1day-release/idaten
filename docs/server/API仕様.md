@@ -17,16 +17,14 @@ api/auth/login
 
 ```
 {
-  security_token: "xxxxxxxxx"
+  code: "xxxxxxxxx"
 }
 ```
 
 ### Response
 
 ```
-{
-  refresh_token: "xxxxxxxxx"
-}
+{}
 ```
 
 ## ログアウト
@@ -91,7 +89,7 @@ api/slides-list
 [POST]
 
 ```
-api/slides-create
+api/slides
 ```
 
 ### Request
@@ -118,22 +116,20 @@ api/slides-create
 [GET]
 
 ```
-api/slides-get
+api/slides/{slide_id}
 ```
 
 ### Request
 
 ```
-{
-  "email": "1day.release@gmail.com"
-  "slide_id": "xxxxxxxxxxxxxxxx"
-}
+{}
 ```
 
 ### Response
 
 ```
 {
+  "slide_id": "xxxxxxxxxxxxxxxx"
   "markdown": "# test",
   "share_mode": 0,
   "create_at": "2019-01-01 00:00:00",
@@ -148,7 +144,7 @@ api/slides-get
 [PUT]
 
 ```
-api/slides-save
+api/slides/{slide_id}
 ```
 
 ### Request
@@ -156,7 +152,6 @@ api/slides-save
 ```
 {
   "email": "1day.release@gmail.com"
-  "slide_id": "xxxxxxxxxxxxxxxx"
   "markdown": "# test",
   "share_mode": 0
 }
@@ -177,7 +172,7 @@ api/slides-save
 [DELETE]
 
 ```
-api/slides-delete
+api/slides/{slide_id}
 ```
 
 ### Request
@@ -185,7 +180,6 @@ api/slides-delete
 ```
 {
   "email": "1day.release@gmail.com"
-  "slide_id": "xxxxxxxxxxxxxxxx"
 }
 ```
 
