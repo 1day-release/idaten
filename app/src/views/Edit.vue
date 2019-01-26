@@ -2,7 +2,9 @@
   <div>
     <Header />
     <Main>
-      <UserSlideList />
+      <div class="l-user-slide">
+        <UserSlideList />
+      </div>
       <div class="l-editor">
         <Editor />
       </div>
@@ -41,14 +43,14 @@ export default {
   }
 
   .l-editor {
-    width: 60%;
+    width: 65%;
     height: calc(100vh - #{$pc-header-height});
     color: map-get($color-brand, "text-white");
     background-color: map-get($color-brand, "main");
   }
 
   .l-preview {
-    width: 40%;
+    width: 35%;
     height: calc(100vh - #{$pc-header-height});
     background-color: map-get($color-brand, "sub");
   }

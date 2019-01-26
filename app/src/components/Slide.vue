@@ -1,23 +1,21 @@
 <template>
-  <ul class="slide">
-    <li>
-      <SlidePage />
-    </li>
-  </ul>
+  <div class="slide"></div>
 </template>
 
 <script>
-import SlidePage from '@/components/SlidePage.vue'
-
 export default {
   name: 'Slide',
-  components: {
-    SlidePage
-  },
   props: {
   }
 }
 </script>
 
 <style scoped lang="scss">
+  .slide {
+    p {
+      &.sub-title {
+        // &:first-of-type {
+      }
+    }
+  }
 </style>
