@@ -3,8 +3,12 @@
     <Header />
     <Main>
       <UserSlideList />
-      <Editor class="editor" />
-      <Preview class="preview" />
+      <div class="l-editor">
+        <Editor />
+      </div>
+      <div class="l-preview">
+        <Preview />
+      </div>
     </Main>
   </div>
 </template>
@@ -31,16 +35,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.editor {
-  float: left;
-  width: 60vw;
-  height: 70vh;
-  overflow: scroll;
-}
-.preview {
-  float: left;
-  width: 40vw;
-  height: 70vh;
-  overflow: scroll;
-}
+  main {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .l-editor {
+    width: 60%;
+    height: calc(100vh - #{$pc-header-height});
+    color: map-get($color-brand, "text-white");
+    background-color: map-get($color-brand, "main");
+  }
+
+  .l-preview {
+    width: 40%;
+    height: calc(100vh - #{$pc-header-height});
+    background-color: map-get($color-brand, "sub");
+  }
 </style>

@@ -1,12 +1,10 @@
 <template>
-  <main role="main">
-    <slot></slot>
-  </main>
+  <div class="slide-page"></div>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'SlidePage',
   props: {
   }
 }

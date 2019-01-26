@@ -1,16 +1,18 @@
 <template>
-  <main role="main">
+  <div class="popups">
     <slot></slot>
-  </main>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'Popups',
   props: {
   }
 }
 </script>
 
 <style scoped lang="scss">
+.popups {
+}
 </style>

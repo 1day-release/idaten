@@ -1,16 +1,18 @@
 <template>
-  <main role="main">
+  <div class="popup-logout">
     <slot></slot>
-  </main>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'PopupLogout',
   props: {
   }
 }
 </script>
 
 <style scoped lang="scss">
+.popup-logout {
+}
 </style>

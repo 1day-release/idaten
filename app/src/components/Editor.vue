@@ -1,12 +1,24 @@
 <template>
   <div>
-    <textarea v-model="markdown" @input="editorInput"></textarea>
+    <div class="editor">
+      <textarea v-model="markdown" @input="editorInput"></textarea>
+    </div>
+    <Popups>
+      <PopupLogout />
+    </Popups>
   </div>
 </template>
 
 <script>
+import Popups from '@/components/Popups.vue'
+import PopupLogout from '@/components/PopupLogout.vue'
+
 export default {
   name: 'Editor',
+  components: {
+    Popups,
+    PopupLogout
+  },
   props: {
   },
   data () {
@@ -28,8 +40,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-textarea {
-  width: 100%;
-  height: 100%;
-}
+  .editor {
+
+    code {
+    }
+  }
 </style>
