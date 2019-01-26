@@ -17,7 +17,7 @@ api/auth/login
 
 ```
 {
-  security_token: "xxxxxxxxx"
+  code: "xxxxxxxxx"
 }
 ```
 
@@ -25,7 +25,6 @@ api/auth/login
 
 ```
 {
-  refresh_token: "xxxxxxxxx"
 }
 ```
 
