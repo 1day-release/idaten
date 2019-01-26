@@ -3,8 +3,8 @@
     <Header />
     <Main>
       <UserSlideList />
-      <Editor />
-      <Preview />
+      <Editor class="editor" />
+      <Preview class="preview" />
     </Main>
   </div>
 </template>
@@ -19,7 +19,7 @@ import Editor from '@/components/Editor.vue'
 import Preview from '@/components/Preview.vue'
 
 export default {
-  name: 'home',
+  name: 'Edit',
   components: {
     Header,
     Main,
@@ -29,3 +29,18 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.editor {
+  float: left;
+  width: 60vw;
+  height: 70vh;
+  overflow: scroll;
+}
+.preview {
+  float: left;
+  width: 40vw;
+  height: 70vh;
+  overflow: scroll;
+}
+</style>
