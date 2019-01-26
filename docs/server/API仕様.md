@@ -98,9 +98,8 @@ api/slides-create
 
 ```
 {
-  "email": "1day.release@gmail.com"
-  "markdown": "# test",
-  "share_mode": 0,
+  "email": "1day.release@gmail.com",
+  "share_mode": 0
 }
 ```
 
