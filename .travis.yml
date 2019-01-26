@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - "10"
+dist: trusty
+sudo: false
+cache: npm
+branches:
+  only:
+    - develop
+    - stating
+    - master
+install:
+  - cd src/vue-cli3
+  - npm install
+script:
+  - npm run build
+
+deploy:
+  - provider: s3
+    access_key_id: "$AWS_ACCESS_KEY_ID"
+    secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+    bucket: idaten.1day-release.com
+    region: ap-northeast-1
+    local_dir: dist
+    endpoint: s3-ap-northeast-1.amazonaws.com
+    skip_cleanup: true
+    on:
+      branch: master
+
+notifications:
+  slack:
+    secure: qMuD2wOXEz6JwO3OYFNO9Srdu4aW2uivf52UD9JPqeWAuxpiv2L/IrQ6iCgruzx/7Blsz99xXtZh8iL4fYwmttlvDwDRpchdQAak3iQnMAp+RQRnPX68OuQFbWzd0XV0RUIoi4NI8MWD2HFuTqA5+1H6DauTDz5wExswnmMMXRIBrp1rAbap9HekLZlZvHXUJ8l9taHSVZB9rUIsGSXNsWx3x9II9bVr7icmSf2uL/23xG/iYeEA4lAGCcvnlUD3t9guKvTm9WRqyuCw1hbLuMbkAXpni7LS5LebxtRG2wDz/pAd7LM3PKfRHDNMfCjlWR7n1u5PwhsXO5/5awkDaIMjoBayfTwnNxZsDZVLCwjrhP4wR7vZIMCQ1pLZRs/BMi4d+91sjBAcNtHI4i12ezJVXzKf39+0IpDZQ4wUJU7rHfD/ymmZB8BQSPcuZutwYeWda9n8ZpbD2D/tFIspQN3N2Oh8rKdELxDWJ/Gt63qOqF3hCG6qJUvZFKMONpbTR2AiD3Qc61D8IEr5ZaVYYKgF7gORi6jvGtcx965iWS6yV7sVtGGoPcS0DxjnilFwide8ghQ7CE7p5CKTtkRacFyH1VeqtmwLTsailWLX01naPgT+YCjEBQQCAIJA/19mcVdjZDwoZylwW/kaNsGPQvxED8TxdMHtcbDjNsEUFv8=
