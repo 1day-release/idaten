@@ -47,3 +47,5 @@
 - app user-slide-list user-slide押下
   - 選択されたスライドに同窓遷移する
   
+- 現在のスライドのpreview slide slide-pageにis_nowクラスを付与する
+  
