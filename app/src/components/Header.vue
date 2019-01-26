@@ -97,10 +97,13 @@ export default {
   }
 
   &-tool {
+    $padding: 15px;
+
     display: flex;
     height: inherit;
 
     >li {
+      box-sizing: border-box;
       flex: 0 0 auto;
       position: relative;
       display: flex;
@@ -108,7 +111,8 @@ export default {
       align-items: center;
       width: auto;
       min-width: 64px;
-      padding-left: 1px;
+      padding-right: $padding;
+      padding-left: $padding + 1px;
       height: inherit;
 
       &::before,
@@ -141,24 +145,20 @@ export default {
         }
       }
 
-      &.is_logout {
+      @at-root #app:not(.is_logout) &.is_logout {
         display: none;
       }
 
       @at-root #app.is_logout &.is_login {
         display: none;
       }
-
-      @at-root #app.is_logout &.is_logout {
-        display: block;
-      }
     }
 
     &:first-child {
       >li {
         &:last-child {
-          padding-right: 1px;
-          padding-left: 0;
+          padding-right: $padding + 1px;
+          padding-left: $padding;
 
           &::after {
             content: "";

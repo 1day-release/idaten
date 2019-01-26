@@ -1,22 +1,25 @@
 <template>
-  <div class="l-user-slide">
-    <ul class="user-slide-list">
-      <li>
-        <a class="user-slide" href="#">
-          <SlidePage />
-        </a>
-      </li>
-    </ul>
-  </div>
+  <ul class="user-slide-list">
+    <li>
+      <a class="user-slide" href="#">
+        <Slide />
+      </a>
+    </li>
+    <li>
+      <a class="user-slide" href="#">
+        <Slide />
+      </a>
+    </li>
+  </ul>
 </template>
 
 <script>
-import SlidePage from '@/components/SlidePage.vue'
+import Slide from '@/components/Slide.vue'
 
 export default {
   name: 'UserSlideList',
   components: {
-    SlidePage
+    Slide
   },
   props: {
   }

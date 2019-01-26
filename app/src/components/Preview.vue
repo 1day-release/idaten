@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <Slide class="slide" v-for="(value, index) in slideMarkdown" :key="index" :markdown="value" />
+  <div class="preview">
+    <ul class="preview-list">
+      <li v-for="(value, index) in slideMarkdown" :key="index">
+        <Slide :markdown="value" />
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -27,7 +31,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.slide {
-  border: 1px solid gray;
-}
+  .preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    &-list {
+      position: absolute;
+      left: 20px;
+
+      >li {
+      }
+    }
+  }
 </style>
