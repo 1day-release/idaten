@@ -5,7 +5,7 @@ plugins:
 
 custom:
   customDomain:
-    domainName: api.idaten.1day-release.com
+    domainName: api-idaten.1day-release.com
     basePath: "api"
     stage: ${self:provider.stage}
     createRoute53Record: true
