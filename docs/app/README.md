@@ -3,13 +3,15 @@
 ## 編集モード: /xxx/edit
 - app
   - header
-    - slide-list-display-button
+    - slide-list-show-button
     - brand-logo
     - presentation-button
     - user-icon
     - login-button
     - logout-button
   - user-slide-list
+    - slide-list-hide-button
+    - create-slide-button
     - user-slide
   - editor
     - popups
@@ -31,22 +33,19 @@
   - appにlogoutクラスが付与される
     - app header user-icon非表示
     - app header logout-button非表示
-    - app header slide-list-display-buttonが網かけ状態になる
+    - app header slide-list-show-buttonが網かけ状態になる
     - app editor popups popup-logoutが表示
-- app header slide-list-display-button押下
+- app header slide-list-show-button押下
   - app slide-listにis_showクラスが付与される
     - app slide-listを表示する
-  - 再度押下するとis_showクラスが削除される
-
+- app header slide-list-hide-button押下
+  - app slide-listのis_showクラスが削除される
 - app header presentation-button押下
   - /xxx/presentationに別窓遷移する
-  
 - app header login-button押下
   - ログアウトAPIを実行する
-  
 - app user-slide-list user-slide押下
   - 選択されたスライドに同窓遷移する
-  
 - 現在のスライドのpreview slide slide-pageにis_nowクラスを付与する
   
   
