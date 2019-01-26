@@ -14,7 +14,6 @@ install:
   - npm install
 script:
   - npm run build
-
 deploy:
   - provider: s3
     access_key_id: "$AWS_ACCESS_KEY_ID"
@@ -26,7 +25,6 @@ deploy:
     skip_cleanup: true
     on:
       branch: master
-
 notifications:
-  slack:
-    secure: "Rv4wNOpWOm8bU48z3JDmOOgkuKs/qJTMlLkfsX021D2lok/F105mkj9F5Ckk8QeRNgh57ufy03Kqsu1R17QiygPMTdzn0MkG6fnDCzqQGVLBwZQ79DNdMcX/Xa0/poun6408z97qew+W+HLnXO8SnTNXQ23p2HOZ+uKc8tR1rpV/f45HJ85s53/eT4e4KiRvyL6tT++7bxf33wDLCJV1CyrgnuRFO9LCac3K8ep5UmZHihkoMQrvdPbjxHD+zu+gkNWPl6ZLx2mMViASdGmtUaQ2WR+p3cDRubzDk3m5gGDcW4sjg7FlWbLAhScfkYAex/VePGVfoZa1zosynx0goFxWM+jdM7YmmGt+ADfgbKdP/e5fntf/Akm3b7ltYW7oL2basi+RgeDz3XQR5gekxFJD9jveyhkA/NzJFYJPuwPCx25fLhy0DoKmajxXmnITc3uR04ELroYQWLbkI+ZQ27/epWPrAHTcYEbed429HHH1nsn9maxk6t/QILy8+jsSk5aGhJw/zjrVhFProNtKzoFUvJOXBYC79qKchitoQRpiC9mui4GIE9nyK97xDMYywSEA2oB35tqUKu5kEAcvFiTb0TaWM5ezAI/ODeRPPHiDQIBQtA72AezBZ1towwyKb8zz5gYFUjNvVhYHLSw6MdunL9X0w2/zpxbi+Db+pYM="
+  dd:
+    secure: bUv1IUCXYSCMjZ/CN/T2jFuz7Gq/+lDh6J8BAtwWLy0jbP2/g1eQ2J7UypH8xYYqcDyuX+dedbywnn/RKHfS5LpA5tlYzu2UyaNg/NvVMUkSgp38vCCV6PMh8OttMNAABjsDtP/AYekva9emenGOyzSXYo/vNHMl5LuRbn1tOE928ImWQXF2vBUJmOgDNMdY1bqcbiIB5/dpLFBCzNchH0HDRTQQespA9cHTB2bPGt3Z/RsQuDvYwDa4AFWuRlCNG14FTNRu235b06izbMAynsx5ECMHGGTF3HxvXx4vmGRdsoj3H36/Budc128a08Fx8tJUTnoSCyfh52weCl1PbdBqA/ddTkAUE3XSiiMmhAV3zxsWJQAoTnlmEJ/2tpnj0CwYwRXQBpYd3TJhQ3qgbH6K6+x4mx4W0nnM8tfR4D1cr3OvHLOPNBcnevfiwUOSQe2YV+zP9HZ+Naz27Xiis6iVU98CLIwRAOE2WYk9ucG93EhxbKg7xDZA7vaf0pFVumrt6rl1f0lfb0wZBh78bX+cbWKoJ23XpbTGnfd5hVy1Yuf5NykqWfU1LsYUSKKv0ZccdHDbbBOgx3zlwXb13Eka0LbqEq2r3Q4aapBTfesbtvAqUqzu0xsoo9oFMcJGPiwfR05LZ/TB0KHV4791+IZSiyY72P8a+xzkS1BvcGM=
