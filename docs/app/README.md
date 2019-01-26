@@ -9,8 +9,8 @@
     - user-icon
     - login-button
     - logout-button
-  - slide-list
-    - slide
+  - user-slide-list
+    - usre-slide
   - editor
     - popups
       - popup-logout
