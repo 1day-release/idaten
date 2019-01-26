@@ -11,7 +11,7 @@
     - logout-button
   - user-slide-list
     - slide-list-hide-button
-    - add-slide-button
+    - create-slide-button
     - user-slide
   - editor
     - popups
