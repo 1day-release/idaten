@@ -10,7 +10,7 @@ branches:
     - stating
     - master
 install:
-  - cd app/src/vue-cli3
+  - cd app
   - npm install
 script:
   - npm run build
