@@ -11,90 +11,24 @@
   }
 }
 
-.pc {
-  @media #{$device-s} {
-    display: none !important;
-  }
-}
-
-.sp {
-  @media #{$device-l} {
-    display: none !important;
-  }
-}
-
 html {
   font-family: $ff !important;
   font-size: 10px !important;
 
   body {
-    font-size: 1.2rem;
-
-    @media #{$device-l} {
-      font-size: 1.4rem;
-    }
+    font-size: 1.3rem;
   }
 }
 
 #container {
-  position: relative;
+  display: block;
   overflow: hidden;
   width: 100%;
-  min-width: $sp-min-width;
-  background-color: #000;
-  color: #fff;
-
-  @media #{$device-l} {
-    min-width: $pc-max-width;
-  }
-}
-
-.contents {
-  position: relative;
-  z-index: 30;
-
-  @media #{$device-l} {
-  }
-
-  .wrap {
-    @media #{$device-l} {
-      padding-left: 140px;
-    }
-  }
-}
-
-.background-image {
-  position: absolute;
-  z-index: 1;
-  background-size: contain;
+  min-width: $pc-max-width;
 }
 
 .wrap {
-  margin: 0 20px;
-
-  @media #{$device-l} {
-    box-sizing: border-box;
-    width: $pc-min-width;
-    margin: 0 auto;
-  }
-}
-
-.cover {
-  position: fixed;
-  z-index: 10;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  // background-image: url(".#{$directory}bg_line.svg");
-  background-repeat: repeat;
-  background-position: center top;
-  background-size: 75px 1px;
-
-  pointer-events: none;
-
-  @media #{$device-l} {
-    background-size: 180px 1px;
-  }
+  box-sizing: border-box;
+  width: $pc-min-width;
+  margin: 0 auto;
 }
