@@ -51,10 +51,37 @@ functions:
       - http:
           path: auth/logout
           method: get
-  slideslist:
+  slides-list:
     handler: bin/slides-list
     events:
       - http:
           path: slides/{slide_id}
           method: get
+          cors: true
+  slides-create:
+    handler: bin/slides-create
+    events:
+      - http:
+          path: slides
+          method: post
+  slides-get:
+    handler: bin/slides-get
+    events:
+      - http:
+          path: slides/{slide_id}
+          method: get
+          cors: true
+  slides-save:
+    handler: bin/slides-save
+    events:
+      - http:
+          path: slides/{slide_id}
+          method: put
+          cors: true
+  slides-delete:
+    handler: bin/slides-delete
+    events:
+      - http:
+          path: slides/{slide_id}
+          method: delete
           cors: true
