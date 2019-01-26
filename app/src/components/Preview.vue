@@ -1,12 +1,17 @@
 <template>
-  <div>
-    preview
+  <div class="l-preview">
+    <Slide />
   </div>
 </template>
 
 <script>
+import Slide from '@/components/Slide.vue'
+
 export default {
   name: 'Preview',
+  components: {
+    Slide
+  },
   props: {
   }
 }

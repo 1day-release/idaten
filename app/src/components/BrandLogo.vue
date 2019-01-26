@@ -1,12 +1,10 @@
 <template>
-  <main role="main">
-    <slot></slot>
-  </main>
+  <a href="#">Logo</a>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'BrandLogo',
   props: {
   }
 }

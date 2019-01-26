@@ -1,12 +1,10 @@
 <template>
-  <main role="main">
-    <slot></slot>
-  </main>
+  <button class="logout-button" href="#" target="_blank"></button>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'LogoutButton',
   props: {
   }
 }

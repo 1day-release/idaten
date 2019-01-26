@@ -1,12 +1,10 @@
 <template>
-  <main role="main">
-    <slot></slot>
-  </main>
+  <button class="user-slide-list-show-button"></button>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'UserSlideListShowButton',
   props: {
   }
 }

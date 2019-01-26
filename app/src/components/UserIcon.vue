@@ -1,12 +1,10 @@
 <template>
-  <main role="main">
-    <slot></slot>
-  </main>
+  <a class="user-icon" href="#" target="_blank"></a>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'UserIcon',
   props: {
   }
 }
