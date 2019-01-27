@@ -11,8 +11,7 @@ export default new Vuex.Store({
       const markdown = localStorage.getItem('idaten.markdown')
       if (markdown) return markdown
 
-      return `
-# サンプルについて
+      return `# サンプルについて
 サブタイトル : サブタイトル
 日付 : 2019-01-01
 宛名 : 〇〇様
