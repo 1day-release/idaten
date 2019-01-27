@@ -50,7 +50,7 @@ export default {
       width: 80%;
       padding-right: 20px;
       border: none;
-      max-width: $pc-min-width * 0.8 - 40px;
+      max-width: $pc-min-width * 0.65 - 40px;
       margin: auto;
       line-height: 1.8;
       font-family: $ff-mono;

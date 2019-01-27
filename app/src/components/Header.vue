@@ -7,16 +7,16 @@
         </a>
       </h1>
       <div class="header-tools">
-        <ul class="header-tool">
+        <!-- ul class="header-tool">
           <li>
             <UserSlideListShowButton />
           </li>
-        </ul>
+        </ul -->
         <ul class="header-tool">
           <li>
             <PresentationButton />
           </li>
-          <li class="is_separate is_login">
+          <!-- li class="is_separate is_login">
             <LogoutButton />
           </li>
           <li class="is_login">
@@ -26,7 +26,7 @@
           </li>
           <li class="is_separate is_logout">
             <LoginButton />
-          </li>
+          </li -->
         </ul>
       </div>
     </div>
@@ -35,21 +35,22 @@
 
 <script>
 import BrandLogo from '@/components/BrandLogo.vue'
-import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
+// import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
 import PresentationButton from '@/components/PresentationButton.vue'
-import UserIcon from '@/components/UserIcon.vue'
-import LoginButton from '@/components/LoginButton.vue'
-import LogoutButton from '@/components/LogoutButton.vue'
+// import UserIcon from '@/components/UserIcon.vue'
+// import LoginButton from '@/components/LoginButton.vue'
+// import LogoutButton from '@/components/LogoutButton.vue'
 
 export default {
   name: 'Header',
   components: {
     BrandLogo,
-    UserSlideListShowButton,
-    PresentationButton,
-    UserIcon,
-    LoginButton,
-    LogoutButton
+    // UserSlideListShowButton,
+    // PresentationButton,
+    PresentationButton
+    // UserIcon,
+    // LoginButton,
+    // LogoutButton
   },
   props: {
   },
@@ -91,7 +92,8 @@ export default {
 
   &-tools {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     height: 100%;
   }

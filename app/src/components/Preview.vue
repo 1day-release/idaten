@@ -38,9 +38,18 @@ export default {
 
     &-list {
       position: absolute;
+      top: 20px;
       left: 20px;
+      overflow-y: auto;
+      width: calc(100% - #{20px + 40px});
+      max-width: $pc-min-width * 0.35 - 20px;
+      height: auto;
+      max-height: 100%;
+      padding-right: 40px;
+      margin: auto;
 
       >li {
+        padding-bottom: 20px;
       }
     }
   }
