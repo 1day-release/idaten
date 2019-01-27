@@ -1,5 +1,5 @@
 <template>
-  <div class="slide" :class="['slide-type' + slideType]" v-html="marked(markdown)"></div>
+  <div class="slide" :class="['slide-type' + slideType]" v-html="marked"></div>
 </template>
 
 <script>
@@ -12,51 +12,14 @@ export default {
     }
   },
   props: {
-    markdown: String
+    markdown: {
+      type: String,
+      default: ''
+    }
   },
   created () {
   },
   methods: {
-    marked (value) {
-      let str = ''
-      if (this.slideType === 1) {
-        let title = ''
-        let subtitle = ''
-        let date = ''
-        let to = ''
-        let author = ''
-        value.split(/\n/).forEach((line, lineNum) => {
-          if (lineNum === 0) {
-            title = line
-          } else if (lineNum === 1) {
-            const cutStart = line.indexOf(': ') || 0
-            subtitle = line.slice(cutStart + 2)
-          } else if (lineNum === 2) {
-            const cutStart = line.indexOf(': ') || 0
-            date = line.slice(cutStart + 2)
-          } else if (lineNum === 3) {
-            const cutStart = line.indexOf(': ') || 0
-            to = line.slice(cutStart + 2)
-          } else if (lineNum === 4) {
-            const cutStart = line.indexOf(': ') || 0
-            author = line.slice(cutStart + 2)
-          }
-        })
-        str = ((to) ? to + '\n' : '') + ((title) ? title + '\n' : '') + ((subtitle) ? subtitle + '\n\n' : '') +
-         ((date) ? date + '\n\n' : '') + ((author) ? author + '\n' : '') + '\n'
-      } else if (this.slideType === 2) {
-        let title = ''
-        value.split(/\n/).forEach((line, lineNum) => {
-          if (lineNum === 0) {
-            title = line
-          }
-        })
-        str = ((title) ? title + '\n' : '')
-      } else {
-        str = value
-      }
-      return Marked(str)
-    }
   },
   computed: {
     slideType () {
@@ -67,6 +30,48 @@ export default {
       } else {
         return 3
       }
+    },
+    marked () {
+      let str = ''
+      if (this.slideType === 1) {
+        let title = ''
+        let subtitle = ''
+        let date = ''
+        let to = ''
+        let from = ''
+        this.markdown.split(/\n/).forEach((line, lineNum) => {
+          const cutStart = (line.indexOf(': ') >= 0) ? (line.indexOf(': ')) + 2 : 0
+          if (lineNum === 0) {
+            title = line
+          } else if (lineNum === 1) {
+            subtitle = line.slice(cutStart)
+          } else if (lineNum === 2) {
+            date = line.slice(cutStart)
+          } else if (lineNum === 3) {
+            to = line.slice(cutStart)
+          } else if (lineNum === 4) {
+            from = line.slice(cutStart)
+          }
+        })
+        str =
+         ((to) ? `<p class="to">${to}</p>\n` : '') +
+         ((title) ? `\n${title}\n` : '') +
+         ((subtitle) ? `<p class="subtitle">${subtitle}</p>\n` : '') +
+         ((date) ? `<p class="date">${date}</p>\n` : '') +
+         ((from) ? `<p class="from">${from}</p>\n` : '') +
+         '\n'
+      } else if (this.slideType === 2) {
+        let title = ''
+        this.markdown.split(/\n/).forEach((line, lineNum) => {
+          if (lineNum === 0) {
+            title = line
+          }
+        })
+        str = ((title) ? title + '\n' : '')
+      } else {
+        str = this.markdown
+      }
+      return Marked(str)
     }
   }
 }
