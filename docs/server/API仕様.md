@@ -1,5 +1,11 @@
 # API 仕様
 
+## エンドポイント
+
+```
+https://api-idaten.1day-release.com/
+```
+
 ## ログイン
 
 クライアント側から受け取ったトークンを Google の認証サーバへ転送する  
@@ -10,7 +16,7 @@
 [GET]
 
 ```
-api/auth/login
+auth/login
 ```
 
 ### Request
@@ -36,7 +42,7 @@ Google への認証情報を切る
 [GET]
 
 ```
-api/auth/logout
+auth/logout
 ```
 
 ### Request
@@ -50,7 +56,7 @@ api/auth/logout
 [GET]
 
 ```
-api/slides
+slides
 ```
 
 ### Request
@@ -89,7 +95,7 @@ api/slides
 [POST]
 
 ```
-api/slides
+slides
 ```
 
 ### Request
@@ -116,7 +122,7 @@ api/slides
 [GET]
 
 ```
-api/slides/{slide_id}
+slides/{slide_id}
 ```
 
 ### Request
@@ -144,7 +150,7 @@ api/slides/{slide_id}
 [PUT]
 
 ```
-api/slides/{slide_id}
+slides/{slide_id}
 ```
 
 ### Request
@@ -172,7 +178,7 @@ api/slides/{slide_id}
 [DELETE]
 
 ```
-api/slides/{slide_id}
+slides/{slide_id}
 ```
 
 ### Request
