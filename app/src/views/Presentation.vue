@@ -16,10 +16,17 @@ export default {
   },
   data () {
     return {
-      nowSlideNum: 0
+      nowSlideNum: 0,
+      markdown: ''
     }
   },
   created () {
+    if (this.$route.query.mdUrl) {
+      console.log('md', this.$route.query.mdUrl)
+      fetch(this.$route.query.mdUrl).then(request => request.text()).then((markdown) => {
+        this.markdown = markdown
+      })
+    }
     window.addEventListener('keydown', (event) => {
       if (event.keyCode === 39) {
         this.nextSlide()
@@ -38,7 +45,8 @@ export default {
   },
   computed: {
     slideMarkdown () {
-      return this.$_getSlideMarkdown(this.$store.getters.markdown)
+      const markdown = this.markdown || this.$store.getters.markdown
+      return this.$_getSlideMarkdown(markdown)
     }
   }
 }

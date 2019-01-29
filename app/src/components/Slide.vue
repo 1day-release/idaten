@@ -25,7 +25,7 @@ export default {
     slideType () {
       if (this.markdown.indexOf('# ') === 0) {
         return 1
-      } else if (this.markdown.indexOf('## ') === 0) {
+      } else if (this.markdown.indexOf('## ') === 0 && this.markdown.split(/\n/).length === 1) {
         return 2
       } else {
         return 3
@@ -65,6 +65,8 @@ export default {
         this.markdown.split(/\n/).forEach((line, lineNum) => {
           if (lineNum === 0) {
             title = line
+          } else {
+            str = line
           }
         })
         str = ((title) ? title + '\n' : '')
@@ -83,15 +85,18 @@ export default {
   width: 100%;
   min-height: 70%;
   color: #000c36;
+  /deep/ * {
+    user-select: none;
+  }
   &.slide-type1  /deep/ {
     padding: 5% 5%;
     box-sizing: border-box;
     p:nth-of-type(1) {
       font-size: 16px;
-      margin-bottom: 25%;
     }
     h1 {
       font-size: 30px;
+      margin-top: 25%;
       margin-bottom: 2%;
     }
     p:nth-of-type(2) {
@@ -116,6 +121,11 @@ export default {
   &.slide-type3  /deep/ {
     padding: 10% 10%;
     box-sizing: border-box;
+    h2 {
+      font-size: 30px;
+      color: #000c36;
+      text-align: center;
+    }
     h3 {
       margin-bottom: 5%;
       font-size: 30px;
