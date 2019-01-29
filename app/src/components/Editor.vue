@@ -1,17 +1,6 @@
 <template>
   <div class="editor">
     <textarea v-model="markdown" @input="editorInput">
-# サンプルについて
-サブタイトル : サブタイトル
-日付 : 2019-01-01
-宛名 : 〇〇様
-製作者 : 〇〇
-
-## Slide1
-
-### Slide2
-1. Ordered List1
-2. Ordered List2
     </textarea>
     <Popups>
       <PopupLogout />
@@ -33,18 +22,15 @@ export default {
   },
   data () {
     return {
-      markdown: ''
+      markdown: this.$store.getters.markdown
     }
   },
   methods: {
     editorInput () {
       this.$store.commit('markdown', this.markdown)
-      localStorage.setItem('idaten.markdown', this.markdown)
     }
   },
   created () {
-    this.markdown = localStorage.getItem('idaten.markdown')
-    this.editorInput()
   }
 }
 </script>

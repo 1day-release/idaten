@@ -7,7 +7,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    markdown: ''
+    markdown: (() => {
+      const markdown = localStorage.getItem('idaten.markdown')
+      if (markdown) return markdown
+
+      return `# サンプルについて
+サブタイトル : サブタイトル
+日付 : 2019-01-01
+宛名 : 〇〇様
+製作者 : 〇〇
+
+## Slide1
+
+### Slide2
+1. Ordered List1
+2. Ordered List2
+`
+    })()
   },
   getters: {
     markdown: state => {
@@ -16,6 +32,7 @@ export default new Vuex.Store({
   },
   mutations: {
     markdown (state, data) {
+      localStorage.setItem('idaten.markdown', data)
       state.markdown = data
     }
   },

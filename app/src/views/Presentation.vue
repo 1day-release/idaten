@@ -1,5 +1,5 @@
 <template>
-  <div @click="nextSlide" @contextmenu.prevent="prevSlide">
+  <div class="presentation" @click="nextSlide" @contextmenu.prevent="prevSlide">
     <Slide :markdown="slideMarkdown[nowSlideNum]" />
   </div>
 </template>
@@ -16,16 +16,17 @@ export default {
   },
   data () {
     return {
-      slideMarkdown: [],
-      nowSlideNum: 0
+      nowSlideNum: 0,
+      markdown: ''
     }
   },
   created () {
-    const markdown = localStorage.getItem('idaten.markdown')
-    if (!markdown) return
-
-    this.slideMarkdown = this.$_getSlideMarkdown(markdown)
-
+    if (this.$route.query.mdUrl) {
+      console.log('md', this.$route.query.mdUrl)
+      fetch(this.$route.query.mdUrl).then(request => request.text()).then((markdown) => {
+        this.markdown = markdown
+      })
+    }
     window.addEventListener('keydown', (event) => {
       if (event.keyCode === 39) {
         this.nextSlide()
@@ -41,6 +42,20 @@ export default {
     prevSlide () {
       if (this.nowSlideNum > 0) this.nowSlideNum--
     }
+  },
+  computed: {
+    slideMarkdown () {
+      const markdown = this.markdown || this.$store.getters.markdown
+      return this.$_getSlideMarkdown(markdown)
+    }
   }
 }
 </script>
+
+<style scoped lang="scss">
+  .presentation {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+</style>
