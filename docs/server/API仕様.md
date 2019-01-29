@@ -43,14 +43,14 @@ api/auth/logout
 
 ### Response
 
-## スライド一覧
+## スライド一覧取得
 
 ### URL
 
 [GET]
 
 ```
-api/slides-list
+api/slides
 ```
 
 ### Request
