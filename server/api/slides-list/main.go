@@ -2,17 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	var path = request.Path
-	var slideID = strings.Split(path, "/")[3]
-	fmt.Print(slideID)
+func slides_list(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	personID := "123456acsdvdw"
 	personName := "mym@gmail.com"
@@ -31,12 +26,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}, nil
 }
 
-func main() {
-	lambda.Start(handler)
-}
-
 type PersonResponse struct {
 	PersonID   string `json:"personID"`
 	PersonName string `json:"personName"`
 	Old        int    `json:"old"`
+}
+
+func main() {
+	lambda.Start(slides_list)
 }

@@ -10,7 +10,7 @@ import (
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var path = request.Path
-	var getSlideID = strings.Split(path, "/")[3]
+	var getSlideID = strings.Split(path, "/")[2]
 
 	slideID := getSlideID
 	markdown := "# Test\n\n## Test2"
