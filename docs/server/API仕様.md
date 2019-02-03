@@ -19,12 +19,14 @@ https://api.idaten.1day-release.com/
 auth/login
 ```
 
-### Request
+### Query Parameter
+
+| パラメータ |             説明              |
+| :--------: | :---------------------------: |
+|    code    | Google から送信されたトークン |
 
 ```
-{
-  code: "xxxxxxxxx"
-}
+?code=xxxxxxxxxxxx
 ```
 
 ### Response
@@ -45,7 +47,7 @@ Google への認証情報を切る
 auth/logout
 ```
 
-### Request
+### Query Parameter
 
 ### Response
 
@@ -59,12 +61,14 @@ auth/logout
 slides
 ```
 
-### Request
+### Query Parameter
+
+| パラメータ |                     説明                     |
+| :--------: | :------------------------------------------: |
+|   email    | メールアドレス（ex. 1day.release@gmail.com） |
 
 ```
-{
-  "email": "1day.release@gmail.com"
-}
+?email=1day.release@gmail.com
 ```
 
 ### Response
@@ -98,7 +102,12 @@ slides
 slides
 ```
 
-### Request
+### Request Body
+
+| パラメータ |                     説明                     |
+| :--------: | :------------------------------------------: |
+|   email    | メールアドレス（ex. 1day.release@gmail.com） |
+| share_mode |       0:非公開，1:公開閲覧，2:公開編集       |
 
 ```
 {
@@ -125,10 +134,14 @@ slides
 slides/{slide_id}
 ```
 
-### Request
+### Query Parameter
+
+| パラメータ | 説明 |
+| :--------: | :--: |
+|    なし    |      |
 
 ```
-{}
+URLのみ
 ```
 
 ### Response
@@ -153,7 +166,13 @@ slides/{slide_id}
 slides/{slide_id}
 ```
 
-### Request
+### Request Body
+
+| パラメータ |                     説明                     |
+| :--------: | :------------------------------------------: |
+|   email    | メールアドレス（ex. 1day.release@gmail.com） |
+|  markdown  |            マークダウンのテキスト            |
+| share_mode |       0:非公開，1:公開閲覧，2:公開編集       |
 
 ```
 {
@@ -181,7 +200,11 @@ slides/{slide_id}
 slides/{slide_id}
 ```
 
-### Request
+### Request Body
+
+| パラメータ |                     説明                     |
+| :--------: | :------------------------------------------: |
+|   email    | メールアドレス（ex. 1day.release@gmail.com） |
 
 ```
 {
