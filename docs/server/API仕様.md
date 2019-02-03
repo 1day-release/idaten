@@ -3,7 +3,7 @@
 ## エンドポイント
 
 ```
-https://api-idaten.1day-release.com/
+https://api.idaten.1day-release.com/
 ```
 
 ## ログイン
