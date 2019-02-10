@@ -79,15 +79,15 @@ slides
     "slide_id": "xxxxxxxxxxxxxxxx",
     "email": "1day.release@gmail.com",
     "share_mode": 0,
-    "create_at": "2019-01-01 00:00:00",
-    "update_at": "2019-01-02 00:00:00"
+    "created_at": "2019-01-01 00:00:00",
+    "updated_at": "2019-01-02 00:00:00"
   },
   {
     "slide_id": "xxxxxxxxxxxxxxxx",
     "email": "1day.release@gmail.com",
     "share_mode": 0,
-    "create_at": "2019-01-01 00:00:00",
-    "update_at": "2019-01-02 00:00:00"
+    "created_at": "2019-01-01 00:00:00",
+    "updated_at": "2019-01-02 00:00:00"
   },
 ]
 ```
@@ -151,8 +151,8 @@ URLのみ
   "slide_id": "xxxxxxxxxxxxxxxx"
   "markdown": "# test",
   "share_mode": 0,
-  "create_at": "2019-01-01 00:00:00",
-  "update_at": "2019-01-02 00:00:00"
+  "created_at": "2019-01-01 00:00:00",
+  "updated_at": "2019-01-02 00:00:00"
 }
 ```
 
@@ -186,7 +186,7 @@ slides/{slide_id}
 
 ```
 {
-  "update_at": "2019-01-02 00:00:00"
+  "updated_at": "2019-01-02 00:00:00"
 }
 ```
 

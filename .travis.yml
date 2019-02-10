@@ -1,30 +1,30 @@
 language: node_js
 node_js:
-  - "10"
+- '10'
 dist: trusty
 sudo: false
 cache: npm
 branches:
   only:
-    - develop
-    - stating
-    - master
+  - develop
+  - stating
+  - master
 install:
-  - cd app
-  - npm install
+- cd app
+- npm install
 script:
-  - npm run build
+- npm run build
 deploy:
-  - provider: s3
-    access_key_id: "$AWS_ACCESS_KEY_ID"
-    secret_access_key: "$AWS_SECRET_ACCESS_KEY"
-    bucket: idaten.1day-release.com
-    region: ap-northeast-1
-    local_dir: dist
-    endpoint: s3-ap-northeast-1.amazonaws.com
-    skip_cleanup: true
-    on:
-      branch: master
+- provider: s3
+  access_key_id: "$AWS_ACCESS_KEY_ID"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+  bucket: idaten.1day-release.com
+  region: ap-northeast-1
+  local_dir: dist
+  endpoint: s3-ap-northeast-1.amazonaws.com
+  skip_cleanup: true
+  on:
+    branch: master
 notifications:
   slack:
-    secure: id5zDFzvjZKgB0IWNZ1hyE/Ouh2TyHPobiw/9Vi4YPramwl/6zl34ydSgyKAnAPN0WR9QbUyCnykbZR968/yLqStD7O+JJ5DMlix+KjalMOItcZZQ3+gNgFMdKgqiLcaGmbpGD5s8pI7xHxqKy8t4INOnoFCGncre8sh6coRZ1BT9akvAA5ighPP0l0vQJq2e70cl2BHuxn4ON+YzQ/mXOPhvKexHLUE1qaJFB7OyEdn1XCC7TgW4IDpgD9oaAPFhLT7l3gMD8o7eCc6b9rDstSi3T7BYu31gAhaWqImVRuwWXygpNiLmk71ILUov3iMdqyfUi5WqpknsYg3Y1eGMt+/OTxJCdkP30bCEEUQlJ7wTE9VgCTT8P8D3IQ9RVwH6y+frqNZ1jpb/RXuFn458SM9Z3g/2Se5ijbdxxnTr1zVxmKAs1UoAuw+NqTnLpWiMb0HVwn651gySBiFoeRLbQfsbJ2ziH6ss6OXaO/naO89dTopDQIVS19EjpOLLCn+5Zc7xQWETFJyLodRK71ggCqsV113fjQJhk9WATE/QS40uf8kGMEDf2ym2ddceEuHIqsYqfWNMaQ6QP/g3tx6+DRm0yJuO83nUqymsUEmggeZxJn8XZx4X9U+8Aeec7Wyuml6uwe25HpUvuczKSlM62e26sxb/4PwcrEgvjv2K4U=
+    secure: JGTgyjWYGy5lwRvbwTBxPwkLZBrU5y3iwFnd+3O+1RhZhxXgFqVDE/+P4C/mlI4iYX9EAOEGyFh086RucWbT+T9h2z/QlCBwq3Ulg/o2GapCxz6VX38BOb4/E1YPDPKUisFZB/fnUhn04m7VkHtoIgED/jojclcoyHH3LJDapjTG13BKnhsnSwwdizhRIaUscqrjZl5u73vzZvuDUxs0c/wjm8BG+UmAXNjvZAETDoA1JT7/Qrf7uzjEk+heWjKSe2e+rV384DE4uE8yfLyDBZ48rIoqpXDqI5yPo/VLvQOh+4ADzp1YHXRIJETwiLfZGamoyXWnsb0ghdN1ChvLvZkkCSxUTuoad3AbMHNxfJrCXi85ik6bxIWHdgyvJbGgnELCy6qHtbbjz05ZpcL6ghexgseNEaFcUY60htQvFtkFj3kvT2aNovK88r6K/GY3t9xJ05eFL8XcmJlVnvYrjk8KRAjTG6R66A6BD+w9CeSqQvJ4Bl0wq0Th/VNE8tyBme/GiKpHus/sY6E1ddAw+JMhHLOgvA/0urpfqAZF07ZXiJC2jjHgQl1ZUNQmYvPqgLJiKm9QCIiA8oB4DFHdNZcxFKuQFTx9f7F8yq8SqiQlamuFk8n+0iiKc6BXgUHbVbwM5ZC9zn3FoxgxKIhwTNGQa/wUOvS1QZWLfNmAvME=
