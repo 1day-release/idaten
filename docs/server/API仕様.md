@@ -147,13 +147,15 @@ URLのみ
 ### Response
 
 ```
-{
-  "slide_id": "xxxxxxxxxxxxxxxx"
-  "markdown": "# test",
-  "share_mode": 0,
-  "created_at": "2019-01-01 00:00:00",
-  "updated_at": "2019-01-02 00:00:00"
-}
+[
+  {
+    "slide_id": "xxxxxxxxxxxxxxxx"
+    "markdown": "# test",
+    "share_mode": 0,
+    "created_at": "2019-01-01 00:00:00",
+    "updated_at": "2019-01-02 00:00:00"
+  }
+]
 ```
 
 ## スライド保存
