@@ -120,7 +120,7 @@ grant_type: authorization_code
 3. OAuth認証取得データのaccess_tokenを元に、ユーザー情報を取得する
     1. ヘッダーのContent-Typeをapplication/json、ヘッダーのAuthorizationを「Bearer {取得したaccess_token}」、メソッドをGETとして、https://www.googleapis.com/oauth2/v1/userinfo にHTTP通信を行う
 4. Googleユーザー情報の取得に失敗した場合、Error Codeをa2としてレスポンスを返す、処理終了
-5. ユーザー情報取得データのemailをemail、OAuth取得データのaccess_tokenをaccess_token、ユーザー情報取得データをuser_infoとして、usersテーブルを更新する
+5. OAuth取得データのaccess_tokenをaccess_token、ユーザー情報取得データを各カラムに分解して、usersテーブルを更新する
 6. 更新に失敗した場合、Error Codeをa3としてレスポンスを返す、処理終了
 7. OAuth取得データのaccess_tokenをaccess_tokenとして、Http Codeを200としてレスポンスを返す
 

@@ -6,7 +6,12 @@
 | :-------------: | :------------------------: |
 |      email      |    Google のメールアドレス    |
 |   access_token  |    認証用のアクセストークン    |
-|    user_info    |   ユーザーの取得情報(分解定)   |
+|     user_id     |      GoogleのユーザーID      |
+|      name       |         フルネーム           |
+|    given_name   |       ファーストネーム        |
+|   family_name   |       ファミリーネーム        |
+|     picture     |     アカウントのアイコン       |
+|     locale      |          ロケール            |
 
 ## slides
 
