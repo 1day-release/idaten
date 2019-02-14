@@ -33,23 +33,37 @@ export default {
 <style scoped lang="scss">
   .preview {
     position: relative;
+    overflow: hidden;
+    display: block;
     width: 100%;
     height: 100%;
 
     &-list {
+      $position: 20px;
+      $padding: 40px;
+
       position: absolute;
-      top: 20px;
-      left: 20px;
+      top: $position;
+      bottom: $position;
+      left: $position;
       overflow-y: auto;
-      width: calc(100% - #{20px + 40px});
-      max-width: $pc-min-width * 0.35 - 20px;
+      min-width: calc(100% + 17px);
+      width: calc(100% - #{$position * 3});
+      max-width: $pc-min-width * 0.35 - $position;
       height: auto;
       max-height: 100%;
-      padding-right: 40px;
+      padding-right: $position;
       margin: auto;
 
+      // @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
+
       >li {
-        padding-bottom: 20px;
+        width: 100%;
+        margin-top: $position;
+
+        // &:first-child {
+        //   margin-top: 0;
+        // }
       }
     }
   }

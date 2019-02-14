@@ -7,11 +7,11 @@
         </a>
       </h1>
       <div class="header-tools">
-        <!-- ul class="header-tool">
-          <li>
+        <ul class="header-tool">
+          <!-- li>
             <UserSlideListShowButton />
-          </li>
-        </ul -->
+          </li -->
+        </ul>
         <ul class="header-tool">
           <li>
             <PresentationButton />
@@ -64,116 +64,115 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.l-header {
-  position: relative;
-  height: $pc-header-height;
-  background-color: map-get($color-brand, "base");
-}
-
-.header {
-  &-logo {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100px;
-    margin: auto;
-
-    >a {
-      display: block;
-      overflow: hidden;
-      width: inherit;
-    }
+  .l-header {
+    position: relative;
+    height: $pc-header-height;
+    background-color: map-get($color-brand, "base");
   }
 
-  &-tools {
-    display: flex;
-    // justify-content: space-between;
-    justify-content: flex-end;
-    align-items: center;
-    height: 100%;
-  }
-
-  &-tool {
-    $padding: 15px;
-
-    display: flex;
-    height: inherit;
-
-    >li {
-      box-sizing: border-box;
-      flex: 0 0 auto;
-      position: relative;
+  .header {
+    &-logo {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      width: auto;
-      min-width: 64px;
-      padding-right: $padding;
-      padding-left: $padding + 1px;
-      height: inherit;
+      width: 100px;
+      margin: auto;
 
-      &::before,
-      &::after {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        margin: auto 0;
-        width: 1px;
-        height: 30px;
-        background-color: map-get($color-brand, "border-light");
-      }
-
-      &::before {
-        content: "";
-        left: 0;
-      }
-
-      &:first-child {
-
-        &::before {
-          content: none;
-        }
-      }
-
-      &.is_separate {
-        &::before,
-        &::after {
-          height: auto;
-        }
-      }
-
-      @at-root #app:not(.is_logout) &.is_logout {
-        display: none;
-      }
-
-      @at-root #app.is_logout &.is_login {
-        display: none;
+      >a {
+        display: block;
+        overflow: hidden;
+        width: inherit;
       }
     }
 
-    &:first-child {
-      >li {
-        &:last-child {
-          padding-right: $padding + 1px;
-          padding-left: $padding;
+    &-tools {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    }
 
+    &-tool {
+      $padding: 15px;
+
+      display: flex;
+      height: inherit;
+
+      >li {
+        box-sizing: border-box;
+        flex: 0 0 auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        min-width: 64px;
+        padding-right: $padding;
+        padding-left: $padding + 1px;
+        height: inherit;
+
+        &::before,
+        &::after {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          margin: auto 0;
+          width: 1px;
+          height: 30px;
+          background-color: map-get($color-brand, "border-light");
+        }
+
+        &::before {
+          content: "";
+          left: 0;
+        }
+
+        &:first-child {
+
+          &::before {
+            content: none;
+          }
+        }
+
+        &.is_separate {
+          &::before,
           &::after {
-            content: "";
-            right: 0;
+            height: auto;
+          }
+        }
+
+        @at-root #app:not(.is_logout) &.is_logout {
+          display: none;
+        }
+
+        @at-root #app.is_logout &.is_login {
+          display: none;
+        }
+      }
+
+      &:first-child {
+        >li {
+          &:last-child {
+            padding-right: $padding + 1px;
+            padding-left: $padding;
+
+            &::after {
+              content: "";
+              right: 0;
+            }
           }
         }
       }
     }
   }
-}
 
-.user {
-  width: 30px;
-  height: 30px;
-}
+  .user {
+    width: 30px;
+    height: 30px;
+  }
 </style>
