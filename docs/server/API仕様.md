@@ -3,35 +3,126 @@
 ## エンドポイント
 
 ```
-https://api-idaten.1day-release.com/
+https://api.idaten.1day-release.com/
 ```
+
+## ステータスコード
+
+### 成功
+
+| HTTP Code | 説明 |
+| --- | --- |
+| 200 | 成功 |
+| 201 | 登録成功 |
+
+### 失敗
+レスポンスのボディにcodeとmessageでエラーの原因を配列で含める  
+複数存在する場合は配列内部に複数記述する  
+codeは「分類アルファベット + 発番」により構成される
+
+```
+{
+  "errors": [
+    {
+      "code": "a1",
+      "message": "Invalid code."
+    },
+    {
+      "code": "a2",
+      "message": "Could not get user info."
+    },
+    {
+      "code": "a3",
+      "message": "Could not update access token."
+    }
+  ]
+}
+```
+
+#### 認証(a)
+
+| Error Code | HTTP Code| 説明 |
+| --- | --- | --- |
+| a1 | 401 | Invalid code. |
+| a2 | 401 | Could not get user info. |
+| a3 | 401 | Could not update access token. |
+| a4 | 401 | Could not authenticate. |
+| a5 | 401 | Could not remove access token. |
+
+#### 取得(b)
+
+| Error Code | HTTP Code| 説明 |
+| --- | --- | --- |
+| b1 | 404 |  |
+
+#### 登録(c)
+
+| Error Code | HTTP Code| 説明 |
+| --- | --- | --- |
+| c1 | 400 |  |
+
+#### 削除(d)
+
+| Error Code | HTTP Code| 説明 |
+| --- | --- | --- |
+| d1 | 400 |  |
+| d1 | 404 |  |
 
 ## ログイン
 
-クライアント側から受け取ったトークンを Google の認証サーバへ転送する  
+クライアント側から受け取ったトークンをGoogleの認証サーバへ転送する
 転送されて帰ってきた認証情報をクライアント側へ返却する
 
 ### URL
 
-[GET]
+[POST]
 
 ```
 auth/login
 ```
 
-### Request
+### Query Parameter
+
+#### Header
+
+#### Body
+
+| パラメータ |             説明              |
+| :--------: | :---------------------------: |
+|    code    | Google から送信されたトークン |
 
 ```
 {
-  code: "xxxxxxxxx"
+  "code": "xxxxxxxxxxxx"
 }
 ```
 
 ### Response
 
 ```
-{}
+{
+  "access_token": "xxxxxxxxxx"
+}
 ```
+
+### 処理仕様
+
+1. パラメータのcodeを元に、GoogleのOAuth認証を行う
+    1. フォームデータを下記のデータ構造、ヘッダーのContent-Typeをapplication/x-www-form-urlencoded、メソッドをPOSTとして、https://accounts.google.com/o/oauth2/token にHTTP通信を行う
+```
+code: 取得したコード
+client_id: Googleで取得したClientID
+client_secret: Googleで取得したClientSecret
+redirect_uri: idaten編集画面のURL
+grant_type: authorization_code
+```
+2. OAuth認証に失敗した場合、Error Codeをa1としてレスポンスを返す、処理終了
+3. OAuth認証取得データのaccess_tokenを元に、ユーザー情報を取得する
+    1. ヘッダーのContent-Typeをapplication/json、ヘッダーのAuthorizationを「Bearer {取得したaccess_token}」、メソッドをGETとして、https://www.googleapis.com/oauth2/v1/userinfo にHTTP通信を行う
+4. Googleユーザー情報の取得に失敗した場合、Error Codeをa2としてレスポンスを返す、処理終了
+5. OAuth取得データのaccess_tokenをaccess_token、ユーザー情報取得データを各カラムに分解して、usersテーブルを更新する
+6. 更新に失敗した場合、Error Codeをa3としてレスポンスを返す、処理終了
+7. OAuth取得データのaccess_tokenをaccess_tokenとして、Http Codeを200としてレスポンスを返す
 
 ## ログアウト
 
@@ -39,15 +130,44 @@ Google への認証情報を切る
 
 ### URL
 
-[GET]
+[POST]
 
 ```
 auth/logout
 ```
 
-### Request
+### Query Parameter
+
+#### Header
+
+| パラメータ | 説明 |
+| --- | --- |
+| Authorization | 「Bearer 」+ ログインAPIで発行されたアクセストークン |
+
+```
+Authorization: Bearer xxxxxxxxxx
+```
+
+#### Body
 
 ### Response
+
+```
+{}
+```
+
+### 処理仕様
+
+1. 認証処理を行い、ユーザー構造体を取得する(共通処理)
+    1. ヘッダーのAuthorizationが存在しないまたは、Authorizationの先頭に「Bearer 」が存在しない場合、Error Codeをa4としてレスポンスを返す、処理終了
+    2. ヘッダーのAuthorizationの「Bearer 」を省いた文字列をaccess_tokenとして、usersテーブルを検索する
+    3. ユーザーが存在しない場合、Error Codeをa4としてレスポンスを返す、処理終了
+    2. ヘッダーのAuthorizationの「Bearer 」を省いた文字列をaccess_tokenとして、usersテーブルを検索する
+    3. ユーザーが存在しない場合、Error Codeをa4としてレスポンスを返す、処理終了
+    4. ユーザー構造体を返す
+2. ユーザー構造体のaccess_tokenを空にして、usersテーブルを更新する
+3. 更新に失敗した場合、Error Codeをa5としてレスポンスを返す、処理終了
+4. Http Codeを200としてレスポンスを返す
 
 ## スライド一覧取得
 
@@ -59,15 +179,31 @@ auth/logout
 slides
 ```
 
-### Request
+### Query Parameter
+
+#### Header
+
+| パラメータ | 説明 |
+| --- | --- |
+| Authorization | 「Bearer 」+ ログインAPIで発行されたアクセストークン |
 
 ```
-{
-  "email": "1day.release@gmail.com"
-}
+Authorization: Bearer xxxxxxxxxx
+```
+
+#### Body
+
+| パラメータ | 説明 |
+| --- | --- |
+| email | メールアドレス（ex.1day.release@gmail.com） |
+
+```
+?email=1day.release@gmail.com
 ```
 
 ### Response
+
+#### 取得成功(200)
 
 ```
 [
@@ -75,18 +211,25 @@ slides
     "slide_id": "xxxxxxxxxxxxxxxx",
     "email": "1day.release@gmail.com",
     "share_mode": 0,
-    "create_at": "2019-01-01 00:00:00",
-    "update_at": "2019-01-02 00:00:00"
+    "created_at": "2019-01-01 00:00:00",
+    "updated_at": "2019-01-02 00:00:00"
   },
   {
     "slide_id": "xxxxxxxxxxxxxxxx",
     "email": "1day.release@gmail.com",
     "share_mode": 0,
-    "create_at": "2019-01-01 00:00:00",
-    "update_at": "2019-01-02 00:00:00"
-  },
+    "created_at": "2019-01-01 00:00:00",
+    "updated_at": "2019-01-02 00:00:00"
+  }
 ]
 ```
+
+### 処理仕様
+
+1. 認証処理を行い、ユーザー構造体を取得する(共通処理)
+4. ユーザー構造体を元に、emailでslidesテーブルを絞り込む
+5. 取得に失敗した場合、レスポンスデータを空配列、Http Codeを200としてレスポンスを返す、処理終了
+9. レスポンスデータを取得したデータ、Http Codeを200としてレスポンスを返す
 
 ## スライド作成
 
@@ -98,12 +241,17 @@ slides
 slides
 ```
 
-### Request
+### Request Body
+
+| パラメータ |                     説明                     |
+| :--------: | :------------------------------------------: |
+|   email    | メールアドレス（ex. 1day.release@gmail.com） |
+| share_mode |       0:非公開，1:公開閲覧，2:公開編集       |
 
 ```
 {
-  "email": "1day.release@gmail.com",
-  "share_mode": 0
+    "email": "1day.release@gmail.com",
+    "share_mode": 0
 }
 ```
 
@@ -111,7 +259,7 @@ slides
 
 ```
 {
-  "slide_id": "xxxxxxxxxxxxxxxx"
+    "slide_id": "xxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -125,22 +273,28 @@ slides
 slides/{slide_id}
 ```
 
-### Request
+### Query Parameter
+
+| パラメータ | 説明 |
+| :--------: | :--: |
+|    なし    |      |
 
 ```
-{}
+URLのみ
 ```
 
 ### Response
 
 ```
-{
-  "slide_id": "xxxxxxxxxxxxxxxx"
-  "markdown": "# test",
-  "share_mode": 0,
-  "create_at": "2019-01-01 00:00:00",
-  "update_at": "2019-01-02 00:00:00"
-}
+[
+  {
+    "slide_id": "xxxxxxxxxxxxxxxx"
+    "markdown": "# test", 
+    "share_mode": 0, 
+    "created_at": "2019-01-01 00:00:00", 
+    "updated_at": "2019-01-02 00:00:00"
+  }
+]
 ```
 
 ## スライド保存
@@ -153,13 +307,19 @@ slides/{slide_id}
 slides/{slide_id}
 ```
 
-### Request
+### Request Body
+
+| パラメータ |                     説明                     |
+| :--------: | :------------------------------------------: |
+|   email    | メールアドレス（ex. 1day.release@gmail.com） |
+|  markdown  |            マークダウンのテキスト            |
+| share_mode |       0:非公開，1:公開閲覧，2:公開編集       |
 
 ```
 {
-  "email": "1day.release@gmail.com"
-  "markdown": "# test",
-  "share_mode": 0
+    "email": "1day.release@gmail.com"
+    "markdown": "# test",
+    "share_mode": 0
 }
 ```
 
@@ -167,7 +327,7 @@ slides/{slide_id}
 
 ```
 {
-  "update_at": "2019-01-02 00:00:00"
+    "updated_at": "2019-01-02 00:00:00"
 }
 ```
 
@@ -181,11 +341,15 @@ slides/{slide_id}
 slides/{slide_id}
 ```
 
-### Request
+### Request Body
+
+| パラメータ |                     説明                     |
+| :--------: | :------------------------------------------: |
+|   email    | メールアドレス（ex. 1day.release@gmail.com） |
 
 ```
 {
-  "email": "1day.release@gmail.com"
+    "email": "1day.release@gmail.com"
 }
 ```
 
@@ -193,6 +357,6 @@ slides/{slide_id}
 
 ```
 {
-  "status": "200"
+    "status": "200"
 }
 ```
