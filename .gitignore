@@ -3,3 +3,5 @@ server/.serverless
 
 # golang output binary directory
 server/bin
+
+.DS_Store
