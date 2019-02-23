@@ -126,6 +126,31 @@ export default {
 
       .from {
       }
+      // padding: 5% 5%;
+      // box-sizing: border-box;
+
+      // p:nth-of-type(1) {
+      //   font-size: 16px;
+      // }
+
+      // h1 {
+      //   font-size: 30px;
+      //   margin-top: 25%;
+      //   margin-bottom: 2%;
+      // }
+
+      // p:nth-of-type(2) {
+      //   margin-bottom: 25%;
+      // }
+
+      // p:nth-of-type(3) {
+      //   color: #cbcdd6;
+      //   margin-bottom: 1%;
+      // }
+
+      // p:nth-of-type(4) {
+      //   color: #cbcdd6;
+      // }
     }
 
     &.slide-type2  /deep/ {

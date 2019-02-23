@@ -45,11 +45,23 @@ export default {
     margin-left: $position;
 
     &-list {
-      overflow-y: scroll;
-      width: calc(100% + 17px);
-      height: 100%;
-      padding-right: 17px;
+      $position: 20px;
+      $padding: 40px;
+
+      position: absolute;
+      top: $position;
+      bottom: $position;
+      left: $position;
+      overflow-y: auto;
+      min-width: calc(100% + 17px);
+      width: calc(100% - #{$position * 3});
+      max-width: $pc-min-width * 0.35 - $position;
+      height: auto;
+      max-height: 100%;
+      padding-right: $position;
       margin: auto;
+
+      // @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
 
       >li {
         width: 100%;
