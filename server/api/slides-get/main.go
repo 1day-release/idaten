@@ -15,8 +15,8 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	var path = request.Path
-	var getSlideID = strings.Split(path, "/")[2]
+	path := request.Path
+	getSlideID := strings.Split(path, "/")[2]
 	fmt.Println(getSlideID)
 
 	// DynamoDBのテーブルと接続
