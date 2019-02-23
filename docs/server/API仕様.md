@@ -43,11 +43,11 @@ codeは「分類アルファベット + 発番」により構成される
 
 | Error Code | HTTP Code| 説明 |
 | --- | --- | --- |
-| a1 | 401 | Invalid code. |
-| a2 | 401 | Could not get user info. |
-| a3 | 401 | Could not update access token. |
-| a4 | 401 | Could not authenticate. |
-| a5 | 401 | Could not remove access token. |
+| a1 | 403 | Invalid code. |
+| a2 | 403 | Could not get user info. |
+| a3 | 403 | Could not update access token. |
+| a4 | 403 | Could not authenticate. |
+| a5 | 403 | Could not remove access token. |
 
 #### 取得(b)
 
