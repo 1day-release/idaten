@@ -15,12 +15,16 @@ import (
 )
 
 func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
 	requestEmail := request.QueryStringParameters["email"]
 
 	if len(requestEmail) == 0 {
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body: `{"status": "Bad Request"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: 400,
 		}, nil
 	}
@@ -81,7 +85,12 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 	jsonBytes, _ := json.Marshal(responseUserData)
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(jsonBytes),
+		Body: string(jsonBytes),
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+			"Content-Type":                 "application/json",
+		},
 		StatusCode: 200,
 	}, nil
 }
