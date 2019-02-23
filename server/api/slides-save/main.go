@@ -106,7 +106,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if err := json.Unmarshal(jsonBytes, requestData); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body: `{"status": "Bad Request"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: 400,
 		}, nil
 	}
@@ -123,7 +128,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if err != nil {
 		fmt.Println(err.Error())
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body: `{"status": "Bad Request"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: 400,
 		}, nil
 	}
@@ -132,7 +142,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	status, jsonString := FindGetItem(svc, getSlideID, requestData.Email)
 	if status != 200 {
 		return events.APIGatewayProxyResponse{
-			Body:       jsonString,
+			Body: jsonString,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: status,
 		}, nil
 	}
@@ -141,7 +156,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	status, jsonString = UpdateItemInput(svc, getSlideID, requestData.Email, requestData.MarkDown, strconv.Itoa(requestData.ShareMode), nowDateTime)
 
 	return events.APIGatewayProxyResponse{
-		Body:       jsonString,
+		Body: jsonString,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+			"Content-Type":                 "application/json",
+		},
 		StatusCode: status,
 	}, nil
 }
