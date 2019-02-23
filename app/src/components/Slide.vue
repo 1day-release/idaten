@@ -80,11 +80,31 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  $fz: (
+               "p": 18px,
+           "pager": 12px,
+
+           "title": 40px,
+       "sub-title": 20px,
+              "to": 16px,
+            "date": 16px,
+            "name": 16px,
+
+     "slide-title": 12px,
+              "h2": 40px,
+
+   "section-title": 14px,
+              "h3": 30px,
+              "h4": 22px
+  );
+
   .slide {
     box-sizing: border-box;
     width: 100%;
-    min-height: 70%;
-    color: #000c36;
+    height: auto;
+    min-height: 680px / 1110px * 100%;
+    color: #0f002b;
+    font-size: 18px;
     background: #fff;
 
     /deep/ * {
@@ -92,30 +112,19 @@ export default {
     }
 
     &.slide-type1  /deep/ {
-      padding: 5% 5%;
-      box-sizing: border-box;
-
-      p:nth-of-type(1) {
-        font-size: 16px;
+      .to {
       }
 
       h1 {
-        font-size: 30px;
-        margin-top: 25%;
-        margin-bottom: 2%;
       }
 
-      p:nth-of-type(2) {
-        margin-bottom: 25%;
+      .subtitle {
       }
 
-      p:nth-of-type(3) {
-        color: #cbcdd6;
-        margin-bottom: 1%;
+      .date {
       }
 
-      p:nth-of-type(4) {
-        color: #cbcdd6;
+      .from {
       }
     }
 

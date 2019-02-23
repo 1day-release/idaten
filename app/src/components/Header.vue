@@ -8,9 +8,9 @@
       </h1>
       <div class="header-tools">
         <ul class="header-tool">
-          <!-- li>
+          <li>
             <UserSlideListShowButton />
-          </li -->
+          </li>
         </ul>
         <ul class="header-tool">
           <li>
@@ -35,7 +35,7 @@
 
 <script>
 import BrandLogo from '@/components/BrandLogo.vue'
-// import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
+import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
 import PresentationButton from '@/components/PresentationButton.vue'
 // import UserIcon from '@/components/UserIcon.vue'
 // import LoginButton from '@/components/LoginButton.vue'
@@ -45,7 +45,7 @@ export default {
   name: 'Header',
   components: {
     BrandLogo,
-    // UserSlideListShowButton,
+    UserSlideListShowButton,
     // PresentationButton,
     PresentationButton
     // UserIcon,

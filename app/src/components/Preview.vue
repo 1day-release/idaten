@@ -32,38 +32,32 @@ export default {
 
 <style scoped lang="scss">
   .preview {
+    $position: 20px;
+    $padding: 40px;
+
+    box-sizing: border-box;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
     display: block;
-    width: 100%;
+    width: calc(100% - #{$position * 2});
+    max-width: $pc-min-width * 0.35 - $position;
     height: 100%;
+    margin-left: $position;
 
     &-list {
-      $position: 20px;
-      $padding: 40px;
-
-      position: absolute;
-      top: $position;
-      bottom: $position;
-      left: $position;
-      overflow-y: auto;
-      min-width: calc(100% + 17px);
-      width: calc(100% - #{$position * 3});
-      max-width: $pc-min-width * 0.35 - $position;
-      height: auto;
-      max-height: 100%;
-      padding-right: $position;
+      overflow-y: scroll;
+      width: calc(100% + 17px);
+      height: 100%;
+      padding-right: 17px;
       margin: auto;
-
-      // @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
 
       >li {
         width: 100%;
-        margin-top: $position;
+        padding-bottom: $padding;
 
-        // &:first-child {
-        //   margin-top: 0;
-        // }
+        &:first-child {
+          padding-top: $padding;
+        }
       }
     }
   }
