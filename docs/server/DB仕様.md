@@ -1,19 +1,25 @@
 # DB 仕様
 
-## users
+## idaten-users
 
-|    フィールド名   |           用途              |
-| :-------------: | :------------------------: |
-|      email      |    Google のメールアドレス    |
-|   access_token  |    認証用のアクセストークン    |
-|     user_id     |      GoogleのユーザーID      |
-|      name       |         フルネーム           |
-|    given_name   |       ファーストネーム        |
-|   family_name   |       ファミリーネーム        |
-|     picture     |     アカウントのアイコン       |
-|     locale      |          ロケール            |
+- Hash Key: user_id
+- Range Key: email
 
-## slides
+| フィールド名 |           用途           |
+| :----------: | :----------------------: |
+|   user_id    |   Google のユーザー ID   |
+|    email     | Google のメールアドレス  |
+| access_token | 認証用のアクセストークン |
+|     name     |        フルネーム        |
+|  given_name  |     ファーストネーム     |
+| family_name  |     ファミリーネーム     |
+|   picture    |   アカウントのアイコン   |
+|    locale    |         ロケール         |
+
+## idaten-slides
+
+- Hash Key: slide_id
+- Range Key: email
 
 | フィールド名 |              用途              |
 | :----------: | :----------------------------: |
