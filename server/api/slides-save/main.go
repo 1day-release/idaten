@@ -28,8 +28,10 @@ func FindGetItem(svc *dynamodb.DynamoDB, getSlideID string, Email string) (int, 
 	status := 200
 	jsonString := "ok"
 
+	fmt.Println(getSlideID)
+	fmt.Println(Email)
 	input := &dynamodb.GetItemInput{
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),
@@ -75,7 +77,7 @@ func UpdateItemInput(svc *dynamodb.DynamoDB, getSlideID string, Email string, Ma
 			"#updated_at": aws.String("updated_at"),
 		},
 
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),

@@ -55,7 +55,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 				S: aws.String(requestData.Email),
 			},
 		},
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 	}
 
 	_, err = svc.DeleteItem(input)

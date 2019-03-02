@@ -32,7 +32,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	svc := dynamodb.New(session)
 
 	result, err := svc.Query(&dynamodb.QueryInput{
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 		ExpressionAttributeNames: map[string]*string{
 			"#ID":        aws.String("slide_id"),
 			"#MARKDOWN":  aws.String("markdown"),

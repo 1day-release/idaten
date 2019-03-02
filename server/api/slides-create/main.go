@@ -105,7 +105,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	input := &dynamodb.PutItemInput{
 		Item:      av,
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 	}
 
 	_, err = svc.PutItem(input)

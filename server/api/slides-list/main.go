@@ -52,7 +52,7 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 		ExpressionAttributeValues: expr.Values(),
 		FilterExpression:          expr.Filter(),
 		ProjectionExpression:      expr.Projection(),
-		TableName:                 aws.String("idaten"),
+		TableName:                 aws.String("idaten-slides"),
 	}
 
 	results, err := svc.Scan(params)
