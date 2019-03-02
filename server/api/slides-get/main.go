@@ -79,9 +79,13 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	jsonBytes, _ := json.Marshal(responseUserData)
+	jsonString := string(jsonBytes)
+	if jsonString == "null" {
+		jsonString = "[]"
+	}
 
 	return events.APIGatewayProxyResponse{
-		Body: string(jsonBytes),
+		Body: jsonString,
 		Headers: map[string]string{
 			"Access-Control-Allow-Origin":  "*",
 			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
