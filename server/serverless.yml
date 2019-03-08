@@ -39,12 +39,15 @@ package:
     - ./bin/**
 
 functions:
-  login:
-    handler: bin/hello
+  users-login:
+    handler: bin/users-login
     events:
       - http:
           path: auth/login
-          method: get
+          method: post
+    environment:
+      ClientID: ${file(api/users-login/google_api.yml):ClientID}
+      ClientSecret: ${file(api/users-login/google_api.yml):ClientSecret}
   logout:
     handler: bin/world
     events:
