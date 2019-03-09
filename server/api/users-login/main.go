@@ -70,6 +70,7 @@ func getUserInfoFromGoogle(accessToken string) ResponseGoogleUserInfo {
 	if err = json.NewDecoder(response.Body).Decode(&responseGoogleUserInfo); err != nil {
 	}
 
+	fmt.Print(responseGoogleUserInfo)
 	return responseGoogleUserInfo
 }
 
