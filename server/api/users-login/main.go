@@ -11,6 +11,10 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
 func connectToGoogle(requestGoogleData RequestGoogleClientData) ResponseGoogleServerData {
@@ -74,6 +78,46 @@ func getUserInfoFromGoogle(accessToken string) ResponseGoogleUserInfo {
 	return responseGoogleUserInfo
 }
 
+func UserInfoItemInput(responseGoogleServerData ResponseGoogleServerData, responseGoogleUserInfo ResponseGoogleUserInfo) {
+	idatenUserInfo := IdatenUserInfo{
+		ID:          responseGoogleUserInfo.ID,
+		Email:       responseGoogleUserInfo.Email,
+		AccessToken: responseGoogleServerData.AccessToken,
+		Name:        responseGoogleUserInfo.Name,
+		GivenName:   responseGoogleUserInfo.GivenName,
+		FamilyName:  responseGoogleUserInfo.FamilyName,
+		Picture:     responseGoogleUserInfo.Picture,
+		Locale:      responseGoogleUserInfo.Locale,
+	}
+
+	av, err := dynamodbattribute.MarshalMap(idatenUserInfo)
+
+	session, err := session.NewSession(&aws.Config{
+		Region: aws.String("ap-northeast-1")},
+	)
+
+	if err != nil {
+		fmt.Println("Got error creating session:")
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	svc := dynamodb.New(session)
+
+	input := &dynamodb.PutItemInput{
+		Item:      av,
+		TableName: aws.String("idaten-users"),
+	}
+
+	_, err = svc.PutItem(input)
+
+	if err != nil {
+		fmt.Println("Got error calling PutItem:")
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+}
+
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	jsonBytes := ([]byte)(request.Body)
@@ -108,10 +152,11 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	jsonBytes, _ = json.Marshal(responseGoogleUserInfo)
 
 	// DynamoDBにAccessTokenやユーザ情報を格納
+	UserInfoItemInput(responseGoogleServerData, responseGoogleUserInfo)
 
 	// AccessTokenを返却する
 	return events.APIGatewayProxyResponse{
-		Body: string(jsonBytes),
+		Body: "{\"access_token\":\"" + responseGoogleServerData.AccessToken + "\"}",
 		Headers: map[string]string{
 			"Access-Control-Allow-Origin":  "*",
 			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
@@ -155,4 +200,15 @@ type ResponseGoogleUserInfo struct {
 	FamilyName    string `json:"family_name"`
 	Picture       string `json:"picture"`
 	Locale        string `json:"locale"`
+}
+
+type IdatenUserInfo struct {
+	ID          string `json:"user_id"`
+	Email       string `json:"email"`
+	AccessToken string `json:"access_token"`
+	Name        string `json:"name"`
+	GivenName   string `json:"given_name"`
+	FamilyName  string `json:"family_name"`
+	Picture     string `json:"picture"`
+	Locale      string `json:"locale"`
 }
