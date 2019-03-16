@@ -19,6 +19,15 @@ export default {
       })
       if (slideMarkdown[0] === '') slideMarkdown.shift()
       return slideMarkdown
+    },
+
+    /**
+     * スライドのHTMLを取得する
+     * @param markdown : マークダウン文字列
+     * @return html : HTML
+     */
+    $_getSlideHtml (markdown) {
+      return 'test'
     }
   }
 }
