@@ -1,3 +1,6 @@
+import authModel from './models/auth'
+import slideModel from './models/slide'
+
 export default {
   methods: {
     /**
@@ -28,6 +31,18 @@ export default {
      */
     $_getSlideHtml (markdown) {
       return 'test'
-    }
+    },
+
+    /**
+     * 認証APIを操作する
+     * @return authModel
+     */
+    $_authModel: authModel,
+
+    /**
+     * スライドAPIを操作する
+     * @return slideModel
+     */
+    $_slideModel: slideModel
   }
 }
