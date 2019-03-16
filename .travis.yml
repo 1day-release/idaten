@@ -13,6 +13,7 @@ install:
 - cd app
 - npm install
 script:
+- npm run test:unit
 - npm run build
 deploy:
 - provider: s3
