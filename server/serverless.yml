@@ -48,8 +48,8 @@ functions:
     environment:
       ClientID: ${file(api/users-login/google_api.yml):ClientID}
       ClientSecret: ${file(api/users-login/google_api.yml):ClientSecret}
-  logout:
-    handler: bin/world
+  users-logout:
+    handler: bin/users-logout
     events:
       - http:
           path: auth/logout
