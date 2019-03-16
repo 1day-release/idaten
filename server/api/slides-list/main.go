@@ -15,12 +15,16 @@ import (
 )
 
 func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
 	requestEmail := request.QueryStringParameters["email"]
 
 	if len(requestEmail) == 0 {
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body: `{"status": "Bad Request"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: 400,
 		}, nil
 	}
@@ -48,7 +52,7 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 		ExpressionAttributeValues: expr.Values(),
 		FilterExpression:          expr.Filter(),
 		ProjectionExpression:      expr.Projection(),
-		TableName:                 aws.String("idaten"),
+		TableName:                 aws.String("idaten-slides"),
 	}
 
 	results, err := svc.Scan(params)
@@ -79,9 +83,17 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 	}
 
 	jsonBytes, _ := json.Marshal(responseUserData)
-
+	jsonString := string(jsonBytes)
+	if jsonString == "null" {
+		jsonString = "[]"
+	}
 	return events.APIGatewayProxyResponse{
-		Body:       string(jsonBytes),
+		Body: jsonString,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+			"Content-Type":                 "application/json",
+		},
 		StatusCode: 200,
 	}, nil
 }

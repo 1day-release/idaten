@@ -24,7 +24,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if err := json.Unmarshal(jsonBytes, requestData); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body: `{"status": "Bad Request"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: 400,
 		}, nil
 	}
@@ -50,7 +55,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 				S: aws.String(requestData.Email),
 			},
 		},
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 	}
 
 	_, err = svc.DeleteItem(input)
@@ -61,13 +66,23 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		fmt.Println("Got error calling DeleteItem")
 		fmt.Println(err.Error())
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Not Found"}`,
+			Body: `{"status": "Not Found"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: 404,
 		}, nil
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       `{"status": "200"}`,
+		Body: `{"status": "200"}`,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+			"Content-Type":                 "application/json",
+		},
 		StatusCode: 200,
 	}, nil
 }

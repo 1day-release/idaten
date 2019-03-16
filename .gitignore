@@ -1,5 +1,9 @@
 # Serverless directories
 server/.serverless
+server/node_modules
+server/package-lock.json
 
 # golang output binary directory
 server/bin
+
+.DS_Store

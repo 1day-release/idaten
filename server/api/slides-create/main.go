@@ -50,14 +50,29 @@ func getSlideID(n int) string {
 	return string(b)
 }
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	fmt.Println(request)
 	fmt.Println(request.Body)
+	fmt.Println(request.Headers)
+	fmt.Println(request.IsBase64Encoded)
+	fmt.Println(request.Path)
+	fmt.Println(request.PathParameters)
+	fmt.Println(request.QueryStringParameters)
+	fmt.Println(request.RequestContext)
+	fmt.Println(request.Resource)
+	fmt.Println(request.StageVariables)
+
 	jsonBytes := ([]byte)(request.Body)
 	requestData := new(RequestData)
 
 	if err := json.Unmarshal(jsonBytes, requestData); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body: `{"status": "Bad Request"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
 			StatusCode: 400,
 		}, nil
 	}
@@ -90,7 +105,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	input := &dynamodb.PutItemInput{
 		Item:      av,
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 	}
 
 	_, err = svc.PutItem(input)
@@ -103,7 +118,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	jsonString := `{"slide_id":"` + slideID + `"}`
 	return events.APIGatewayProxyResponse{
-		Body:       jsonString,
+		Body: jsonString,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+			"Content-Type":                 "application/json",
+		},
 		StatusCode: 200,
 	}, nil
 }

@@ -15,8 +15,8 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	var path = request.Path
-	var getSlideID = strings.Split(path, "/")[2]
+	path := request.Path
+	getSlideID := strings.Split(path, "/")[2]
 	fmt.Println(getSlideID)
 
 	// DynamoDBのテーブルと接続
@@ -32,7 +32,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	svc := dynamodb.New(session)
 
 	result, err := svc.Query(&dynamodb.QueryInput{
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 		ExpressionAttributeNames: map[string]*string{
 			"#ID":        aws.String("slide_id"),
 			"#MARKDOWN":  aws.String("markdown"),
@@ -79,9 +79,18 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	jsonBytes, _ := json.Marshal(responseUserData)
+	jsonString := string(jsonBytes)
+	if jsonString == "null" {
+		jsonString = "[]"
+	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(jsonBytes),
+		Body: jsonString,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+			"Content-Type":                 "application/json",
+		},
 		StatusCode: 200,
 	}, nil
 }
