@@ -80,66 +80,112 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.slide {
-  background: white;
-  width: 100%;
-  min-height: 70%;
-  color: #000c36;
-  /deep/ * {
-    user-select: none;
-  }
-  &.slide-type1  /deep/ {
-    padding: 5% 5%;
+  $fz: (
+               "p": 18px,
+           "pager": 12px,
+
+           "title": 40px,
+       "sub-title": 20px,
+              "to": 16px,
+            "date": 16px,
+            "name": 16px,
+
+     "slide-title": 12px,
+              "h2": 40px,
+
+   "section-title": 14px,
+              "h3": 30px,
+              "h4": 22px
+  );
+
+  .slide {
     box-sizing: border-box;
-    p:nth-of-type(1) {
-      font-size: 16px;
-    }
-    h1 {
-      font-size: 30px;
-      margin-top: 25%;
-      margin-bottom: 2%;
-    }
-    p:nth-of-type(2) {
-      margin-bottom: 25%;
-    }
-    p:nth-of-type(3) {
-      color: #cbcdd6;
-      margin-bottom: 1%;
-    }
-    p:nth-of-type(4) {
-      color: #cbcdd6;
-    }
-  }
-  &.slide-type2  /deep/ {
-    h2 {
-      margin-top: 30%;
-      font-size: 30px;
-      color: #000c36;
-      text-align: center;
-    }
-  }
-  &.slide-type3  /deep/ {
-    padding: 10% 10%;
-    box-sizing: border-box;
-    h2 {
-      font-size: 30px;
-      color: #000c36;
-      text-align: center;
-    }
-    h3 {
-      margin-bottom: 5%;
-      font-size: 30px;
-      color: #000c36;
-      text-align: center;
+    width: 100%;
+    height: auto;
+    min-height: 680px / 1110px * 100%;
+    color: #0f002b;
+    font-size: 18px;
+    background: #fff;
+
+    /deep/ * {
+      user-select: none;
     }
 
-    ol {
-      list-style-type: decimal;
+    &.slide-type1  /deep/ {
+      .to {
+      }
+
+      h1 {
+      }
+
+      .subtitle {
+      }
+
+      .date {
+      }
+
+      .from {
+      }
+      // padding: 5% 5%;
+      // box-sizing: border-box;
+
+      // p:nth-of-type(1) {
+      //   font-size: 16px;
+      // }
+
+      // h1 {
+      //   font-size: 30px;
+      //   margin-top: 25%;
+      //   margin-bottom: 2%;
+      // }
+
+      // p:nth-of-type(2) {
+      //   margin-bottom: 25%;
+      // }
+
+      // p:nth-of-type(3) {
+      //   color: #cbcdd6;
+      //   margin-bottom: 1%;
+      // }
+
+      // p:nth-of-type(4) {
+      //   color: #cbcdd6;
+      // }
     }
 
-    ul {
-      list-style-type: disc;
+    &.slide-type2  /deep/ {
+      h2 {
+        margin-top: 30%;
+        font-size: 30px;
+        color: #000c36;
+        text-align: center;
+      }
+    }
+
+    &.slide-type3  /deep/ {
+      padding: 10% 10%;
+      box-sizing: border-box;
+
+      h2 {
+        font-size: 30px;
+        color: #000c36;
+        text-align: center;
+      }
+
+      h3 {
+        margin-bottom: 5%;
+        font-size: 30px;
+        color: #000c36;
+        text-align: center;
+      }
+
+      ol {
+        list-style-type: decimal;
+      }
+
+      ul {
+        list-style-type: disc;
+      }
     }
   }
-}
 </style>
