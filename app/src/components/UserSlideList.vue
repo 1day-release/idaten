@@ -1,5 +1,5 @@
 <template>
-  <ul class="user-slide-list">
+  <ul class="user-slide-list" v-bind:class="{is_active: isActive}" >
     <li>
       <a class="user-slide" href="#">
         <Slide />
@@ -22,12 +22,18 @@ export default {
     Slide
   },
   props: {
+  },
+  data () {
+    return {
+      isActive: this.$store.getters.userSlideListState
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 .l-user-slide {
+
 }
 
 .user-slide {
