@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -15,16 +16,23 @@ import (
 )
 
 func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	// CORSレスポンスヘッダを設定
+	responseHeader := map[string]string{
+		"Access-Control-Allow-Origin":  "*",
+		"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+		"Content-Type":                 "application/json",
+	}
+
+	// AccessTokenを取得する
+	bearerAccessToken := request.Headers["Authorization"]
+	bearerAccessTokenSplit := strings.Split(bearerAccessToken, " ")
+	// メールアドレスを取得
 	requestEmail := request.QueryStringParameters["email"]
 
-	if len(requestEmail) == 0 {
+	if len(bearerAccessTokenSplit) == 1 || len(requestEmail) == 0 {
 		return events.APIGatewayProxyResponse{
-			Body: `{"status": "Bad Request"}`,
-			Headers: map[string]string{
-				"Access-Control-Allow-Origin":  "*",
-				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
-				"Content-Type":                 "application/json",
-			},
+			Body:       `{"status": "Bad Request"}`,
+			Headers:    responseHeader,
 			StatusCode: 400,
 		}, nil
 	}
@@ -88,12 +96,8 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 		jsonString = "[]"
 	}
 	return events.APIGatewayProxyResponse{
-		Body: jsonString,
-		Headers: map[string]string{
-			"Access-Control-Allow-Origin":  "*",
-			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
-			"Content-Type":                 "application/json",
-		},
+		Body:       jsonString,
+		Headers:    responseHeader,
 		StatusCode: 200,
 	}, nil
 }

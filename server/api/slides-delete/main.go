@@ -14,22 +14,29 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	path := request.Path
-	getSlideID := strings.Split(path, "/")[2]
-	fmt.Println(getSlideID)
+	// CORSレスポンスヘッダを設定
+	responseHeader := map[string]string{
+		"Access-Control-Allow-Origin":  "*",
+		"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+		"Content-Type":                 "application/json",
+	}
 
+	// AccessTokenを取得する
+	bearerAccessToken := request.Headers["Authorization"]
+	bearerAccessTokenSplit := strings.Split(bearerAccessToken, " ")
+	// Bodyの内容を取得
 	jsonBytes := ([]byte)(request.Body)
 	requestData := new(RequestData)
+	err := json.Unmarshal(jsonBytes, requestData)
+	//スライドIDを取得
+	path := request.Path
+	getSlideID := strings.Split(path, "/")[2]
 
-	if err := json.Unmarshal(jsonBytes, requestData); err != nil {
-		fmt.Println("JSON Unmarshal error:", err)
+	if len(bearerAccessTokenSplit) == 1 || err != nil || getSlideID == "" {
+		fmt.Println("get error:", err)
 		return events.APIGatewayProxyResponse{
-			Body: `{"status": "Bad Request"}`,
-			Headers: map[string]string{
-				"Access-Control-Allow-Origin":  "*",
-				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
-				"Content-Type":                 "application/json",
-			},
+			Body:       `{"status": "Bad Request"}`,
+			Headers:    responseHeader,
 			StatusCode: 400,
 		}, nil
 	}
@@ -66,23 +73,15 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		fmt.Println("Got error calling DeleteItem")
 		fmt.Println(err.Error())
 		return events.APIGatewayProxyResponse{
-			Body: `{"status": "Not Found"}`,
-			Headers: map[string]string{
-				"Access-Control-Allow-Origin":  "*",
-				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
-				"Content-Type":                 "application/json",
-			},
+			Body:       `{"status": "Not Found"}`,
+			Headers:    responseHeader,
 			StatusCode: 404,
 		}, nil
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body: `{"status": "200"}`,
-		Headers: map[string]string{
-			"Access-Control-Allow-Origin":  "*",
-			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
-			"Content-Type":                 "application/json",
-		},
+		Body:       `{"status": "200"}`,
+		Headers:    responseHeader,
 		StatusCode: 200,
 	}, nil
 }

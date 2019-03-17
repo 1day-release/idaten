@@ -15,9 +15,28 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	// CORSレスポンスヘッダを設定
+	responseHeader := map[string]string{
+		"Access-Control-Allow-Origin":  "*",
+		"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+		"Content-Type":                 "application/json",
+	}
+
+	// AccessTokenを取得する
+	bearerAccessToken := request.Headers["Authorization"]
+	bearerAccessTokenSplit := strings.Split(bearerAccessToken, " ")
+	// スライドパスを取得する
 	path := request.Path
 	getSlideID := strings.Split(path, "/")[2]
 	fmt.Println(getSlideID)
+
+	if len(bearerAccessTokenSplit) == 1 || getSlideID == "" {
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Bad Request"}`,
+			Headers:    responseHeader,
+			StatusCode: 400,
+		}, nil
+	}
 
 	// DynamoDBのテーブルと接続
 	session, err := session.NewSession(&aws.Config{
@@ -85,12 +104,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body: jsonString,
-		Headers: map[string]string{
-			"Access-Control-Allow-Origin":  "*",
-			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
-			"Content-Type":                 "application/json",
-		},
+		Body:       jsonString,
+		Headers:    responseHeader,
 		StatusCode: 200,
 	}, nil
 }
