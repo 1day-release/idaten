@@ -84,9 +84,7 @@ auth/login
 
 ### Query Parameter
 
-#### Header
-
-#### Body
+### Request Body
 
 | パラメータ |             説明              |
 | :--------: | :---------------------------: |
@@ -139,19 +137,13 @@ Google への認証情報を切る
 auth/logout
 ```
 
-### Query Parameter
-
-#### Header
+### Request Header
 
 | パラメータ    | 説明                                                   |
 | ------------- | ------------------------------------------------------ |
 | Authorization | 「Bearer 」+ ログイン API で発行されたアクセストークン |
 
-```
-Authorization: Bearer xxxxxxxxxx
-```
-
-#### Body
+### Query Parameter
 
 ### Response
 
@@ -184,9 +176,7 @@ Authorization: Bearer xxxxxxxxxx
 slides
 ```
 
-### Query Parameter
-
-#### Header
+### Request Header
 
 | パラメータ    | 説明                                                   |
 | ------------- | ------------------------------------------------------ |
@@ -196,7 +186,7 @@ slides
 Authorization: Bearer xxxxxxxxxx
 ```
 
-#### Body
+### Query Parameter
 
 | パラメータ | 説明                                        |
 | ---------- | ------------------------------------------- |
@@ -246,6 +236,12 @@ Authorization: Bearer xxxxxxxxxx
 slides
 ```
 
+### Request Header
+
+| パラメータ    | 説明                                                   |
+| ------------- | ------------------------------------------------------ |
+| Authorization | 「Bearer 」+ ログイン API で発行されたアクセストークン |
+
 ### Request Body
 
 | パラメータ |                     説明                     |
@@ -277,6 +273,12 @@ slides
 ```
 slides/{slide_id}
 ```
+
+### Request Header
+
+| パラメータ    | 説明                                                   |
+| ------------- | ------------------------------------------------------ |
+| Authorization | 「Bearer 」+ ログイン API で発行されたアクセストークン |
 
 ### Query Parameter
 
@@ -312,6 +314,12 @@ URLのみ
 slides/{slide_id}
 ```
 
+### Request Header
+
+| パラメータ    | 説明                                                   |
+| ------------- | ------------------------------------------------------ |
+| Authorization | 「Bearer 」+ ログイン API で発行されたアクセストークン |
+
 ### Request Body
 
 | パラメータ |                     説明                     |
@@ -345,6 +353,12 @@ slides/{slide_id}
 ```
 slides/{slide_id}
 ```
+
+### Request Header
+
+| パラメータ    | 説明                                                   |
+| ------------- | ------------------------------------------------------ |
+| Authorization | 「Bearer 」+ ログイン API で発行されたアクセストークン |
 
 ### Request Body
 
