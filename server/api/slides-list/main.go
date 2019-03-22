@@ -13,7 +13,37 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
+	goLambda "github.com/aws/aws-sdk-go/service/lambda"
 )
+
+func athorizationIdatenUser(accessToken UserAccessToken) {
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+	}))
+	client := goLambda.New(sess, &aws.Config{Region: aws.String("ap-northeast-1")})
+
+	payload, err := json.Marshal(accessToken)
+	//payload, err := json.Marshal(accessToken)
+	if err != nil {
+		fmt.Println("Error marshalling idaten-api-users-authorization request")
+		os.Exit(0)
+	}
+
+	response, err := client.Invoke(&goLambda.InvokeInput{FunctionName: aws.String("idaten-api-users-authorization"), Payload: payload})
+	if err != nil {
+		fmt.Println("Error calling idaten-api-users-authorization")
+		os.Exit(0)
+	}
+
+	var lambdaResponse LambdaResponse
+	err = json.Unmarshal(response.Payload, &lambdaResponse)
+	if err != nil {
+		fmt.Println("Error unmarshalling idaten-api-users-authorization response")
+		os.Exit(0)
+	}
+
+	fmt.Printf(lambdaResponse.Message)
+}
 
 func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// CORSレスポンスヘッダを設定
@@ -36,6 +66,10 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 			StatusCode: 400,
 		}, nil
 	}
+
+	accessToken := bearerAccessTokenSplit[1]
+	userAccessToken := UserAccessToken{AccessToken: accessToken}
+	athorizationIdatenUser(userAccessToken)
 
 	// DynamoDBのテーブルと接続
 	session, err := session.NewSession(&aws.Config{
@@ -112,8 +146,13 @@ type UserData struct {
 
 type ResponseUserData []UserData
 
-type UserInfo struct {
-	Email string `json:"email"`
+type UserAccessToken struct {
+	AccessToken string `json:"access_token"`
+}
+
+type LambdaResponse struct {
+	Message string `json:"message"`
+	Ok      bool   `json:"ok"`
 }
 
 func main() {
