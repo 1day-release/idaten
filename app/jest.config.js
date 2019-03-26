@@ -1,4 +1,6 @@
 module.exports = {
+  collectCoverage: true,
+  coverageDirectory: "./dist/tests",
   moduleFileExtensions: [
     'js',
     'jsx',

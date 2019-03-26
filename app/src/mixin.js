@@ -110,7 +110,7 @@ export default {
         })
         str = ((title) ? title + '\n' : '')
       } else {
-        str = markdown
+        html = markdown
       }
 
       return html

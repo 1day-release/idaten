@@ -3,7 +3,7 @@ import jsBeautify from 'js-beautify'
 import mixin from '@/mixin'
 const getSlideHtml = mixin.methods.$_getSlideHtml
 
-const testCasesURL = 'https://script.google.com/macros/s/AKfycbwTNzktMR8aTSvpXQFnxTqNHj93vs-2bzhESVHIVJg/dev'
+const testCasesURL = 'https://script.google.com/macros/s/AKfycbxYk9NMXJbjxCdHMyTmoFH-mIVfoCgw2PXr_0NWIuFvp5dzfrE/exec'
 
 const testCasesResponse = request('GET', testCasesURL)
 const testCases = JSON.parse(testCasesResponse.getBody('utf8'))
