@@ -14,7 +14,7 @@
         </ul>
         <ul class="header-tool">
           <li>
-            <PresentationButton />
+            <IconButton text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="{name: 'Presentation'}" />
           </li>
           <li class="is_separate is_login">
             <LogoutButton />
@@ -36,7 +36,7 @@
 <script>
 import BrandLogo from '@/components/BrandLogo.vue'
 import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
-import PresentationButton from '@/components/PresentationButton.vue'
+import IconButton from '@/components/IconButton.vue'
 import UserIcon from '@/components/UserIcon.vue'
 import LoginButton from '@/components/LoginButton.vue'
 import LogoutButton from '@/components/LogoutButton.vue'
@@ -46,7 +46,7 @@ export default {
   components: {
     BrandLogo,
     UserSlideListShowButton,
-    PresentationButton,
+    IconButton,
     UserIcon,
     LoginButton,
     LogoutButton

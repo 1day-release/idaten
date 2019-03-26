@@ -7,6 +7,7 @@ build:
 	env GOOS=linux go build -ldflags="-s -w" -o bin/slides-save api/slides-save/main.go
 	env GOOS=linux go build -ldflags="-s -w" -o bin/users-login api/users-login/main.go
 	env GOOS=linux go build -ldflags="-s -w" -o bin/users-logout api/users-logout/main.go
+	env GOOS=linux go build -ldflags="-s -w" -o bin/users-authorization api/users-authorization/main.go
 
 domain:
 	sls create_domain --aws-profile 1day-release
