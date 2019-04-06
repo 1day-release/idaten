@@ -27,6 +27,10 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+    - Effect: "Allow"
+      Resource: "arn:aws:lambda:ap-northeast-1:825959978397:function:idaten-api-users-authorization"
+      Action:
+        - lambda:InvokeFunction
 
 # you can define service wide environment variables here
 #  environment:
@@ -48,12 +52,17 @@ functions:
     environment:
       ClientID: ${file(api/users-login/google_api.yml):ClientID}
       ClientSecret: ${file(api/users-login/google_api.yml):ClientSecret}
-  logout:
-    handler: bin/world
+
+  users-logout:
+    handler: bin/users-logout
     events:
       - http:
           path: auth/logout
           method: get
+
+  users-authorization:
+    handler: bin/users-authorization
+
   slides-list:
     handler: bin/slides-list
     events:
@@ -61,12 +70,14 @@ functions:
           path: slides
           method: get
           cors: true
+
   slides-create:
     handler: bin/slides-create
     events:
       - http:
           path: slides
           method: post
+
   slides-get:
     handler: bin/slides-get
     events:
@@ -74,6 +85,7 @@ functions:
           path: slides/{slide_id}
           method: get
           cors: true
+
   slides-save:
     handler: bin/slides-save
     events:
@@ -81,6 +93,7 @@ functions:
           path: slides/{slide_id}
           method: put
           cors: true
+
   slides-delete:
     handler: bin/slides-delete
     events:

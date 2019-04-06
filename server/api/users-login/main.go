@@ -151,6 +151,20 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	responseGoogleUserInfo := getUserInfoFromGoogle(responseGoogleServerData.AccessToken)
 	jsonBytes, _ = json.Marshal(responseGoogleUserInfo)
 
+	// Googleのユーザ情報が取れない場合には403のレスポンスを返す
+	if responseGoogleUserInfo.VerifiedEmail == false {
+		fmt.Println("Does't get google user infomation")
+		return events.APIGatewayProxyResponse{
+			Body: `{"status": "Forbidden"}`,
+			Headers: map[string]string{
+				"Access-Control-Allow-Origin":  "*",
+				"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+				"Content-Type":                 "application/json",
+			},
+			StatusCode: 403,
+		}, nil
+	}
+
 	// DynamoDBにAccessTokenやユーザ情報を格納
 	UserInfoItemInput(responseGoogleServerData, responseGoogleUserInfo)
 
