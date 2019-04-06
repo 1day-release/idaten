@@ -5,10 +5,6 @@
         <IconButton class="is-left is-reverse is-light-gray" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
       </div>
       <div class="user-slide-head-item">
-        <!-- <a href="#" class="button"> -->
-          <!-- <span class="icon is_plus"></span> -->
-          <!-- 新規スライド作成 -->
-        <!-- </a> -->
         <TextButton class="is-ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" :to="{name: 'createSlide'}" />
       </div>
     </div>

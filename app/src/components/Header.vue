@@ -39,7 +39,6 @@
             <UserIcon text="アカウント" />
           </li>
           <li class="is-separate is-logout">
-            <!-- <LoginButton /> -->
             <TextButton text="ログイン" svg="" :to="{name: 'Login'}" />
           </li>
         </ul>
@@ -53,7 +52,6 @@ import BrandLogo from '@/components/BrandLogo.vue'
 import IconButton from '@/components/IconButton.vue'
 import TextButton from '@/components/TextButton.vue'
 import UserIcon from '@/components/UserIcon.vue'
-// import LoginButton from '@/components/LoginButton.vue'
 import ButtonMask from '@/assets/icon-mask.svg'
 
 export default {
@@ -63,7 +61,6 @@ export default {
     IconButton,
     TextButton,
     UserIcon,
-    // LoginButton,
     ButtonMask
   },
   props: {
