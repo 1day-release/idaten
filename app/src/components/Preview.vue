@@ -49,7 +49,7 @@ export default {
       $padding: 40px;
 
       position: absolute;
-      top: 0;
+      top: 1px;
       bottom: 0;
       left: 0;
       overflow-y: auto;

@@ -52,6 +52,21 @@ export default {
     justify-content: space-between;
   }
 
+  .l-user-slide {
+    position: absolute;
+    z-index: 80;
+    top: 0;
+    bottom: 0;
+    left: -100%;
+    width: 220px;
+    margin: auto 0;
+    transition-duration: $duration;
+
+    &.is-active {
+      left: 0;
+    }
+  }
+
   .l-editor {
     width: 65%;
     height: calc(100vh - #{$pc-header-height});
@@ -69,13 +84,12 @@ export default {
   .preview {
     &-contents {
       position: relative;
-      z-index: 10;
+      z-index: 1;
       height: inherit;
     }
 
     &-bg {
       position: absolute;
-      z-index: 1;
       top: 0;
       right: 0;
       bottom: 0;

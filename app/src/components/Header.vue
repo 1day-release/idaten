@@ -9,7 +9,12 @@
       <div class="header-tools">
         <ul class="header-tool">
           <li>
-            <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
+            <div class="button-block">
+              <div class="button-mask is-logout">
+                <ButtonMask />
+              </div>
+              <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
+            </div>
           </li>
         </ul>
         <ul class="header-tool">
@@ -17,23 +22,25 @@
             <IconButton text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="{name: 'Presentation'}" />
           </li>
           <li>
-            <div class="">
+            <div class="button-block">
+              <div class="button-mask is-logout">
+                <ButtonMask />
+              </div>
               <IconButton text="スライドをシェア" svg="@/assets/icon-link.svg" :to="{name: 'Share'}" />
             </div>
           </li>
-          <li class="">
+          <li>
             <IconButton text="設定" svg="@/assets/icon-setting.svg" :to="{name: 'Setting'}" />
           </li>
           <li class="is-separate is-login">
             <IconButton text="ログアウト" svg="@/assets/icon-logout.svg" :to="{name: 'Setting'}" />
           </li>
           <li class="is-login">
-            <div class="user">
-              <UserIcon />
-            </div>
+            <UserIcon text="アカウント" />
           </li>
           <li class="is-separate is-logout">
-            <LoginButton />
+            <!-- <LoginButton /> -->
+            <TextButton text="ログイン" svg="" :to="{name: 'Login'}" />
           </li>
         </ul>
       </div>
@@ -43,21 +50,21 @@
 
 <script>
 import BrandLogo from '@/components/BrandLogo.vue'
-// import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
 import IconButton from '@/components/IconButton.vue'
+import TextButton from '@/components/TextButton.vue'
 import UserIcon from '@/components/UserIcon.vue'
-import LoginButton from '@/components/LoginButton.vue'
-// import LogoutButton from '@/components/LogoutButton.vue'
+// import LoginButton from '@/components/LoginButton.vue'
+import ButtonMask from '@/assets/icon-mask.svg'
 
 export default {
   name: 'Header',
   components: {
     BrandLogo,
-    // UserSlideListShowButton,
     IconButton,
+    TextButton,
     UserIcon,
-    LoginButton
-    // LogoutButton
+    // LoginButton,
+    ButtonMask
   },
   props: {
   },
@@ -178,8 +185,40 @@ export default {
     }
   }
 
+  .button {
+    &-block {
+      position: relative;
+    }
+
+    &-mask {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+
+      svg {
+        .cls-1, .cls-3 {
+          fill: none;
+        }
+
+        .cls-2 {
+          clip-path: url(#clip-path);
+        }
+
+        .cls-3 {
+          stroke: #cbcdd6;
+          stroke-width: 0.5px;
+        }
+      }
+    }
+  }
+
   .user {
-    width: 30px;
-    height: 30px;
   }
 </style>
