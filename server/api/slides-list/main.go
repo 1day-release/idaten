@@ -16,14 +16,13 @@ import (
 	goLambda "github.com/aws/aws-sdk-go/service/lambda"
 )
 
-func athorizationIdatenUser(accessToken UserAccessToken) {
+func athorizationIdatenUser(accessToken UserAccessToken) (lambdaResponse LambdaResponse) {
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
 	client := goLambda.New(sess, &aws.Config{Region: aws.String("ap-northeast-1")})
 
 	payload, err := json.Marshal(accessToken)
-	//payload, err := json.Marshal(accessToken)
 	if err != nil {
 		fmt.Println("Error marshalling idaten-api-users-authorization request")
 		os.Exit(0)
@@ -35,14 +34,14 @@ func athorizationIdatenUser(accessToken UserAccessToken) {
 		os.Exit(0)
 	}
 
-	var lambdaResponse LambdaResponse
+	//var lambdaResponse LambdaResponse
 	err = json.Unmarshal(response.Payload, &lambdaResponse)
 	if err != nil {
 		fmt.Println("Error unmarshalling idaten-api-users-authorization response")
 		os.Exit(0)
 	}
 
-	fmt.Printf(lambdaResponse.Message)
+	return lambdaResponse
 }
 
 func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -56,20 +55,30 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 	// AccessTokenを取得する
 	bearerAccessToken := request.Headers["Authorization"]
 	bearerAccessTokenSplit := strings.Split(bearerAccessToken, " ")
-	// メールアドレスを取得
-	requestEmail := request.QueryStringParameters["email"]
+	accessToken := bearerAccessTokenSplit[1]
+	userAccessToken := UserAccessToken{AccessToken: accessToken}
+	// idatenUserテーブルからユーザ情報を取得
+	lambdaResponse := athorizationIdatenUser(userAccessToken)
 
-	if len(bearerAccessTokenSplit) == 1 || len(requestEmail) == 0 {
+	// lambdaresponseのコードが403の場合にはレスポンスを返す
+	if lambdaResponse.Code != 200 {
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Forbidden"}`,
+			Headers:    responseHeader,
+			StatusCode: lambdaResponse.Code,
+		}, nil
+	}
+
+	// lambdaresponseのメッセージからIdatenユーザ情報を取り出す
+	idatenUserInfo := new(IdatenUserInfo)
+	err := json.Unmarshal([]byte(lambdaResponse.Message), idatenUserInfo)
+	if err != nil {
 		return events.APIGatewayProxyResponse{
 			Body:       `{"status": "Bad Request"}`,
 			Headers:    responseHeader,
 			StatusCode: 400,
 		}, nil
 	}
-
-	accessToken := bearerAccessTokenSplit[1]
-	userAccessToken := UserAccessToken{AccessToken: accessToken}
-	athorizationIdatenUser(userAccessToken)
 
 	// DynamoDBのテーブルと接続
 	session, err := session.NewSession(&aws.Config{
@@ -85,7 +94,7 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 	// Create DynamoDB client
 	svc := dynamodb.New(session)
 
-	filter := expression.Name("email").Equal(expression.Value(requestEmail))
+	filter := expression.Name("email").Equal(expression.Value(idatenUserInfo.Email))
 	project := expression.NamesList(expression.Name("slide_id"), expression.Name("email"), expression.Name("share_mode"), expression.Name("created_at"), expression.Name("updated_at"))
 	expr, err := expression.NewBuilder().WithFilter(filter).WithProjection(project).Build()
 
@@ -136,6 +145,16 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 	}, nil
 }
 
+type IdatenUserInfo struct {
+	ID          string `json:"user_id"`
+	Email       string `json:"email"`
+	AccessToken string `json:"access_token"`
+	Name        string `json:"name"`
+	GivenName   string `json:"given_name"`
+	FamilyName  string `json:"family_name"`
+	Picture     string `json:"picture"`
+	Locale      string `json:"locale"`
+}
 type UserData struct {
 	SlideID   string `json:"slide_id"`
 	Email     string `json:"email"`
@@ -152,7 +171,7 @@ type UserAccessToken struct {
 
 type LambdaResponse struct {
 	Message string `json:"message"`
-	Ok      bool   `json:"ok"`
+	Code    int    `json:"code"`
 }
 
 func main() {
