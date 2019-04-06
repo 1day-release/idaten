@@ -9,7 +9,13 @@
         <Editor />
       </div>
       <div class="l-preview">
-        <Preview />
+        <div class="preview-contents">
+          <Preview />
+        </div>
+        <div class="preview-bg">
+          <PreviewBg1 />
+          <PreviewBg2 />
+        </div>
       </div>
     </Main>
   </div>
@@ -23,6 +29,8 @@ import Main from '@/components/Main.vue'
 import UserSlideList from '@/components/UserSlideList.vue'
 import Editor from '@/components/Editor.vue'
 import Preview from '@/components/Preview.vue'
+import PreviewBg1 from '@/assets/preview-bg1.svg'
+import PreviewBg2 from '@/assets/preview-bg2.svg'
 
 export default {
   name: 'Edit',
@@ -31,7 +39,9 @@ export default {
     Main,
     UserSlideList,
     Editor,
-    Preview
+    Preview,
+    PreviewBg1,
+    PreviewBg2
   }
 }
 </script>
@@ -50,8 +60,42 @@ export default {
   }
 
   .l-preview {
+    position: relative;
     width: 35%;
     height: calc(100vh - #{$pc-header-height});
-    background-color: map-get($color-brand, "sub");
+    background-color: map-get($color-brand, "sub-dark");
+  }
+
+  .preview {
+    &-contents {
+      position: relative;
+      z-index: 10;
+      height: inherit;
+    }
+
+    &-bg {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+
+      svg {
+        position: absolute;
+        width: 100%;
+
+        &:nth-child(1) {
+          top: 0;
+          right: 0;
+        }
+
+        &:nth-child(2) {
+          bottom: 0;
+          left: 0;
+        }
+      }
+    }
   }
 </style>

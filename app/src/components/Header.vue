@@ -9,24 +9,32 @@
       <div class="header-tools">
         <ul class="header-tool">
           <li>
-            <UserSlideListShowButton />
+            <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
           </li>
         </ul>
         <ul class="header-tool">
           <li>
             <IconButton text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="{name: 'Presentation'}" />
           </li>
-          <!-- li class="is_separate is_login">
-            <LogoutButton />
+          <li>
+            <div class="">
+              <IconButton text="スライドをシェア" svg="@/assets/icon-link.svg" :to="{name: 'Share'}" />
+            </div>
           </li>
-          <li class="is_login">
+          <li class="">
+            <IconButton text="設定" svg="@/assets/icon-setting.svg" :to="{name: 'Setting'}" />
+          </li>
+          <li class="is-separate is-login">
+            <IconButton text="ログアウト" svg="@/assets/icon-logout.svg" :to="{name: 'Setting'}" />
+          </li>
+          <li class="is-login">
             <div class="user">
               <UserIcon />
             </div>
           </li>
-          <li class="is_separate is_logout">
+          <li class="is-separate is-logout">
             <LoginButton />
-          </li -->
+          </li>
         </ul>
       </div>
     </div>
@@ -35,21 +43,21 @@
 
 <script>
 import BrandLogo from '@/components/BrandLogo.vue'
-import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
+// import UserSlideListShowButton from '@/components/UserSlideListShowButton.vue'
 import IconButton from '@/components/IconButton.vue'
 import UserIcon from '@/components/UserIcon.vue'
 import LoginButton from '@/components/LoginButton.vue'
-import LogoutButton from '@/components/LogoutButton.vue'
+// import LogoutButton from '@/components/LogoutButton.vue'
 
 export default {
   name: 'Header',
   components: {
     BrandLogo,
-    UserSlideListShowButton,
+    // UserSlideListShowButton,
     IconButton,
     UserIcon,
-    LoginButton,
-    LogoutButton
+    LoginButton
+    // LogoutButton
   },
   props: {
   },
@@ -63,6 +71,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @at-root #app:not(.is-logout) .is-logout {
+    display: none !important;
+  }
+
+  @at-root #app.is-logout .is-login {
+    display: none !important;
+  }
+
   .l-header {
     position: relative;
     height: $pc-header-height;
@@ -138,19 +154,11 @@ export default {
           }
         }
 
-        &.is_separate {
+        &.is-separate {
           &::before,
           &::after {
             height: auto;
           }
-        }
-
-        @at-root #app:not(.is_logout) &.is_logout {
-          display: none;
-        }
-
-        @at-root #app.is_logout &.is_login {
-          display: none;
         }
       }
 

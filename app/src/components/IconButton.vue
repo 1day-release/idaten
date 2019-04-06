@@ -1,7 +1,7 @@
 <template>
-  <router-link class="presentation-button" :to="to" target="_blank">
+  <router-link class="icon-button" :to="to" target="_blank">
     <component :is="icon" />
-    <span class="presentation-button-text">
+    <span class="icon-button-text">
       {{text}}
     </span>
   </router-link>
@@ -28,20 +28,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .presentation-button {
+  .icon-button {
+    $size: 36px;
+    $margin: 10px;
+
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 36px;
-    height: 36px;
+    width: $size;
+    height: $size;
     color: inherit;
     text-decoration: none;
 
     svg {
       path {
         transition-duration: $duration;
-        // fill: map-get($color-brand, "sub");
       }
     }
 
@@ -49,12 +51,11 @@ export default {
       box-sizing: border-box;
       position: absolute;
       top: calc(100% + #{15px - 1px - 5px});
-      right: -165%;
-      left: -165%;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 26px;
+      padding: 0 20px;
       margin: 0 auto;
       color: map-get($color-brand, "text-white");
       background-color: map-get($color-brand, "gray");
@@ -69,8 +70,8 @@ export default {
         content: "";
         position: absolute;
         top: -5px;
-        right: 0;
-        left: 0;
+        right: ($size + $margin) / 2;
+        left: ($size + $margin) / 2;
         display: block;
         width: 0;
         height: 0;
@@ -82,18 +83,38 @@ export default {
       }
     }
 
+    &.is-left & {
+      &-text {
+        left: -#{$margin};
+
+        &::before {
+          right: auto;
+        }
+      }
+    }
+
+    &.is-right & {
+      &-text {
+        right: -#{$margin};
+
+        &::before {
+          left: auto;
+        }
+      }
+    }
+
     &:hover {
       svg {
         path {
           fill: map-get($color-brand, "sub");
         }
       }
+    }
 
-      .presentation-button {
-        &-text {
-          top: calc(100% + #{15px - 1px});
-          opacity: 1;
-        }
+    &:hover & {
+      &-text {
+        top: calc(100% + #{15px - 1px});
+        opacity: 1;
       }
     }
   }
