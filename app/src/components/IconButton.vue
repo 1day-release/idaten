@@ -1,8 +1,19 @@
 <template>
-  <router-link class="icon-button" :to="to" target="_blank">
-    <component :is="icon" />
-    <span class="icon-button-balloon">{{text}}</span>
-  </router-link>
+  <div>
+    <router-link v-if="to" class="presentation-button" :to="to" target="_blank">
+      <component :is="icon" />
+      <span class="presentation-button-text">
+        {{text}}
+      </span>
+    </router-link>
+
+    <div v-else>
+      <component :is="icon" />
+      <span class="presentation-button-text">
+        {{text}}
+      </span>
+    </div>
+  </div>
 </template>
 
 <script>
