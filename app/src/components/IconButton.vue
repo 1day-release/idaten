@@ -1,9 +1,7 @@
 <template>
-  <router-link class="presentation-button" :to="to" target="_blank">
+  <router-link class="icon-button" :to="to" target="_blank">
     <component :is="icon" />
-    <span class="presentation-button-text">
-      {{text}}
-    </span>
+    <span class="icon-button-balloon">{{text}}</span>
   </router-link>
 </template>
 
@@ -28,57 +26,41 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .presentation-button {
+  .icon-button {
+    $size: 36px;
+    $margin: 10px;
+
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 36px;
-    height: 36px;
+    width: $size;
+    height: $size;
     color: inherit;
     text-decoration: none;
 
     svg {
       path {
         transition-duration: $duration;
-        // fill: map-get($color-brand, "sub");
       }
     }
 
-    &-text {
-      box-sizing: border-box;
-      position: absolute;
-      top: calc(100% + #{15px - 1px - 5px});
-      right: -165%;
-      left: -165%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 26px;
-      margin: 0 auto;
-      color: map-get($color-brand, "text-white");
-      background-color: map-get($color-brand, "gray");
-      border-radius: 13px;
-      box-shadow: 4px 4px 11px 0 map-get($color-brand, "shadow");
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0;
-      transition-duration: $duration;
+    &-balloon {
+      @include balloon($size);
+    }
 
-      &::before {
-        content: "";
-        position: absolute;
-        top: -5px;
-        right: 0;
-        left: 0;
-        display: block;
-        width: 0;
-        height: 0;
-        border-width: 0 3px;
-        border-style: solid;
-        border-color: transparent;
-        border-bottom: 5px solid map-get($color-brand, "gray");
-        margin: 0 auto;
+    @include balloon-styles();
+
+    &.is-light-gray {
+      svg {
+        fill: map-get($color-brand, "gray-light");
+      }
+    }
+
+    &.is-reverse {
+      svg {
+        transform: scale(-1, 1);
+        transform-origin: center center;
       }
     }
 
@@ -89,10 +71,9 @@ export default {
         }
       }
 
-      .presentation-button {
-        &-text {
-          top: calc(100% + #{15px - 1px});
-          opacity: 1;
+      .icon-button {
+        &-balloon {
+          @include balloon-hover-styles();
         }
       }
     }

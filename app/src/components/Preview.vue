@@ -49,9 +49,9 @@ export default {
       $padding: 40px;
 
       position: absolute;
-      top: $position;
-      bottom: $position;
-      left: $position;
+      top: 1px;
+      bottom: 0;
+      left: 0;
       overflow-y: auto;
       min-width: calc(100% + 17px);
       width: calc(100% - #{$position * 3});
@@ -60,8 +60,6 @@ export default {
       max-height: 100%;
       padding-right: $position;
       margin: auto;
-
-      // @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
 
       >li {
         width: 100%;
