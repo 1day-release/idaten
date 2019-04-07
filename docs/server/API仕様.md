@@ -314,15 +314,13 @@ slides/{slide_id}
 
 ### Request Body
 
-| パラメータ |                     説明                     |
-| :--------: | :------------------------------------------: |
-|   email    | メールアドレス（ex. 1day.release@gmail.com） |
-|  markdown  |            マークダウンのテキスト            |
-| share_mode |       0:非公開，1:公開閲覧，2:公開編集       |
+| パラメータ |               説明               |
+| :--------: | :------------------------------: |
+|  markdown  |      マークダウンのテキスト      |
+| share_mode | 0:非公開，1:公開閲覧，2:公開編集 |
 
 ```
 {
-    "email": "1day.release@gmail.com"
     "markdown": "# test",
     "share_mode": 0
 }
