@@ -10,7 +10,7 @@ export default {
   name: 'TextButton',
   props: {
     svg: String,
-    to: Object,
+    email: Object,
     text: String
   },
   computed: {

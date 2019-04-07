@@ -3,7 +3,7 @@
     <span class="user-icon">
       <img src="//placehold.jp/150x150.png" alt="">
     </span>
-    <span class="user-balloon">{{text}}</span>
+    <span class="user-balloon">{{text}}&nbsp;&lt;{{email}}&gt;<!-- name --></span>
   </div>
 </template>
 
@@ -11,7 +11,8 @@
 export default {
   name: 'UserIcon',
   props: {
-    text: String
+    text: String,
+    email: String
   }
 }
 </script>

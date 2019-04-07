@@ -2,7 +2,7 @@
   <div>
     <Header />
     <Main>
-      <div class="l-user-slide">
+      <div class="l-user-slide js-slidelist-container">
         <UserSlideList />
       </div>
       <div class="l-editor">

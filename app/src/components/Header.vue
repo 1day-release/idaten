@@ -36,7 +36,7 @@
             <IconButton text="ログアウト" svg="@/assets/icon-logout.svg" :to="{name: 'Setting'}" />
           </li>
           <li class="is-login">
-            <UserIcon text="アカウント" />
+            <UserIcon text="ワンデイ太郎" email="1day-release@gmail.com" />
           </li>
           <li class="is-separate is-logout">
             <TextButton text="ログイン" svg="" :to="{name: 'Login'}" />
