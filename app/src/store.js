@@ -23,20 +23,29 @@ export default new Vuex.Store({
 1. Ordered List1
 2. Ordered List2
 `
-    })()
+    })(),
+    userSlideListState: false
   },
   getters: {
     markdown: state => {
       return state.markdown
+    },
+    userSlideListState: state => {
+      return state.userSlideListState
     }
   },
   mutations: {
     markdown (state, data) {
       localStorage.setItem('idaten.markdown', data)
       state.markdown = data
+    },
+    userSlideListState (state, data) {
+      state.userSlideListState = data
     }
   },
   actions: {
-
+    changeStateUserSlideList ({ commit }, state) {
+      commit('userSlideListState', state)
+    }
   }
 })

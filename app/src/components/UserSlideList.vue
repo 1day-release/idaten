@@ -1,4 +1,5 @@
 <template>
+
   <div class="user-slide">
     <div class="user-slide-head">
       <div class="user-slide-head-item">
@@ -51,11 +52,22 @@ export default {
     Slide
   },
   props: {
+  },
+  data () {
+    return {
+    }
+  },
+  computed: {
+    isActive () {
+      console.log(this.$store.getters.userSlideListState)
+      return this.$store.getters.userSlideListState
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
+
   $padding: 20px;
   $border-color: map-get($color-brand, "main-bright");
 
