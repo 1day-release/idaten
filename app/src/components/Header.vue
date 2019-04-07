@@ -13,7 +13,7 @@
               <div class="button-mask is-logout">
                 <ButtonMask />
               </div>
-              <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
+              <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" v-on:click.prevent=""/>
             </div>
           </li>
         </ul>

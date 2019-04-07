@@ -2,7 +2,7 @@
   <div>
     <Header />
     <Main>
-      <div class="l-user-slide js-slidelist-container">
+      <div class="l-user-slide js-slidelist-container" v-bind:class="{isActive}" >
         <UserSlideList />
       </div>
       <div class="l-editor">
@@ -42,7 +42,14 @@ export default {
     Preview,
     PreviewBg1,
     PreviewBg2
+  },
+  computed: {
+    isActive () {
+      console.log(this.$store.getters.userSlideListState)
+      return this.$store.getters.userSlideListState
+    }
   }
+
 }
 </script>
 

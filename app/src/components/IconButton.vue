@@ -1,5 +1,5 @@
 <template>
-  <router-link class="icon-button" :to="to" target="_blank">
+  <router-link class="icon-button" :to="to">
     <component :is="icon" />
     <span class="icon-button-balloon">{{text}}</span>
   </router-link>
