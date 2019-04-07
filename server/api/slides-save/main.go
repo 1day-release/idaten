@@ -28,8 +28,10 @@ func FindGetItem(svc *dynamodb.DynamoDB, getSlideID string, Email string) (int, 
 	status := 200
 	jsonString := "ok"
 
+	fmt.Println(getSlideID)
+	fmt.Println(Email)
 	input := &dynamodb.GetItemInput{
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),
@@ -75,7 +77,7 @@ func UpdateItemInput(svc *dynamodb.DynamoDB, getSlideID string, Email string, Ma
 			"#updated_at": aws.String("updated_at"),
 		},
 
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),
@@ -97,16 +99,28 @@ func UpdateItemInput(svc *dynamodb.DynamoDB, getSlideID string, Email string, Ma
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Println(request.Body)
+	// CORSレスポンスヘッダを設定
+	responseHeader := map[string]string{
+		"Access-Control-Allow-Origin":  "*",
+		"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+		"Content-Type":                 "application/json",
+	}
+
+	// AccessTokenを取得する
+	bearerAccessToken := request.Headers["Authorization"]
+	bearerAccessTokenSplit := strings.Split(bearerAccessToken, " ")
+	// Bodyの内容を取得
 	jsonBytes := ([]byte)(request.Body)
 	requestData := new(RequestData)
-
+	err := json.Unmarshal(jsonBytes, requestData)
+	//スライドIDを取得
 	getSlideID := strings.Split(request.Path, "/")[2]
 
-	if err := json.Unmarshal(jsonBytes, requestData); err != nil {
-		fmt.Println("JSON Unmarshal error:", err)
+	if len(bearerAccessTokenSplit) == 1 || err != nil || getSlideID == "" {
+		fmt.Println("get error:", err)
 		return events.APIGatewayProxyResponse{
 			Body:       `{"status": "Bad Request"}`,
+			Headers:    responseHeader,
 			StatusCode: 400,
 		}, nil
 	}
@@ -124,6 +138,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		fmt.Println(err.Error())
 		return events.APIGatewayProxyResponse{
 			Body:       `{"status": "Bad Request"}`,
+			Headers:    responseHeader,
 			StatusCode: 400,
 		}, nil
 	}
@@ -133,6 +148,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if status != 200 {
 		return events.APIGatewayProxyResponse{
 			Body:       jsonString,
+			Headers:    responseHeader,
 			StatusCode: status,
 		}, nil
 	}
@@ -142,6 +158,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	return events.APIGatewayProxyResponse{
 		Body:       jsonString,
+		Headers:    responseHeader,
 		StatusCode: status,
 	}, nil
 }

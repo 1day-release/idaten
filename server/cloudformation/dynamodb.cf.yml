@@ -1,10 +1,40 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Resources:
-  BorderlessHouseMemeber:
+  IdatenUser:
     Type: "AWS::DynamoDB::Table"
     Properties:
-      TableName: "idaten"
+      TableName: "idaten-users"
+      AttributeDefinitions:
+        - AttributeName: "user_id"
+          AttributeType: "S"
+        - AttributeName: "email"
+          AttributeType: "S"
+        - AttributeName: "access_token"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "user_id"
+          KeyType: "HASH"
+        - AttributeName: "email"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      GlobalSecondaryIndexes:
+        - IndexName: "access_token-index"
+          KeySchema:
+            - AttributeName: "access_token"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+
+  Idaten:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: "idaten-slides"
       AttributeDefinitions:
         - AttributeName: "slide_id"
           AttributeType: "S"

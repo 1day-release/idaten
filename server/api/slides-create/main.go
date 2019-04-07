@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -50,14 +51,26 @@ func getSlideID(n int) string {
 	return string(b)
 }
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Println(request.Body)
+	// CORSレスポンスヘッダを設定
+	responseHeader := map[string]string{
+		"Access-Control-Allow-Origin":  "*",
+		"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+		"Content-Type":                 "application/json",
+	}
+
+	// AccessTokenを取得する
+	bearerAccessToken := request.Headers["Authorization"]
+	bearerAccessTokenSplit := strings.Split(bearerAccessToken, " ")
+
+	// Bodyの内容を取得する
 	jsonBytes := ([]byte)(request.Body)
 	requestData := new(RequestData)
 
-	if err := json.Unmarshal(jsonBytes, requestData); err != nil {
+	if err := json.Unmarshal(jsonBytes, requestData); err != nil || len(bearerAccessTokenSplit) == 1 {
 		fmt.Println("JSON Unmarshal error:", err)
 		return events.APIGatewayProxyResponse{
 			Body:       `{"status": "Bad Request"}`,
+			Headers:    responseHeader,
 			StatusCode: 400,
 		}, nil
 	}
@@ -90,7 +103,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	input := &dynamodb.PutItemInput{
 		Item:      av,
-		TableName: aws.String("idaten"),
+		TableName: aws.String("idaten-slides"),
 	}
 
 	_, err = svc.PutItem(input)
@@ -104,6 +117,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	jsonString := `{"slide_id":"` + slideID + `"}`
 	return events.APIGatewayProxyResponse{
 		Body:       jsonString,
+		Headers:    responseHeader,
 		StatusCode: 200,
 	}, nil
 }

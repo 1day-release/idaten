@@ -1,4 +1,13 @@
 module.exports = {
+  collectCoverage: true,
+  coverageDirectory: "./dist/tests",
+  reporters: [
+    "default",
+    ["./node_modules/jest-html-reporter", {
+      pageTitle: "Test Report",
+      outputPath: "./dist/tests/test-report/index.html"
+    }]
+  ],
   moduleFileExtensions: [
     'js',
     'jsx',
