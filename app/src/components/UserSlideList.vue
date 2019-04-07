@@ -1,5 +1,5 @@
 <template>
-  <ul class="user-slide-list" v-bind:class="{is_active: isActive}" >
+  <ul class="user-slide-list" v-bind:class="{isActive}" >
     <li>
       <a class="user-slide" href="#">
         <Slide />
@@ -25,9 +25,14 @@ export default {
   },
   data () {
     return {
-      isActive: this.$store.getters.userSlideListState
     }
-  }
+  },
+  computed:{
+    isActive(){
+      console.log(this.$store.getters.userSlideListState)
+      return this.$store.getters.userSlideListState
+    }
+  },
 }
 </script>
 
