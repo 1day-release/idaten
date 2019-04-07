@@ -1,5 +1,8 @@
 <template>
-  <div class="slide" :class="['slide-type' + slideType]" v-html="marked"></div>
+  <div>
+    <div v-if="html" v-html="html"></div>
+    <div v-else class="slide" :class="['slide-type' + slideType]" v-html="marked"></div>
+  </div>
 </template>
 
 <script>
@@ -13,6 +16,10 @@ export default {
   },
   props: {
     markdown: {
+      type: String,
+      default: ''
+    },
+    html: {
       type: String,
       default: ''
     }
