@@ -8,12 +8,12 @@
       </h1>
       <div class="header-tools">
         <ul class="header-tool">
-          <li>
+          <li v-on:click="showUserSlideList()">
             <div class="button-block">
               <div class="button-mask is-logout">
                 <ButtonMask />
               </div>
-              <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" v-on:click.prevent=""/>
+              <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg"/>
             </div>
           </li>
         </ul>
@@ -70,6 +70,12 @@ export default {
     }
   },
   computed: {
+  },
+  methods: {
+    showUserSlideList: function (e) {
+      console.log('test')
+      this.$store.dispatch('changeStateUserSlideList', !this.$store.getters.userSlideListState)
+    }
   }
 }
 </script>

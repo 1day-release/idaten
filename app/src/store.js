@@ -44,7 +44,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    changeStateUserSlideList ({commit},state) {
+    changeStateUserSlideList ({ commit }, state) {
       commit('userSlideListState', state)
     }
   }

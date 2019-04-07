@@ -3,7 +3,7 @@
   <div class="user-slide">
     <div class="user-slide-head">
       <div class="user-slide-head-item">
-        <IconButton class="is-left is-reverse is-light-gray" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" v-bind:class="{isActive}" />
+        <IconButton class="is-left is-reverse is-light-gray test" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" v-bind:class="{ 'is-active': is-active}" />
       </div>
       <div class="user-slide-head-item">
         <TextButton class="is-ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" :to="{name: 'createSlide'}" />
@@ -57,12 +57,12 @@ export default {
     return {
     }
   },
-  computed:{
-    isActive(){
+  computed: {
+    isActive () {
       console.log(this.$store.getters.userSlideListState)
       return this.$store.getters.userSlideListState
     }
-  },
+  }
 }
 </script>
 
