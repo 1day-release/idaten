@@ -43,5 +43,13 @@ export default {
       .color4 { fill: #ffce00; }
       .color5 { fill: #40c799; }
     }
+
+    &.is-gray {
+      svg {
+        [class^=color] {
+          fill: rgba(#fff, 0.15);
+        }
+      }
+    }
   }
 </style>
