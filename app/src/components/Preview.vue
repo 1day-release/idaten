@@ -45,8 +45,6 @@ export default {
     margin-left: $position;
 
     &-list {
-      $position: 20px;
-      $padding: 40px;
 
       position: absolute;
       top: 1px;

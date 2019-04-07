@@ -10,7 +10,7 @@
         <ul class="header-tool">
           <li>
             <div class="button-block">
-              <div class="button-mask is-logout">
+              <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
               <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
@@ -23,7 +23,7 @@
           </li>
           <li>
             <div class="button-block">
-              <div class="button-mask is-logout">
+              <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
               <IconButton text="スライドをシェア" svg="@/assets/icon-link.svg" :to="{name: 'Share'}" />

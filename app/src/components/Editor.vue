@@ -1,22 +1,20 @@
 <template>
-  <div class="editor">
-    <textarea v-model="markdown" @input="editorInput">
+  <div>
+    <textarea class="editor" v-model="markdown" @input="editorInput">
     </textarea>
-    <Popups>
-      <PopupLogout />
-    </Popups>
+    <div class="popups">
+      <PopupText id="popups-logout" class="popup">デモモードです。ログインをしないと、「共有」「保存」などの機能を使えません。<a href="#">ログイン</a>してください。</PopupText>
+    </div>
   </div>
 </template>
 
 <script>
-import Popups from '@/components/Popups.vue'
-import PopupLogout from '@/components/PopupLogout.vue'
+import PopupText from '@/components/PopupText.vue'
 
 export default {
   name: 'Editor',
   components: {
-    Popups,
-    PopupLogout
+    PopupText
   },
   props: {
   },
@@ -36,31 +34,42 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  $width: 100%;
+  $max-width: $pc-min-width * 0.65 + 20px;
+
   .editor {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    bottom: 70px;
+    width: $width;
+    max-width: $max-width;
+    padding-right: 20px;
+    border: none;
+    margin: auto;
+    line-height: 1.8;
+    font-family: $ff-mono;
+    color: rgba( map-get($color-brand, "text-white"), 0.9 );
+    -webkit-font-smoothing: subpixel-antialiased;
+    background-color: transparent;
+    resize: none;
+    outline: none;
 
-    textarea {
-      box-sizing: border-box;
-      position: absolute;
-      top: 40px;
-      right: 40px;
-      bottom: 70px;
-      width: 80%;
-      padding-right: 20px;
-      border: none;
-      max-width: $pc-min-width * 0.65 - 40px;
-      margin: auto;
-      line-height: 1.8;
-      font-family: $ff-mono;
-      color: rgba( map-get($color-brand, "text-white"), 0.9 );
-      -webkit-font-smoothing: subpixel-antialiased;
-      background-color: transparent;
-      resize: none;
-      outline: none;
+    @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
+  }
 
-      @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
-    }
+  .popups {
+    position: absolute;
+    right: 40px;
+    bottom: 20px;
+    width: $width;
+    max-width: $max-width;
+    height: 30px;
+  }
+
+  .popup {
+    position: absolute;
+    right: 0;
   }
 </style>

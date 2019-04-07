@@ -2,7 +2,7 @@
   <div class="user-slide">
     <div class="user-slide-head">
       <div class="user-slide-head-item">
-        <IconButton class="is-left is-reverse is-light-gray" text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
+        <IconButton class="is-left is-reverse is-light-gray" text="スライドリストを閉じる" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
       </div>
       <div class="user-slide-head-item">
         <TextButton class="is-ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" :to="{name: 'createSlide'}" />

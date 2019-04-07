@@ -27,7 +27,7 @@ export default {
     width: $size;
     height: $size;
     padding: 3px;
-    cursor: pointer;
+    // cursor: pointer;
 
     &-icon {
       position: relative;
@@ -74,10 +74,10 @@ export default {
     }
 
     &-balloon {
-      @include balloon($size);
+      @include balloon($size, 3px);
     }
 
-    @include balloon-styles(5px);
+    @include balloon-styles(3px);
 
     &:hover {
 

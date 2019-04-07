@@ -55,6 +55,12 @@ export default {
       }
     }
 
+    &:not(.is-ghost) {
+      &:hover {
+        opacity: $alpha;
+      }
+    }
+
     &:hover {
 
       svg {

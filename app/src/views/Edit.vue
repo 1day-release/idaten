@@ -5,9 +5,7 @@
       <div class="l-user-slide js-slidelist-container">
         <UserSlideList />
       </div>
-      <div class="l-editor">
-        <Editor />
-      </div>
+      <Editor class="l-editor" />
       <div class="l-preview">
         <div class="preview-contents">
           <Preview />
@@ -68,6 +66,7 @@ export default {
   }
 
   .l-editor {
+    position: relative;
     width: 65%;
     height: calc(100vh - #{$pc-header-height});
     color: map-get($color-brand, "text-white");
