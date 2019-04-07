@@ -1,9 +1,9 @@
 <template>
-  <div class="user is-right">
+  <div class="user" :class="balloonClass">
     <span class="user-icon">
       <img src="//placehold.jp/150x150.png" alt="">
     </span>
-    <span class="user-balloon">{{text}}&nbsp;&lt;{{email}}&gt;<!-- name --></span>
+    <span class="user-balloon">{{userName}}&nbsp;&lt;{{email}}&gt;<!-- name --></span>
   </div>
 </template>
 
@@ -11,8 +11,20 @@
 export default {
   name: 'UserIcon',
   props: {
-    text: String,
+    balloonPosition: String,
+    userName: String,
     email: String
+  },
+  computed: {
+    balloonClass () {
+      if (this.balloonPosition === 'left') {
+        return ['is-left']
+      } else if (this.balloonPosition === 'right') {
+        return ['is-right']
+      } else {
+        return []
+      }
+    }
   }
 }
 </script>
