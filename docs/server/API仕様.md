@@ -352,15 +352,7 @@ slides/{slide_id}
 
 ### Request Body
 
-| パラメータ |                     説明                     |
-| :--------: | :------------------------------------------: |
-|   email    | メールアドレス（ex. 1day.release@gmail.com） |
-
-```
-{
-    "email": "1day.release@gmail.com"
-}
-```
+- 設定なし
 
 ### Response
 
