@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -12,7 +13,36 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	goLambda "github.com/aws/aws-sdk-go/service/lambda"
 )
+
+func athorizationIdatenUser(accessToken UserAccessToken) (lambdaResponse LambdaResponse) {
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+	}))
+	client := goLambda.New(sess, &aws.Config{Region: aws.String("ap-northeast-1")})
+
+	payload, err := json.Marshal(accessToken)
+	if err != nil {
+		fmt.Println("Error marshalling idaten-api-users-authorization request")
+		os.Exit(0)
+	}
+
+	response, err := client.Invoke(&goLambda.InvokeInput{FunctionName: aws.String("idaten-api-users-authorization"), Payload: payload})
+	if err != nil {
+		fmt.Println("Error calling idaten-api-users-authorization")
+		os.Exit(0)
+	}
+
+	//var lambdaResponse LambdaResponse
+	err = json.Unmarshal(response.Payload, &lambdaResponse)
+	if err != nil {
+		fmt.Println("Error unmarshalling idaten-api-users-authorization response")
+		os.Exit(0)
+	}
+
+	return lambdaResponse
+}
 
 func getNowTime() string {
 	jst, _ := time.LoadLocation("Asia/Tokyo")
@@ -109,6 +139,20 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	// AccessTokenを取得する
 	bearerAccessToken := request.Headers["Authorization"]
 	bearerAccessTokenSplit := strings.Split(bearerAccessToken, " ")
+	accessToken := bearerAccessTokenSplit[1]
+	userAccessToken := UserAccessToken{AccessToken: accessToken}
+	// idatenUserテーブルからユーザ情報を取得
+	lambdaResponse := athorizationIdatenUser(userAccessToken)
+
+	// lambdaresponseのコードが403の場合にはレスポンスを返す
+	if lambdaResponse.Code != 200 {
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Forbidden"}`,
+			Headers:    responseHeader,
+			StatusCode: lambdaResponse.Code,
+		}, nil
+	}
+
 	// Bodyの内容を取得
 	jsonBytes := ([]byte)(request.Body)
 	requestData := new(RequestData)
@@ -116,7 +160,10 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	//スライドIDを取得
 	getSlideID := strings.Split(request.Path, "/")[2]
 
-	if len(bearerAccessTokenSplit) == 1 || err != nil || getSlideID == "" {
+	// lambdaresponseのメッセージからIdatenユーザ情報を取り出す
+	idatenUserInfo := new(IdatenUserInfo)
+	responseErr := json.Unmarshal([]byte(lambdaResponse.Message), idatenUserInfo)
+	if len(bearerAccessTokenSplit) == 1 || err != nil || responseErr != nil || getSlideID == "" {
 		fmt.Println("get error:", err)
 		return events.APIGatewayProxyResponse{
 			Body:       `{"status": "Bad Request"}`,
@@ -144,7 +191,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	// find exist slide_id item
-	status, jsonString := FindGetItem(svc, getSlideID, requestData.Email)
+	status, jsonString := FindGetItem(svc, getSlideID, idatenUserInfo.Email)
 	if status != 200 {
 		return events.APIGatewayProxyResponse{
 			Body:       jsonString,
@@ -154,7 +201,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	// update Item
-	status, jsonString = UpdateItemInput(svc, getSlideID, requestData.Email, requestData.MarkDown, strconv.Itoa(requestData.ShareMode), nowDateTime)
+	status, jsonString = UpdateItemInput(svc, getSlideID, idatenUserInfo.Email, requestData.MarkDown, strconv.Itoa(requestData.ShareMode), nowDateTime)
 
 	return events.APIGatewayProxyResponse{
 		Body:       jsonString,
@@ -184,4 +231,24 @@ type PutItem struct {
 
 type ResponseUpdatedAt struct {
 	UpdatedAt string `json:"updated_at"`
+}
+
+type UserAccessToken struct {
+	AccessToken string `json:"access_token"`
+}
+
+type LambdaResponse struct {
+	Message string `json:"message"`
+	Code    int    `json:"code"`
+}
+
+type IdatenUserInfo struct {
+	ID          string `json:"user_id"`
+	Email       string `json:"email"`
+	AccessToken string `json:"access_token"`
+	Name        string `json:"name"`
+	GivenName   string `json:"given_name"`
+	FamilyName  string `json:"family_name"`
+	Picture     string `json:"picture"`
+	Locale      string `json:"locale"`
 }
