@@ -1,6 +1,3 @@
-import authModel from './models/auth'
-import slideModel from './models/slide'
-
 export default {
   methods: {
     /**
