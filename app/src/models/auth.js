@@ -4,7 +4,7 @@ export default class Auth {
   }
 
   async login () {
-    return false
+    return true
   }
 
   async logout () {

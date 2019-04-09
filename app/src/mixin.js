@@ -1,6 +1,5 @@
 import authModel from './models/auth'
 import slideModel from './models/slide'
-import marked from 'marked'
 
 export default {
   methods: {
@@ -98,34 +97,21 @@ export default {
         html += `
             </div>
           </div>`
-
       } else if (slideType === 2) {
         let title = ''
         markdown.split(/\n/).forEach((line, lineNum) => {
           if (lineNum === 0) {
             title = line
           } else {
-            str = line
+            html = line
           }
         })
-        str = ((title) ? title + '\n' : '')
+        html = ((title) ? title + '\n' : '')
       } else {
         html = markdown
       }
 
       return html
-    },
-
-    /**
-     * 認証APIを操作する
-     * @return authModel
-     */
-    $_authModel: authModel,
-
-    /**
-     * スライドAPIを操作する
-     * @return slideModel
-     */
-    $_slideModel: slideModel
+    }
   }
 }

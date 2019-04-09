@@ -7,8 +7,8 @@ module.exports = deepmerge({
   test_settings: {
     chrome: {
       desiredCapabilities: {
-        chromeOptions : {
-          args : ["--headless"]
+        chromeOptions: {
+          args: ['--headless']
         }
       }
     }
