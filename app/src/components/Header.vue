@@ -14,7 +14,7 @@
                 <ButtonMask />
               </div>
 
-              <IconButton balloon-position="left" balloon-text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
+              <IconButton balloon-position="left" balloon-text="スライドリスト" svg="@/assets/icon-slidelist.svg" />
             </div>
           </li>
         </ul>
