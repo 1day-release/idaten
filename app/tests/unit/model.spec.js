@@ -1,12 +1,12 @@
-import mixin from '@/mixin'
-const methods = mixin.methods
+import AuthModel from '@/models/auth'
+// import SlideModel from '@/model/slide'
 
 describe('authModel', () => {
-  const model = new methods.$_authModel()
+  const auth = new AuthModel()
 
   it('login', async () => {
-    const result = await model.login()
-    // expect(result).toBeTruthy()
+    const result = await auth.login()
+    expect(result).toBeTruthy()
   })
 })
 
