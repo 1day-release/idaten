@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="html" v-html="html"></div>
-    <div v-else class="slide" :class="['slide-type' + slideType]" v-html="marked"></div>
+    <div v-else class="page" :class="['is-type' + slideType]" v-html="marked"></div>
   </div>
 </template>
 
@@ -105,7 +105,7 @@ export default {
               "h4": 22px
   );
 
-  .slide {
+  /deep/ .page {
     box-sizing: border-box;
     width: 100%;
     height: auto;
@@ -114,11 +114,11 @@ export default {
     font-size: 18px;
     background: #fff;
 
-    /deep/ * {
+    * {
       user-select: none;
     }
 
-    &.slide-type1  /deep/ {
+    &.is-type1  /deep/ {
       .to {
       }
 
@@ -160,7 +160,7 @@ export default {
       // }
     }
 
-    &.slide-type2  /deep/ {
+    &.is-type2  /deep/ {
       h2 {
         margin-top: 30%;
         font-size: 30px;
@@ -169,7 +169,7 @@ export default {
       }
     }
 
-    &.slide-type3  /deep/ {
+    &.is-type3  /deep/ {
       padding: 10% 10%;
       box-sizing: border-box;
 

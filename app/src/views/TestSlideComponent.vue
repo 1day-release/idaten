@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(testCase, index) in slideTestCases" :key="index">
+    <div class="test-block" v-for="(testCase, index) in slideTestCases" :key="index">
       <Slide :html="testCase.html" />
     </div>
   </div>
@@ -31,4 +31,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .test-block {
+    background-color: map-get($color-brand, "main");
+  }
 </style>

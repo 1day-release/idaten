@@ -13,33 +13,34 @@
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-              <IconButton class="is-left" text="スライドリスト" svg="@/assets/icon-slidelist.svg"/>
+
+              <IconButton balloon-position="left" balloon-text="スライドリスト" svg="@/assets/icon-slidelist.svg" :to="{name: 'SlideList'}" />
             </div>
           </li>
         </ul>
         <ul class="header-tool">
           <li>
-            <IconButton text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="{name: 'Presentation'}" />
+            <IconButton balloon-text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="{name: 'Presentation'}" />
           </li>
           <li>
             <div class="button-block">
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-              <IconButton text="スライドをシェア" svg="@/assets/icon-link.svg" :to="{name: 'Share'}" />
+              <IconButton balloon-text="スライドをシェア" svg="@/assets/icon-link.svg" :to="{name: 'Share'}" />
             </div>
           </li>
           <li>
-            <IconButton text="設定" svg="@/assets/icon-setting.svg" :to="{name: 'Setting'}" />
+            <IconButton balloon-text="設定" svg="@/assets/icon-setting.svg" :to="{name: 'Setting'}" />
           </li>
           <li class="is-separate is-login">
-            <IconButton text="ログアウト" svg="@/assets/icon-logout.svg" :to="{name: 'Setting'}" />
+            <IconButton balloon-text="ログアウト" svg="@/assets/icon-logout.svg" :to="{name: 'Setting'}" />
           </li>
           <li class="is-login">
-            <UserIcon text="ワンデイ太郎" email="1day-release@gmail.com" />
+            <UserIcon balloon-position="right" user-name="ワンデイ太郎" email="1day-release@gmail.com" />
           </li>
           <li class="is-separate is-logout">
-            <TextButton text="ログイン" svg="" :to="{name: 'Login'}" />
+            <TextButton balloon-text="ログイン" svg="" :to="{name: 'Login'}" />
           </li>
         </ul>
       </div>
@@ -112,6 +113,11 @@ export default {
         display: block;
         overflow: hidden;
         width: inherit;
+        transition-duration: $duration;
+
+        &:hover {
+          opacity: $alpha;
+        }
       }
     }
 

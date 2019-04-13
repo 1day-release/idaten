@@ -1,16 +1,16 @@
 <template>
   <div>
-    <router-link v-if="to" class="presentation-button" :to="to" target="_blank">
+    <router-link v-if="to" class="icon-button" :class="balloonClass" :to="to" target="_blank">
       <component :is="icon" />
-      <span class="presentation-button-text">
-        {{text}}
+      <span class="icon-button-balloon">
+        {{balloonText}}
       </span>
     </router-link>
 
-    <div v-else>
+    <div v-else class="icon-button" :class="balloonClass">
       <component :is="icon" />
-      <span class="presentation-button-text">
-        {{text}}
+      <span class="icon-button-balloon">
+        {{balloonText}}
       </span>
     </div>
   </div>
@@ -22,9 +22,19 @@ export default {
   props: {
     svg: String,
     to: Object,
-    text: String
+    balloonPosition: String,
+    balloonText: String
   },
   computed: {
+    balloonClass () {
+      if (this.balloonPosition === 'left') {
+        return ['is-left']
+      } else if (this.balloonPosition === 'right') {
+        return ['is-right']
+      } else {
+        return []
+      }
+    },
     icon () {
       return () => import(
         /* webpackChunkName: "assets" */
