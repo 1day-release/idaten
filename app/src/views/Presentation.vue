@@ -8,7 +8,7 @@
       </p>
     </div>
     <div class="presentation-body">
-      <Slide :markdown="slideMarkdown[nowSlideNum]" />
+      <Slide :markdown="slideMarkdown[nowSlideNum]" :calculate-window-height="true" :calculate-window-height-padding="100" />
     </div>
     <div class="presentation-footer">
       <ul class="presentation-pager">

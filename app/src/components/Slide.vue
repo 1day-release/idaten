@@ -22,9 +22,45 @@ export default {
     html: {
       type: String,
       default: ''
+    },
+    calculateWindowHeight: {
+      type: Boolean,
+      default: false
+    },
+    calculateWindowHeightPadding: {
+      type: Number,
+      default: 0
     }
   },
   created () {
+    this.$nextTick(() => {
+      const pageElement = this.$el.querySelector('.page')
+
+      const addPageStyle = () => {
+        const windowHeight = window.innerHeight;
+        const pageWidth = pageElement.clientWidth
+        const pageCalculatedFontSize = pageWidth / 61.8034
+        const pageCalculatedHeight = pageWidth * 0.618034
+        const pageCalculatedWindowHeight = window.height - this.calculateWindowHeightPadding
+
+        if (this.calculateWindowHeight && pageCalculatedHeight > pageCalculatedWindowHeight) {
+          pageElement.setAttribute('style', `font-size:${pageCalculatedFontSize}px; min-height:${pageCalculatedWindowHeight}px;`)
+        } else {
+          pageElement.setAttribute('style', `font-size:${pageCalculatedFontSize}px; min-height:${pageCalculatedHeight}px;`)
+        }
+      }
+
+      const resizeObserver = new ResizeObserver(entries => {
+        for (const entry of entries) {
+          if (entry.target === pageElement) {
+            addPageStyle()
+          }
+        }
+      })
+      resizeObserver.observe(pageElement)
+
+      addPageStyle()
+    })
   },
   methods: {
   },
