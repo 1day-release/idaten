@@ -2,7 +2,7 @@
   <div class="preview">
     <ul class="preview-list">
       <li v-for="(value, index) in slideMarkdown" :key="index">
-        <Slide :markdown="value" />
+        <Slide :markdown="value" :width="347" />
       </li>
     </ul>
   </div>

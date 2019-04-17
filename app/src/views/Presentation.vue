@@ -8,7 +8,7 @@
       </p>
     </div>
     <div class="presentation-body">
-      <Slide :markdown="slideMarkdown[nowSlideNum]" :calculate-window-height="true" :calculate-window-height-padding="100" />
+      <Slide :markdown="slideMarkdown[nowSlideNum]" :max-width="slideMaxWidth" :max-height="slideMaxHeight"  />
     </div>
     <div class="presentation-footer">
       <ul class="presentation-pager">
@@ -42,7 +42,9 @@ export default {
   data () {
     return {
       nowSlideNum: 0,
-      markdown: ''
+      markdown: '',
+      slideMaxWidth: 0,
+      slideMaxHeight: 0
     }
   },
   created () {
@@ -59,6 +61,9 @@ export default {
         this.prevSlide()
       }
     })
+
+    window.addEventListener('resize', this.calculateSlideMaxSize)
+    this.calculateSlideMaxSize()
   },
   methods: {
     nextSlide () {
@@ -66,6 +71,12 @@ export default {
     },
     prevSlide () {
       if (this.nowSlideNum > 0) this.nowSlideNum--
+    },
+    calculateSlideMaxSize () {
+      const leftRightMargin = 100
+      const topBottomMargin = 120
+      this.slideMaxWidth = window.innerWidth - leftRightMargin
+      this.slideMaxHeight = window.innerHeight - topBottomMargin
     }
   },
   computed: {

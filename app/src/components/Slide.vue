@@ -23,48 +23,56 @@ export default {
       type: String,
       default: ''
     },
-    calculateWindowHeight: {
-      type: Boolean,
-      default: false
-    },
-    calculateWindowHeightPadding: {
+    width: {
       type: Number,
-      default: 0
+      default: null
+    },
+    maxWidth: {
+      type: Number,
+      default: null
+    },
+    maxHeight: {
+      type: Number,
+      default: null
     }
   },
-  created () {
-    this.$nextTick(() => {
-      const pageElement = this.$el.querySelector('.page')
-
-      const addPageStyle = () => {
-        const windowHeight = window.innerHeight;
-        const pageWidth = pageElement.clientWidth
-        const pageCalculatedFontSize = pageWidth / 61.8034
-        const pageCalculatedHeight = pageWidth * 0.618034
-        const pageCalculatedWindowHeight = window.height - this.calculateWindowHeightPadding
-
-        if (this.calculateWindowHeight && pageCalculatedHeight > pageCalculatedWindowHeight) {
-          pageElement.setAttribute('style', `font-size:${pageCalculatedFontSize}px; min-height:${pageCalculatedWindowHeight}px;`)
-        } else {
-          pageElement.setAttribute('style', `font-size:${pageCalculatedFontSize}px; min-height:${pageCalculatedHeight}px;`)
-        }
-      }
-
-      const resizeObserver = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          if (entry.target === pageElement) {
-            addPageStyle()
-          }
-        }
-      })
-      resizeObserver.observe(pageElement)
-
-      addPageStyle()
-    })
+  mounted () {
+    this.$watch('pageStyles', () => {}) // For detect props changing
   },
   methods: {
+    computePageStyles () {
+      let styles = {}
+
+      if (this.width) {
+        styles['font-size'] = Math.round(this.width / 61.8)
+        styles['min-height'] = Math.round(this.width * 0.618)
+      } else if (this.maxWidth && this.maxHeight) {
+        const tempMaxWidth = Math.round(this.maxHeight / 0.618)
+        const tempMaxHeight = Math.round(this.maxWidth * 0.618)
+        if (tempMaxWidth > this.maxWidth) {
+          styles['width'] = this.maxWidth
+          styles['height'] = tempMaxHeight
+        } else {
+          styles['width'] = tempMaxWidth
+          styles['height'] = this.maxHeight
+        }
+        styles['font-size'] = Math.round(styles['width'] / 61.8)
+      }
+
+      this.$nextTick(() => {
+        const pageElement = this.$el.querySelector('.page')
+        const style = Object.entries(styles).map(style => {
+          return `${style[0]}:${style[1]}px`
+        }).join(';') + ';'
+        pageElement.setAttribute('style', style)
+      })
+      return styles
+    }
   },
   computed: {
+    pageStyles () {
+      return this.computePageStyles()
+    },
     slideType () {
       if (this.markdown.indexOf('# ') === 0) {
         return 1
