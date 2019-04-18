@@ -3,7 +3,7 @@
   <div class="user-slide">
     <div class="user-slide-head">
       <div class="user-slide-head-item" v-on:click="showUserSlideList()">
-        <IconButton class="is-left is-reverse is-light-gray"  balloon-text="スライドリストを閉じる" svg="@/assets/icon-slidelist.svg"/>
+        <IconButton balloon-position="left" icon-color="light-gray" icon-reverse balloon-text="スライドリストを閉じる" svg="@/assets/icon-slidelist.svg"/>
       </div>
       <div class="user-slide-head-item">
         <TextButton class="is-ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" :to="{name: 'createSlide'}" />
@@ -12,7 +12,7 @@
     <ul class="user-slide-list">
       <li>
         <a class="slide-cover" href="#">
-          <Slide />
+          <Slide :max-width="slideMaxWidth" :max-height="slideMaxHeight" />
         </a>
       </li>
       <li class="is_now">
@@ -80,6 +80,7 @@ export default {
   .user-slide {
     display: block;
     overflow: hidden;
+    width: 100%;
     height: 100%;
     background-color: map-get($color-brand, "main-light");
 
@@ -163,18 +164,18 @@ export default {
         }
       }
 
+      box-sizing: border-box;
       display: block;
       overflow-y: scroll;
       width: auto;
       min-width: calc(100% + 17px);
       height: 100%;
-      margin-right: -17px;
-
-      // @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
+      padding-right: 17px;
 
       >li {
+        box-sizing: border-box;
+        width: inherit;
         padding: 10px 20px;
-        padding-right: 20px + 17px;
 
         &:not(.is_now) {
           transition-duration: $duration;

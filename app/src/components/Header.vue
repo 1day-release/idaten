@@ -40,7 +40,7 @@
             <UserIcon balloon-position="right" user-name="ワンデイ太郎" email="1day-release@gmail.com" />
           </li>
           <li class="is-separate is-logout">
-            <TextButton balloon-text="ログイン" svg="" :to="{name: 'Login'}" />
+            <TextButton text="ログイン" svg="" :to="{name: 'Login'}" />
           </li>
         </ul>
       </div>

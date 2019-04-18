@@ -82,6 +82,7 @@ export default {
 
   .l-preview {
     position: relative;
+    overflow: hidden;
     width: 35%;
     height: calc(100vh - #{$pc-header-height});
     background-color: map-get($color-brand, "sub-dark");
