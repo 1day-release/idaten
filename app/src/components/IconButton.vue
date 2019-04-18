@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link v-if="to" class="icon-button" :class="balloonClass" :to="to" target="_blank">
+    <router-link v-if="to" class="icon-button" :class="balloonClass" :to="to">
       <component :is="icon" />
       <span class="icon-button-balloon">
         {{balloonText}}

@@ -1,10 +1,44 @@
 import { shallowMount } from '@vue/test-utils'
 import Slide from '@/components/Slide.vue'
 
+describe('基本表示', () => {
+  it('markdownとページ数が入力された時、htmlが表示されるか', done => {
+    const wrapper = shallowMount(Slide, {
+      propsData: {
+        markdown: `# H1
+        ## H2`,
+        pageNumber: 2
+      }
+    })
+    expect(wrapper.vm.markedHtml).toBeTruthy()
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.find('.page').text().length).toBeTruthy()
+      done()
+    })
+  })
+})
+
+describe('サイズの途中変更', () => {
+  it('比率固定モードのプロパティの変更を反映できるか', () => {
+    const wrapper = shallowMount(Slide, {
+      propsData: {
+        maxWidth: 500,
+        maxHeight: 687
+      }
+    })
+    wrapper.setProps({
+      maxWidth: 1112,
+      maxHeight: 687
+    })
+    expect(wrapper.vm.pageStyles['width']).toBe(1112)
+  })
+})
+/*
 describe('モードスタイルの適応', () => {
   it('比率可変モードスタイルが適応されるか', done => {
     const wrapper = shallowMount(Slide, {
       propsData: {
+        markdown: '# H1',
         width: 1112
       }
     })
@@ -13,9 +47,11 @@ describe('モードスタイルの適応', () => {
       done()
     })
   })
+
   it('比率固定モードスタイルが適応されるか', done => {
     const wrapper = shallowMount(Slide, {
       propsData: {
+        markdown: '# H1',
         maxWidth: 1112,
         maxHeight: 687
       }
@@ -26,6 +62,7 @@ describe('モードスタイルの適応', () => {
     })
   })
 })
+*/
 
 describe('比率可変モード(プロパティwidth指定)→font-size,min-heightが変化', () => {
   it('プロパティwidthが1112pxの場合、.pageのfont-sizeが18pxになるか', () => {
@@ -91,21 +128,5 @@ describe('比率固定モード(プロパティmax-widthおよびmax-height指�
     expect(wrapper.vm.pageStyles['width']).toBe(500)
     expect(wrapper.vm.pageStyles['height']).toBe(309)
     expect(wrapper.vm.pageStyles['font-size']).toBe(8)
-  })
-})
-
-describe('サイズの途中変更', () => {
-  it('比率固定モードのプロパティの変更を反映できるか', () => {
-    const wrapper = shallowMount(Slide, {
-      propsData: {
-        maxWidth: 500,
-        maxHeight: 687
-      }
-    })
-    wrapper.setProps({
-      maxWidth: 1112,
-      maxHeight: 687
-    })
-    expect(wrapper.vm.pageStyles['width']).toBe(1112)
   })
 })

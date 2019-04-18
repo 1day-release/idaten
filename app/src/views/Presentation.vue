@@ -1,5 +1,5 @@
 <template>
-  <div class="presentation" @click="nextSlide" @contextmenu.prevent="prevSlide">
+  <div class="presentation" @click="nextPage" @contextmenu.prevent="prevPage">
     <div class="presentation-header">
       <p class="presentation-close">
         <a href="#">
@@ -8,15 +8,11 @@
       </p>
     </div>
     <div class="presentation-body">
-      <Slide :markdown="slideMarkdown[nowSlideNum]" :max-width="slideMaxWidth" :max-height="slideMaxHeight"  />
+      <Slide :markdown="markdown" :page-number="pageNumber" :max-width="pageMaxWidth" :max-height="pageMaxHeight"  />
     </div>
     <div class="presentation-footer">
       <ul class="presentation-pager">
-        <li><a href="#1">1</a></li>
-        <li><a class="is-now" href="#2">2</a></li>
-        <li><a href="#3">3</a></li>
-        <li><a href="#4">4</a></li>
-        <li><a href="#5">5</a></li>
+        <li v-for="n in pageCount" :key="n"><a :class="{'is-now': n === pageNumber}" :href="'#' + n">{{n}}</a></li>
       </ul>
       <p class="presentation-logo">
         <a href="/">
@@ -32,6 +28,8 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Slide from '@/components/Slide.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
+import IdatenCore from 'idaten-core'
+const core = new IdatenCore()
 
 export default {
   name: 'Presentation',
@@ -41,48 +39,53 @@ export default {
   },
   data () {
     return {
-      nowSlideNum: 0,
-      markdown: '',
-      slideMaxWidth: 0,
-      slideMaxHeight: 0
+      pageNumber: 1,
+      pageMaxWidth: 0,
+      pageMaxHeight: 0
     }
   },
   created () {
     if (this.$route.query.mdUrl) {
-      console.log('md', this.$route.query.mdUrl)
       fetch(this.$route.query.mdUrl).then(request => request.text()).then((markdown) => {
         this.markdown = markdown
       })
     }
-    window.addEventListener('keydown', (event) => {
-      if (event.keyCode === 39) {
-        this.nextSlide()
-      } else if (event.keyCode === 37) {
-        this.prevSlide()
-      }
-    })
 
-    window.addEventListener('resize', this.calculateSlideMaxSize)
-    this.calculateSlideMaxSize()
+    const keyEvent = (event) => {
+      if (event.key === 'ArrowRight') {
+        this.nextPage()
+      } else if (event.key === 'ArrowLeft') {
+        this.prevPage()
+      } else if (event.key === 'Escape') {
+        window.removeEventListener('keydown', keyEvent)
+        this.$router.push({ name: 'Edit' })
+      }
+    }
+    window.addEventListener('keydown', keyEvent)
+
+    window.addEventListener('resize', this.calculatePageMaxSize)
+    this.calculatePageMaxSize()
   },
   methods: {
-    nextSlide () {
-      if (this.nowSlideNum < this.slideMarkdown.length - 1) this.nowSlideNum++
+    nextPage () {
+      if (this.pageNumber < this.pageCount) this.pageNumber++
     },
-    prevSlide () {
-      if (this.nowSlideNum > 0) this.nowSlideNum--
+    prevPage () {
+      if (this.pageNumber > 1) this.pageNumber--
     },
-    calculateSlideMaxSize () {
+    calculatePageMaxSize () {
       const leftRightMargin = 100
       const topBottomMargin = 120
-      this.slideMaxWidth = window.innerWidth - leftRightMargin
-      this.slideMaxHeight = window.innerHeight - topBottomMargin
+      this.pageMaxWidth = window.innerWidth - leftRightMargin
+      this.pageMaxHeight = window.innerHeight - topBottomMargin
     }
   },
   computed: {
-    slideMarkdown () {
-      const markdown = this.markdown || this.$store.getters.markdown
-      return this.$_getSlideMarkdown(markdown)
+    pageCount () {
+      return core.countPage(this.markdown)
+    },
+    markdown () {
+      return this.$store.getters.markdown
     }
   }
 }

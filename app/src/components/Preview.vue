@@ -1,8 +1,8 @@
 <template>
   <div class="preview">
     <ul class="preview-list">
-      <li v-for="(value, index) in slideMarkdown" :key="index">
-        <Slide :markdown="value" :width="347" />
+      <li v-for="n in pageCount" :key="n">
+        <Slide :markdown="markdown" :page-number="n" :width="347" />
       </li>
     </ul>
   </div>
@@ -10,6 +10,8 @@
 
 <script>
 import Slide from '@/components/Slide.vue'
+import IdatenCore from 'idaten-core'
+const core = new IdatenCore()
 
 export default {
   name: 'Preview',
@@ -22,9 +24,16 @@ export default {
     return {
     }
   },
+  mounted () {
+  },
+  methods: {
+  },
   computed: {
-    slideMarkdown () {
-      return this.$_getSlideMarkdown(this.$store.getters.markdown)
+    pageCount () {
+      return core.countPage(this.markdown)
+    },
+    markdown () {
+      return this.$store.getters.markdown
     }
   }
 }

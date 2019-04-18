@@ -1,12 +1,13 @@
 <template>
   <div>
     <div v-if="html" v-html="html"></div>
-    <div v-else class="page" :class="['is-type' + slideType]" v-html="marked"></div>
+    <div v-else v-html="markedHtml"></div>
   </div>
 </template>
 
 <script>
-import Marked from 'marked'
+import IdatenCore from 'idaten-core'
+const core = new IdatenCore()
 
 export default {
   name: 'Slide',
@@ -18,6 +19,10 @@ export default {
     markdown: {
       type: String,
       default: ''
+    },
+    pageNumber: {
+      type: Number,
+      default: 0
     },
     html: {
       type: String,
@@ -61,6 +66,7 @@ export default {
 
       this.$nextTick(() => {
         const pageElement = this.$el.querySelector('.page')
+        if (!pageElement) return
         const style = Object.entries(styles).map(style => {
           return `${style[0]}:${style[1]}px`
         }).join(';') + ';'
@@ -73,58 +79,8 @@ export default {
     pageStyles () {
       return this.computePageStyles()
     },
-    slideType () {
-      if (this.markdown.indexOf('# ') === 0) {
-        return 1
-      } else if (this.markdown.indexOf('## ') === 0 && this.markdown.split(/\n/).length === 1) {
-        return 2
-      } else {
-        return 3
-      }
-    },
-    marked () {
-      let str = ''
-      if (this.slideType === 1) {
-        let title = ''
-        let subtitle = ''
-        let date = ''
-        let to = ''
-        let from = ''
-        this.markdown.split(/\n/).forEach((line, lineNum) => {
-          const cutStart = (line.indexOf(': ') >= 0) ? (line.indexOf(': ')) + 2 : 0
-          if (lineNum === 0) {
-            title = line
-          } else if (lineNum === 1) {
-            subtitle = line.slice(cutStart)
-          } else if (lineNum === 2) {
-            date = line.slice(cutStart)
-          } else if (lineNum === 3) {
-            to = line.slice(cutStart)
-          } else if (lineNum === 4) {
-            from = line.slice(cutStart)
-          }
-        })
-        str =
-         ((to) ? `<p class="to">${to}</p>\n` : '') +
-         ((title) ? `\n${title}\n` : '') +
-         ((subtitle) ? `<p class="subtitle">${subtitle}</p>\n` : '') +
-         ((date) ? `<p class="date">${date}</p>\n` : '') +
-         ((from) ? `<p class="from">${from}</p>\n` : '') +
-         '\n'
-      } else if (this.slideType === 2) {
-        let title = ''
-        this.markdown.split(/\n/).forEach((line, lineNum) => {
-          if (lineNum === 0) {
-            title = line
-          } else {
-            str = line
-          }
-        })
-        str = ((title) ? title + '\n' : '')
-      } else {
-        str = this.markdown
-      }
-      return Marked(str)
+    markedHtml () {
+      return core.get(this.markdown, this.pageNumber)
     }
   }
 }
