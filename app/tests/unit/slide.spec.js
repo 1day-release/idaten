@@ -33,12 +33,34 @@ describe('サイズの途中変更', () => {
     expect(wrapper.vm.pageStyles['width']).toBe(1112)
   })
 })
-/*
+
+describe('markdownの途中変更', () => {
+  it('markdown変更時に、モードスタイルが更新適応されるか', done => {
+    const wrapper = shallowMount(Slide, {
+      propsData: {
+        markdown: '# H1',
+        pageNumber: 2,
+        width: 1112
+      }
+    })
+    setTimeout(() => {
+      wrapper.setProps({
+        markdown: '## H2'
+      })
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.find('.page').attributes().style.indexOf(';min-height:')).toBeGreaterThanOrEqual(0)
+        done()
+      })
+    }, 200)
+  })
+})
+
 describe('モードスタイルの適応', () => {
   it('比率可変モードスタイルが適応されるか', done => {
     const wrapper = shallowMount(Slide, {
       propsData: {
         markdown: '# H1',
+        pageNumber: 2,
         width: 1112
       }
     })
@@ -52,6 +74,7 @@ describe('モードスタイルの適応', () => {
     const wrapper = shallowMount(Slide, {
       propsData: {
         markdown: '# H1',
+        pageNumber: 2,
         maxWidth: 1112,
         maxHeight: 687
       }
@@ -62,7 +85,6 @@ describe('モードスタイルの適応', () => {
     })
   })
 })
-*/
 
 describe('比率可変モード(プロパティwidth指定)→font-size,min-heightが変化', () => {
   it('プロパティwidthが1112pxの場合、.pageのfont-sizeが18pxになるか', () => {

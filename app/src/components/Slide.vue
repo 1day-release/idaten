@@ -43,6 +43,7 @@ export default {
   },
   mounted () {
     this.$watch('pageStyles', () => {}) // For detect props changing
+    this.$watch('markdown', () => { this.computePageStyles() })
   },
   methods: {
     computePageStyles () {
