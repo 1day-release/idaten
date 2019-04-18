@@ -123,6 +123,8 @@ export default {
     }
 
     &-body {
+      display: flex;
+      justify-content: center;
       margin: 0 $margin;
     }
 
@@ -159,14 +161,20 @@ export default {
     }
 
     &-pager {
+      $top: 3px;
+      $left: 6px;
+
       display: flex;
+      margin-top: -#{$top};
+      margin-left: -#{$left};
 
       >li {
-        margin-left: 6px;
+        margin-top: $top;
+        margin-left: $left;
 
-        &:first-child {
-          margin-left: 0;
-        }
+        // &:first-child {
+          // margin-left: 0;
+        // }
       }
 
       a {
@@ -178,7 +186,7 @@ export default {
         white-space: nowrap;
         background-color: #fff;
         opacity: 0.2;
-        transition-duration: $alpha;
+        transition-duration: $duration;
 
         &.is-now {
           opacity: 1;
