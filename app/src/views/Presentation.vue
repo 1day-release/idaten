@@ -52,9 +52,9 @@ export default {
     }
 
     const keyEvent = (event) => {
-      if (event.key === 'ArrowRight') {
+      if (event.key === 'ArrowRight' || event.key === 'Enter') {
         this.nextPage()
-      } else if (event.key === 'ArrowLeft') {
+      } else if (event.key === 'ArrowLeft' || event.key === 'Backspace') {
         this.prevPage()
       } else if (event.key === 'Escape') {
         window.removeEventListener('keydown', keyEvent)
