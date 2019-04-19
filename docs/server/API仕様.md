@@ -199,6 +199,7 @@ Authorization: Bearer xxxxxxxxxx
   {
     "slide_id": "xxxxxxxxxxxxxxxx",
     "email": "1day.release@gmail.com",
+    "cover": "# タイトル\nサブタイトル: サブタイトル",
     "share_mode": 0,
     "created_at": "2019-01-01 00:00:00",
     "updated_at": "2019-01-02 00:00:00"
@@ -206,6 +207,7 @@ Authorization: Bearer xxxxxxxxxx
   {
     "slide_id": "xxxxxxxxxxxxxxxx",
     "email": "1day.release@gmail.com",
+    "cover": "# タイトル\nサブタイトル: サブタイトル",
     "share_mode": 0,
     "created_at": "2019-01-01 00:00:00",
     "updated_at": "2019-01-02 00:00:00"
@@ -287,7 +289,8 @@ URLのみ
 ```
 [
   {
-    "slide_id": "xxxxxxxxxxxxxxxx"
+    "slide_id": "xxxxxxxxxxxxxxxx",
+    "cover": "# タイトル\nサブタイトル: サブタイトル",
     "markdown": "# test",
     "share_mode": 0,
     "created_at": "2019-01-01 00:00:00",
@@ -316,12 +319,14 @@ slides/{slide_id}
 
 | パラメータ |               説明               |
 | :--------: | :------------------------------: |
+|  cover     |          表紙のテキスト         |
 |  markdown  |      マークダウンのテキスト      |
 | share_mode | 0:非公開，1:公開閲覧，2:公開編集 |
 
 ```
 {
     "markdown": "# test",
+    "cover": "# タイトル\nサブタイトル: サブタイトル",
     "share_mode": 0
 }
 ```
