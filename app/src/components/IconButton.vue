@@ -1,13 +1,13 @@
 <template>
   <div>
-    <router-link v-if="to" class="icon-button" :class="balloonClass" :to="to" target="_blank">
+    <router-link v-if="to" class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]" :to="to">
       <component :is="icon" />
       <span class="icon-button-balloon">
         {{balloonText}}
       </span>
     </router-link>
 
-    <div v-else class="icon-button" :class="balloonClass">
+    <div v-else class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]">
       <component :is="icon" />
       <span class="icon-button-balloon">
         {{balloonText}}
@@ -23,14 +23,30 @@ export default {
     svg: String,
     to: Object,
     balloonPosition: String,
-    balloonText: String
+    balloonText: String,
+    iconColor: String,
+    iconReverse: Boolean
   },
   computed: {
-    balloonClass () {
+    balloonPositionClass () {
       if (this.balloonPosition === 'left') {
         return ['is-left']
       } else if (this.balloonPosition === 'right') {
         return ['is-right']
+      } else {
+        return []
+      }
+    },
+    iconColorClass () {
+      if (this.iconColor) {
+        return ['is-'+this.iconColor]
+      } else {
+        return []
+      }
+    },
+    iconReverseClass () {
+      if (this.iconReverse === true) {
+        return ['is-reverse']
       } else {
         return []
       }
@@ -59,6 +75,7 @@ export default {
     height: $size;
     color: inherit;
     text-decoration: none;
+    cursor: pointer;
 
     svg {
       path {
@@ -73,15 +90,28 @@ export default {
     @include balloon-styles();
 
     &.is-light-gray {
-      svg {
+      svg,
+      svg path {
         fill: map-get($color-brand, "gray-light");
       }
     }
 
     &.is-reverse {
       svg {
-        transform: scale(-1, 1);
+        transform: scale(-1);
         transform-origin: center center;
+      }
+    }
+
+    &.is-vertical-reverse {
+      svg {
+        transform: scale(1, -1);
+      }
+    }
+
+    &.is-horizontal-reverse {
+      svg {
+        transform: scale(-1, 1);
       }
     }
 

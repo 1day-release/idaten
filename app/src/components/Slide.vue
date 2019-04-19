@@ -1,12 +1,13 @@
 <template>
   <div>
     <div v-if="html" v-html="html"></div>
-    <div v-else class="page" :class="['is-type' + slideType]" v-html="marked"></div>
+    <div v-else v-html="markedHtml"></div>
   </div>
 </template>
 
 <script>
-import Marked from 'marked'
+import IdatenCore from 'idaten-core'
+const core = new IdatenCore()
 
 export default {
   name: 'Slide',
@@ -19,104 +20,68 @@ export default {
       type: String,
       default: ''
     },
+    pageNumber: {
+      type: Number,
+      default: 0
+    },
     html: {
       type: String,
       default: ''
     },
-    calculateWindowHeight: {
-      type: Boolean,
-      default: false
-    },
-    calculateWindowHeightPadding: {
+    width: {
       type: Number,
-      default: 0
+      default: null
+    },
+    maxWidth: {
+      type: Number,
+      default: null
+    },
+    maxHeight: {
+      type: Number,
+      default: null
     }
   },
-  created () {
-    this.$nextTick(() => {
-      const pageElement = this.$el.querySelector('.page')
-
-      const addPageStyle = () => {
-        const windowHeight = window.innerHeight;
-        const pageWidth = pageElement.clientWidth
-        const pageCalculatedFontSize = pageWidth / 61.8034
-        const pageCalculatedHeight = pageWidth * 0.618034
-        const pageCalculatedWindowHeight = window.height - this.calculateWindowHeightPadding
-
-        if (this.calculateWindowHeight && pageCalculatedHeight > pageCalculatedWindowHeight) {
-          pageElement.setAttribute('style', `font-size:${pageCalculatedFontSize}px; min-height:${pageCalculatedWindowHeight}px;`)
-        } else {
-          pageElement.setAttribute('style', `font-size:${pageCalculatedFontSize}px; min-height:${pageCalculatedHeight}px;`)
-        }
-      }
-
-      const resizeObserver = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          if (entry.target === pageElement) {
-            addPageStyle()
-          }
-        }
-      })
-      resizeObserver.observe(pageElement)
-
-      addPageStyle()
-    })
+  mounted () {
+    this.$watch('pageStyles', () => {}) // For detect props changing
+    this.$watch('markdown', () => { this.computePageStyles() })
   },
   methods: {
+    computePageStyles () {
+      let styles = {}
+
+      if (this.width) {
+        styles['font-size'] = Math.round(this.width / 61.8)
+        styles['min-height'] = Math.round(this.width * 0.618)
+      } else if (this.maxWidth && this.maxHeight) {
+        const tempMaxWidth = Math.round(this.maxHeight / 0.618)
+        const tempMaxHeight = Math.round(this.maxWidth * 0.618)
+        if (tempMaxWidth > this.maxWidth) {
+          styles['width'] = this.maxWidth
+          styles['height'] = tempMaxHeight
+        } else {
+          styles['width'] = tempMaxWidth
+          styles['height'] = this.maxHeight
+        }
+        styles['font-size'] = Math.round(styles['width'] / 61.8)
+      }
+
+      this.$nextTick(() => {
+        const pageElement = this.$el.querySelector('.page')
+        if (!pageElement) return
+        const style = Object.entries(styles).map(style => {
+          return `${style[0]}:${style[1]}px`
+        }).join(';') + ';'
+        pageElement.setAttribute('style', style)
+      })
+      return styles
+    }
   },
   computed: {
-    slideType () {
-      if (this.markdown.indexOf('# ') === 0) {
-        return 1
-      } else if (this.markdown.indexOf('## ') === 0 && this.markdown.split(/\n/).length === 1) {
-        return 2
-      } else {
-        return 3
-      }
+    pageStyles () {
+      return this.computePageStyles()
     },
-    marked () {
-      let str = ''
-      if (this.slideType === 1) {
-        let title = ''
-        let subtitle = ''
-        let date = ''
-        let to = ''
-        let from = ''
-        this.markdown.split(/\n/).forEach((line, lineNum) => {
-          const cutStart = (line.indexOf(': ') >= 0) ? (line.indexOf(': ')) + 2 : 0
-          if (lineNum === 0) {
-            title = line
-          } else if (lineNum === 1) {
-            subtitle = line.slice(cutStart)
-          } else if (lineNum === 2) {
-            date = line.slice(cutStart)
-          } else if (lineNum === 3) {
-            to = line.slice(cutStart)
-          } else if (lineNum === 4) {
-            from = line.slice(cutStart)
-          }
-        })
-        str =
-         ((to) ? `<p class="to">${to}</p>\n` : '') +
-         ((title) ? `\n${title}\n` : '') +
-         ((subtitle) ? `<p class="subtitle">${subtitle}</p>\n` : '') +
-         ((date) ? `<p class="date">${date}</p>\n` : '') +
-         ((from) ? `<p class="from">${from}</p>\n` : '') +
-         '\n'
-      } else if (this.slideType === 2) {
-        let title = ''
-        this.markdown.split(/\n/).forEach((line, lineNum) => {
-          if (lineNum === 0) {
-            title = line
-          } else {
-            str = line
-          }
-        })
-        str = ((title) ? title + '\n' : '')
-      } else {
-        str = this.markdown
-      }
-      return Marked(str)
+    markedHtml () {
+      return core.get(this.markdown, this.pageNumber)
     }
   }
 }
