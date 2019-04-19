@@ -10,12 +10,14 @@ branches:
   - stating
   - master
 install:
+- npm install newman
 - cd app
 - npm install
-- npm install newman
+- cd ../
 script:
-- npm run test:unit
 - node_modules/.bin/newman run ./server/tests/postman/idaten-api.postman_collection.json -e ./server/tests/postman/idaten-api.postman_environment.json
+- cd app
+- npm run test:unit
 - npm run build
 deploy:
 - provider: s3
