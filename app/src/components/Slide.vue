@@ -42,8 +42,10 @@ export default {
     }
   },
   mounted () {
-    this.$watch('pageStyles', () => {}) // For detect props changing
-    this.$watch('markdown', () => { this.computePageStyles() })
+    this.computePageStyles()
+  },
+  updated () {
+    this.computePageStyles()
   },
   methods: {
     computePageStyles () {
@@ -77,9 +79,6 @@ export default {
     }
   },
   computed: {
-    pageStyles () {
-      return this.computePageStyles()
-    },
     markedHtml () {
       return core.get(this.markdown, this.pageNumber)
     }
