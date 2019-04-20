@@ -88,15 +88,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  $size: 1112px;
+
+  $base-fz: 18px;
+
   $fz: (
-               "p": 18px,
            "pager": 12px,
 
            "title": 40px,
        "sub-title": 20px,
               "to": 16px,
             "date": 16px,
-            "name": 16px,
+            "from": 16px,
 
      "slide-title": 12px,
               "h2": 40px,
@@ -106,86 +109,76 @@ export default {
               "h4": 22px
   );
 
+  @mixin fontSizeRatio($font: 18px) {
+    font-size: $font / $base-fz * 100%;
+  }
+
   /deep/ .page {
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    min-height: 680px / 1110px * 100%;
+    min-height: 680px / $size * 100%;
     color: #0f002b;
-    font-size: 18px;
+    font-size: map-get($fz, "p");
+    letter-spacing: 0.05em;
     background: #fff;
 
     * {
       user-select: none;
     }
 
-    &.is-type1  /deep/ {
-      .to {
+    &.is-type1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 80px / $size * 100%;
+
+      /deep/ {
+
+        .page {
+          &-header {
+          }
+
+          &-body {
+            font-weight: bold;
+          }
+
+          &-footer {
+            color: rgba( map-get($color-brand, "main"), 0.4);
+          }
+        }
+
+        .cover {
+          &-to {
+            @include fontSizeRatio( map-get($fz, "to") );
+          }
+
+          &-title {
+            margin: 15px 0;
+            @include fontSizeRatio( map-get($fz, "title") );
+          }
+
+          &-subtitle {
+            @include fontSizeRatio( map-get($fz, "sub-title") );
+            color: map-get($color-brand, "text-sub");
+          }
+
+          &-date {
+            @include fontSizeRatio( map-get($fz, "date") );
+          }
+
+          &-from {
+            margin-top: 15px;
+            @include fontSizeRatio( map-get($fz, "from") );
+          }
+        }
       }
-
-      h1 {
-      }
-
-      .subtitle {
-      }
-
-      .date {
-      }
-
-      .from {
-      }
-      // padding: 5% 5%;
-      // box-sizing: border-box;
-
-      // p:nth-of-type(1) {
-      //   font-size: 16px;
-      // }
-
-      // h1 {
-      //   font-size: 30px;
-      //   margin-top: 25%;
-      //   margin-bottom: 2%;
-      // }
-
-      // p:nth-of-type(2) {
-      //   margin-bottom: 25%;
-      // }
-
-      // p:nth-of-type(3) {
-      //   color: #cbcdd6;
-      //   margin-bottom: 1%;
-      // }
-
-      // p:nth-of-type(4) {
-      //   color: #cbcdd6;
-      // }
     }
 
     &.is-type2  /deep/ {
-      h2 {
-        margin-top: 30%;
-        font-size: 30px;
-        color: #000c36;
-        text-align: center;
-      }
     }
 
     &.is-type3  /deep/ {
-      padding: 10% 10%;
-      box-sizing: border-box;
-
-      h2 {
-        font-size: 30px;
-        color: #000c36;
-        text-align: center;
-      }
-
-      h3 {
-        margin-bottom: 5%;
-        font-size: 30px;
-        color: #000c36;
-        text-align: center;
-      }
 
       ol {
         list-style-type: decimal;
