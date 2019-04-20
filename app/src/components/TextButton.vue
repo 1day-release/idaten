@@ -1,26 +1,16 @@
 <template>
-  <router-link class="text-button" :to="to" target="_blank">
-    <component :is="icon" />
+  <div class="text-button">
     {{text}}
-  </router-link>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'TextButton',
   props: {
-    svg: String,
-    to: Object,
     text: String
   },
   computed: {
-    icon () {
-      return () => import(
-        /* webpackChunkName: "assets" */
-        /* webpackMode: "lazy" */
-        `@/${this.svg.replace('@/', '')}`
-      )
-    }
   }
 }
 </script>

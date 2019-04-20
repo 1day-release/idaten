@@ -20,27 +20,27 @@
         </ul>
         <ul class="header-tool">
           <li>
-            <IconButton balloon-text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="{name: 'Presentation'}" />
+            <IconButton balloon-text="プレゼンモード" svg="@/assets/icon-presentation.svg" to="/presentation/1" />
           </li>
           <li>
             <div class="button-block">
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-              <IconButton balloon-text="スライドをシェア" svg="@/assets/icon-link.svg" :to="{name: 'Share'}" />
+              <IconButton balloon-text="スライドをシェア" svg="@/assets/icon-link.svg" />
             </div>
           </li>
           <li>
-            <IconButton balloon-text="設定" svg="@/assets/icon-setting.svg" :to="{name: 'Setting'}" />
+            <IconButton balloon-text="設定" svg="@/assets/icon-setting.svg" />
           </li>
           <li class="is-separate is-login">
-            <IconButton balloon-text="ログアウト" svg="@/assets/icon-logout.svg" :to="{name: 'Setting'}" />
+            <IconButton balloon-text="ログアウト" svg="@/assets/icon-logout.svg" />
           </li>
           <li class="is-login">
             <UserIcon balloon-position="right" user-name="ワンデイ太郎" email="1day-release@gmail.com" />
           </li>
           <li class="is-separate is-logout">
-            <TextButton text="ログイン" svg="" :to="{name: 'Login'}" />
+            <TextButton text="ログイン" svg="" />
           </li>
         </ul>
       </div>

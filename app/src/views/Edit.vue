@@ -43,7 +43,6 @@ export default {
   },
   computed: {
     isActive () {
-      console.log(this.$store.getters.userSlideListState)
       return this.$store.getters.userSlideListState
     }
   }

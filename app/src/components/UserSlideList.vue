@@ -6,13 +6,13 @@
         <IconButton balloon-position="left" icon-color="light-gray" icon-reverse balloon-text="スライドリストを閉じる" svg="@/assets/icon-slidelist.svg"/>
       </div>
       <div class="user-slide-head-item">
-        <TextButton class="is-ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" :to="{name: 'createSlide'}" />
+        <TextButton class="is-ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" />
       </div>
     </div>
     <ul class="user-slide-list">
       <li>
         <a class="slide-cover" href="#">
-          <Slide :max-width="slideMaxWidth" :max-height="slideMaxHeight" />
+          <!--<Slide :max-width="slideMaxWidth" :max-height="slideMaxHeight" />-->
         </a>
       </li>
       <li class="is_now">
