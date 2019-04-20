@@ -88,7 +88,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  $size: 1112px;
+  $ratio: 0.618;
+  $width: 1112px;
+  $height: $width * $ratio;
 
   $base-fz: 18px;
 
@@ -115,9 +117,12 @@ export default {
 
   /deep/ .page {
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 100%;
     height: auto;
-    min-height: 680px / $size * 100%;
+    min-height: 680px / $width * 100%;
     color: #0f002b;
     font-size: map-get($fz, "p");
     letter-spacing: 0.05em;
@@ -128,10 +133,7 @@ export default {
     }
 
     &.is-type1 {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 80px / $size * 100%;
+      padding: 80px / $width * 100%;
 
       /deep/ {
 
@@ -154,7 +156,7 @@ export default {
           }
 
           &-title {
-            margin: 15px 0;
+            margin: 15px / $height * 100% 0;
             @include fontSizeRatio( map-get($fz, "title") );
           }
 
@@ -168,7 +170,7 @@ export default {
           }
 
           &-from {
-            margin-top: 15px;
+            margin-top: 15px / $height * 100%;
             @include fontSizeRatio( map-get($fz, "from") );
           }
         }

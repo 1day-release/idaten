@@ -1,24 +1,26 @@
 <template>
-  <div class="presentation" @click="nextPage" @contextmenu.prevent="prevPage">
-    <div class="presentation-header">
-      <p class="presentation-close">
-        <a href="#">
-          <span class="presentation-close-button">Esc</span>で編集ページに戻る
-        </a>
-      </p>
-    </div>
-    <div class="presentation-body">
-      <Slide :markdown="markdown" :page-number="pageNumber" :max-width="pageMaxWidth" :max-height="pageMaxHeight"  />
-    </div>
-    <div class="presentation-footer">
-      <ul class="presentation-pager">
-        <li v-for="n in pageCount" :key="n"><a :class="{'is-now': n === pageNumber}" :href="'#' + n">{{n}}</a></li>
-      </ul>
-      <p class="presentation-logo">
-        <a href="/">
-          <BrandLogo class="is-gray" />
-        </a>
-      </p>
+  <div class="l-container is-full">
+    <div class="presentation" @click="nextPage" @contextmenu.prevent="prevPage">
+      <div class="presentation-header">
+        <p class="presentation-close">
+          <a href="#">
+            <span class="presentation-close-button">Esc</span>で編集ページに戻る
+          </a>
+        </p>
+      </div>
+      <div class="presentation-body">
+        <Slide :markdown="markdown" :page-number="pageNumber" :max-width="pageMaxWidth" :max-height="pageMaxHeight"  />
+      </div>
+      <div class="presentation-footer">
+        <ul class="presentation-pager">
+          <li v-for="n in pageCount" :key="n"><a :class="{'is-now': n === pageNumber}" :href="'#' + n">{{n}}</a></li>
+        </ul>
+        <p class="presentation-logo">
+          <a href="/">
+            <BrandLogo class="is-gray" />
+          </a>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -90,17 +92,6 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  // html {
-  //   background-color: map-get($color-brand, "main");
-  // }
-
-  // #app {
-  //   min-width: 0;
-  //   min-height: 0;
-  // }
-</style>
 
 <style scoped lang="scss">
   $margin: 5%;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="l-container">
     <Header />
     <Main>
       <div class="l-user-slide js-slidelist-container"  v-bind:class="{ 'is-active': isActive}" >
