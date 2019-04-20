@@ -19,6 +19,8 @@ Vue.use(VueMoment)
 
 Vue.config.productionTip = false
 
+require('@/styles/styles.scss')
+
 new Vue({
   router,
   store,

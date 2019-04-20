@@ -1,19 +1,34 @@
 <template>
-  <router-link class="text-button" :to="to" target="_blank">
-    <component :is="icon" />
-    {{text}}
-  </router-link>
+  <div>
+    <router-link v-if="to && Object.keys(to).length" class="text-button" :class="buttonStylesClass" :to="to" target="_blank">
+      <component :is="icon" />
+      {{text}}
+    </router-link>
+
+    <div v-else class="text-button" :class="buttonStylesClass">
+      <component :is="icon" />
+      {{text}}
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'TextButton',
   props: {
+    styleClass: String,
     svg: String,
     to: Object,
     text: String
   },
   computed: {
+    buttonStylesClass () {
+      if (this.styleClass) {
+        return ['is-'+this.styleClass]
+      } else {
+        return []
+      }
+    },
     icon () {
       return () => import(
         /* webpackChunkName: "assets" */
@@ -45,12 +60,13 @@ export default {
     background-color: $color;
     border-radius: $height / 2;
     transition-duration: $duration;
+    cursor: pointer;
 
     svg {
       margin-right: 5px;
 
       path {
-        // fill: $color;
+        fill: map-get($color-brand, "main");
         transition-duration: $duration;
       }
     }

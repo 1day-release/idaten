@@ -42,10 +42,8 @@ export default {
     }
   },
   mounted () {
-    this.computePageStyles()
-  },
-  updated () {
-    this.computePageStyles()
+    this.$watch('pageStyles', () => {}) // For detect props changing
+    this.$watch('markdown', () => { this.computePageStyles() })
   },
   methods: {
     computePageStyles () {
@@ -79,6 +77,9 @@ export default {
     }
   },
   computed: {
+    pageStyles () {
+      return this.computePageStyles()
+    },
     markedHtml () {
       return core.get(this.markdown, this.pageNumber)
     }
@@ -88,8 +89,13 @@ export default {
 
 <style scoped lang="scss">
   $ratio: 0.618;
+
   $width: 1112px;
   $height: $width * $ratio;
+  $padding: 30px;
+
+  $innerWidth: $width - $padding * 2;
+  $innerHeight: $height - $padding * 2;
 
   $base-fz: 18px;
 
@@ -102,7 +108,7 @@ export default {
             "date": 16px,
             "from": 16px,
 
-     "slide-title": 12px,
+     "cover-title": 12px,
               "h2": 40px,
 
    "section-title": 14px,
@@ -116,22 +122,75 @@ export default {
 
   /deep/ .page {
     box-sizing: border-box;
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
     height: auto;
-    min-height: 680px / $width * 100%;
+    // min-height: 680px / $width * 100%;
     color: #0f002b;
     font-size: map-get($fz, "p");
     letter-spacing: 0.05em;
     background: #fff;
 
+    // Layout
+    // ==============================
+    .page {
+      &-header,
+      &-body,
+      &-footer {
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      &-header {
+      }
+
+      &-body {
+      }
+
+      &-footer {
+      }
+    }
+
+    // Parts
+    // ==============================
     * {
       user-select: none;
     }
 
+    img {
+      max-width: 100%;
+    }
+
+    .page {
+      &-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include fontSizeRatio( map-get($fz, "pager") );
+        color: rgba( map-get($color-brand, "main"), 0.4 );
+
+        &::before,
+        &::after {
+          content: "";
+          width: 0.25em;
+          height: 1px;
+          margin: 0 0.5em;
+          background-color: rgba( map-get($color-brand, "main"), 0.4 );
+        }
+      }
+
+      &-total {
+        &::before {
+          content: "/";
+          margin: 0 0.5em;
+        }
+      }
+    }
+
     &.is-type1 {
+      justify-content: space-between;
       padding: 80px / $width * 100%;
 
       /deep/ {
@@ -176,17 +235,156 @@ export default {
       }
     }
 
-    &.is-type2  /deep/ {
+    &.is-type2,
+    &.is-type3 {
+      justify-content: center;
+      align-items: center;
+      padding: (80px+20px+$padding)/$width*100% $padding/$width*100%;
+
+      /deep/ {
+        p {
+          text-align: center;
+          line-height: 1.5;
+        }
+
+        .slide {
+          &-header {
+
+            .cover {
+              &-title {
+                @include fontSizeRatio( map-get($fz, "cover-title") );
+                color: rgba( map-get($color-brand, "main"), 0.4 );
+              }
+            }
+          }
+        }
+
+        .page {
+          &-header {
+          }
+
+          &-body {
+            padding: 0 35px / $innerWidth * 100%;
+          }
+
+          &-footer {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            margin-bottom: 30px / $height * 100%;
+          }
+        }
+      }
     }
 
-    &.is-type3  /deep/ {
+    &.is-type2 {
 
-      ol {
-        list-style-type: decimal;
+      /deep/ {
+        .slide {
+          &-header {
+            position: absolute;
+            top: $padding / $height * 100%;
+            left: $padding / $width * 100%;
+          }
+        }
+
+        .page {
+          &-header {
+          }
+
+          &-body {
+            margin-top: 20px / $innerHeight * 100%;
+          }
+
+          &-footer {
+          }
+        }
+
+        .childcover {
+          &-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            @include fontSizeRatio( map-get($fz, "h2") );
+            font-weight: bold;
+          }
+
+          &-number {
+            margin-bottom: 20px / $innerWidth * 100%;
+            font-size: 50%;
+            color: map-get($color-brand, "text-sub");
+          }
+        }
+
+        p {
+          @include fontSizeRatio( 20px );
+        }
+      }
+    }
+
+    &.is-type3 {
+      justify-content: flex-start;
+      padding-top: $padding / $width * 100%;
+
+      p {
+        @include fontSizeRatio( $base-fz );
       }
 
-      ul {
-        list-style-type: disc;
+      /deep/ {
+        .slide {
+          &-header {
+            margin-bottom: 12px / $innerWidth * 100%;
+            align-self: self-start;
+          }
+        }
+
+        .page {
+          &-header {
+            margin-bottom: 40px / $width * 100%;
+            text-align: center;
+          }
+
+          &-body {
+            overflow-y: auto;
+            height: 100%;
+          }
+
+          &-footer {
+          }
+        }
+
+        .childcover {
+          &-title {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 10px / $width * 100%;
+            @include fontSizeRatio( map-get($fz, "section-title") );
+          }
+
+          &-number {
+            margin-right: 0.3em;
+            @include fontSizeRatio( 12px );
+          }
+        }
+
+        .contents {
+          &-title {
+            line-height: 1.5;
+            @include fontSizeRatio( map-get($fz, "h3") );
+            font-weight: bold;
+          }
+        }
+
+        ol {
+          list-style-type: decimal;
+        }
+
+        ul {
+          list-style-type: disc;
+        }
       }
     }
   }

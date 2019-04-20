@@ -43,7 +43,6 @@ export default {
   },
   computed: {
     isActive () {
-      console.log(this.$store.getters.userSlideListState)
       return this.$store.getters.userSlideListState
     }
   }
@@ -52,6 +51,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .l-container:not(.is-logout) .is-logout {
+    display: none !important;
+  }
+
+  .l-container.is-logout .is-login {
+    display: none !important;
+  }
+
   main {
     display: flex;
     justify-content: space-between;
