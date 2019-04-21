@@ -153,6 +153,27 @@ export default {
       }
     }
 
+    // Modules
+    // ==============================
+    .content {
+      &s {
+      }
+
+      box-sizing: border-box;
+      margin-top: 40px / $innerWidth * 100%;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &.is-type1 {
+        padding: 0 35px / $innerWidth * 100%;
+      }
+
+      &.is-type2 {
+      }
+    }
+
     // Parts
     // ==============================
     * {
@@ -161,6 +182,12 @@ export default {
 
     img {
       max-width: 100%;
+    }
+
+    h4 {
+      @include fontSizeRatio( map-get($fz, "h4") );
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
     }
 
     .page {
@@ -264,7 +291,6 @@ export default {
           }
 
           &-body {
-            padding: 0 35px / $innerWidth * 100%;
           }
 
           &-footer {

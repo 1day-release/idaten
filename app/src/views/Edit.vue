@@ -51,14 +51,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .l-container:not(.is-logout) .is-logout {
-    display: none !important;
-  }
-
-  .l-container.is-logout .is-login {
-    display: none !important;
-  }
-
   main {
     display: flex;
     justify-content: space-between;

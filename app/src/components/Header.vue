@@ -82,6 +82,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @at-root .l-container:not(.is-logout) .is-logout {
+    display: none !important;
+  }
+
+  @at-root .l-container.is-logout .is-login {
+    display: none !important;
+  }
+
   .l-header {
     position: relative;
     height: $pc-header-height;
