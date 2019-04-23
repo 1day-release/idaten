@@ -153,6 +153,23 @@ export default {
       }
     }
 
+    em {
+      font-weight: bold;
+      font-style: oblique;
+    }
+
+    strong {
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
+    }
+
+    a {
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
     // Modules
     // ==============================
     .content {
@@ -160,10 +177,15 @@ export default {
       }
 
       box-sizing: border-box;
-      margin-top: 40px / $innerWidth * 100%;
+      margin: 40px / $innerWidth * 100% 0;
+      text-align: center;
 
       &:first-child {
         margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
       }
 
       &.is-type1 {
@@ -172,6 +194,32 @@ export default {
 
       &.is-type2 {
       }
+    }
+
+    .item {
+      &s {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        &.is-column2 .item {
+          $itemWidth: 100% / 2;
+
+          width: $itemWidth;
+          padding: 0 calc(40px / #{$itemWidth / 1%});
+        }
+
+        &.is-column3 .item {
+          $itemWidth: 100% / 3;
+
+          width: $itemWidth;
+          padding: 0 calc(45px / #{$itemWidth / 1%});
+        }
+      }
+
+      box-sizing: border-box;
+      flex: 0 0 auto;
+      width: 100%;
     }
 
     // Parts
@@ -185,6 +233,8 @@ export default {
     }
 
     h4 {
+      margin: 20px / $innerWidth * 100% 0;
+      text-align: center;
       @include fontSizeRatio( map-get($fz, "h4") );
       font-weight: bold;
       color: map-get($color-brand, "text-sub");
