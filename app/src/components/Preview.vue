@@ -1,7 +1,7 @@
 <template>
   <div class="preview">
     <ul class="preview-list">
-      <li v-for="n in pageCount" :key="n">
+      <li v-for="n in pageCount" :key="n" :class="{'is-active': activePageNumber === n}">
         <Slide :markdown="markdown" :page-number="n" :width="347" />
       </li>
     </ul>
@@ -19,6 +19,10 @@ export default {
     Slide
   },
   props: {
+    activePageNumber: {
+      type: Number,
+      default: -1
+    }
   },
   data () {
     return {
