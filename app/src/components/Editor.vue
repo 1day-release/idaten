@@ -49,6 +49,11 @@ export default {
       this.$store.commit('activePageNumber', 1)
     }
   },
+  watch: {
+    '$store.getters.markdown' () {
+      this.markdown = this.$store.getters.markdown
+    }
+  },
   mounted () {
     this.setCursorPositionEvent()
   }

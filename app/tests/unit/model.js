@@ -1,5 +1,6 @@
+
+/*
 import AuthModel from '@/models/auth'
-// import SlideModel from '@/model/slide'
 
 describe('authModel', () => {
   const auth = new AuthModel()
@@ -9,13 +10,17 @@ describe('authModel', () => {
     expect(result).toBeTruthy()
   })
 })
+*/
 
-/*
+import SlideModel from '@/models/slide'
+
 describe('slideModel', () => {
-  const model = new methods.$_slideModel()
+  const model = new SlideModel()
 
-  let slideId = null
+  it('constructor', () => {
+  })
 
+  /*
   it('create', async () => {
     const result = await model.create({})
     expect(result).toBeTruthy()
@@ -46,14 +51,5 @@ describe('slideModel', () => {
     const result = await model.get(slideId)
     expect(result).toBeFalsy()
   })
+  */
 })
-
-describe('authModel2', () => {
-  const model = new methods.$_authModel()
-
-  it('logout', async () => {
-    const result = await model.logout()
-    expect(result).toBeTruthy()
-  })
-})
-*/

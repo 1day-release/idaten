@@ -2,39 +2,26 @@
 
   <div class="user-slide">
     <div class="user-slide-head">
-      <div class="user-slide-head-item" v-on:click="showUserSlideList()">
+      <div class="user-slide-head-item" @click="showUserSlideList()">
         <IconButton balloon-position="left" icon-color="light-gray" icon-reverse balloon-text="スライドリストを閉じる" svg="@/assets/icon-slidelist.svg"/>
       </div>
-      <div class="user-slide-head-item">
+      <div class="user-slide-head-item" @click="createSlide">
         <TextButton style-class="ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" />
       </div>
     </div>
     <ul class="user-slide-list">
-      <li>
-        <a class="slide-cover" href="#">
-          <!--<Slide :max-width="slideMaxWidth" :max-height="slideMaxHeight" />-->
+      <li v-for="slide in slides">
+        <a class="slide-cover" href="javascript:void(0)" @click="selectSlide(slide.slide_id)" :class="{'is-now': slide.slide_id === activeSlideId}">
+          <Slide :markdown="slide.cover" :width="180" />
         </a>
       </li>
+      <!--
       <li class="is_now">
         <a class="slide-cover" href="#">
           <Slide />
         </a>
       </li>
-      <li>
-        <a class="slide-cover" href="#">
-          <Slide />
-        </a>
-      </li>
-      <li>
-        <a class="slide-cover" href="#">
-          <Slide />
-        </a>
-      </li>
-      <li>
-        <a class="slide-cover" href="#">
-          <Slide />
-        </a>
-      </li>
+      -->
     </ul>
   </div>
 </template>
@@ -59,14 +46,26 @@ export default {
   },
   computed: {
     isActive () {
-      console.log(this.$store.getters.userSlideListState)
       return this.$store.getters.userSlideListState
+    },
+    slides () {
+      return this.$store.getters.slides
+    },
+    activeSlideId () {
+      return this.$store.getters.slideId
     }
   },
   methods: {
-    showUserSlideList: function (e) {
-      console.log('test')
+    showUserSlideList () {
+      this.$store.commit('slides')
       this.$store.dispatch('changeStateUserSlideList', !this.$store.getters.userSlideListState)
+    },
+    selectSlide (slideId) {
+      this.$router.push('/' + slideId)
+      this.showUserSlideList()
+    },
+    createSlide () {
+      this.$store.dispatch('createSlide')
     }
   }
 }

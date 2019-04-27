@@ -4,6 +4,9 @@ import Edit from './views/Edit.vue'
 import Presentation from './views/Presentation.vue'
 import TestSlideComponent from './views/TestSlideComponent.vue'
 
+import SlideModel from '@/models/slide'
+const slideModel = new SlideModel()
+
 Vue.use(Router)
 
 export default new Router({
@@ -12,20 +15,23 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: {
+        path: '/' + slideModel.list()[0].slide_id
+      }
+    },
+    {
+      path: '/:slideId',
       name: 'Edit',
       component: Edit
     },
     {
       path: '/presentation',
       redirect: {
-        path: '/presentation',
-        params: {
-          pageNumber: 1
-        }
+        path: '/presentation/' + slideModel.list()[0].slide_id + '/1'
       }
     },
     {
-      path: '/presentation/:pageNumber',
+      path: '/presentation/:slideId/:pageNumber',
       name: 'Presentation',
       component: Presentation
     },
