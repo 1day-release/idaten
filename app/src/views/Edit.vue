@@ -94,6 +94,8 @@ export default {
     &-contents {
       position: relative;
       z-index: 1;
+      width: 100%;
+      max-width: $pc-min-width * 0.35 + 20px;
       height: inherit;
     }
 
