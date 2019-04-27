@@ -523,10 +523,6 @@ export default {
       justify-content: flex-start;
       padding-top: $padding / $width * 100%;
 
-      p {
-        @include fontSizeRatio( $base-fz );
-      }
-
       /deep/ {
         .slide {
           &-header {
@@ -544,6 +540,10 @@ export default {
           &-body {
             overflow-y: auto;
             height: 100%;
+
+            p {
+              @include fontSizeRatio( $base-fz );
+            }
           }
 
           &-footer {

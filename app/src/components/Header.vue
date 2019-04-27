@@ -30,9 +30,9 @@
               <IconButton balloon-text="スライドをシェア" svg="@/assets/icon-link.svg" />
             </div>
           </li>
-          <li>
+          <!-- li>
             <IconButton balloon-text="設定" svg="@/assets/icon-setting.svg" />
-          </li>
+          </li -->
           <li class="is-separate is-login">
             <IconButton balloon-text="ログアウト" svg="@/assets/icon-logout.svg" />
           </li>
