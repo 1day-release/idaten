@@ -92,7 +92,7 @@ export default {
 <style scoped lang="scss">
   $ratio: 0.618;
 
-  $width: 1112px;
+  $width: 1100px;
   $height: $width * $ratio;
   $padding: 30px;
 
@@ -155,23 +155,6 @@ export default {
       }
     }
 
-    em {
-      font-weight: bold;
-      font-style: oblique;
-    }
-
-    strong {
-      font-weight: bold;
-      color: map-get($color-brand, "text-sub");
-    }
-
-    a {
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-
     // Modules
     // ==============================
     .content {
@@ -191,7 +174,6 @@ export default {
       }
 
       &.is-type1 {
-        padding: 0 35px / $innerWidth * 100%;
       }
 
       &.is-type2 {
@@ -203,43 +185,81 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        padding: 0 35px / $innerWidth * 100%;
 
-        &.is-column2 .item {
-          $itemWidth: 100% / 2;
-
-          width: $itemWidth;
-          padding: 0 calc(40px / #{$itemWidth / 1%});
+        &[class*=is-column] .item p {
+          text-align: left;
         }
 
-        &.is-column3 .item {
-          $itemWidth: 100% / 3;
+        &.is-column2 {
+          // slide 1100
+          // items  940+40 980
+          // item   450+40 490
+          // padding 20
 
-          width: $itemWidth;
-          padding: 0 calc(45px / #{$itemWidth / 1%});
+          padding: 0 (50px-20px) / $innerWidth * 100%;
+          // margin: 0 -20px / $innerWidth * 100%;
+
+          .item {
+            width: calc(100% / 2);
+            padding: 0 20px / 980px * 100%;
+
+            h4 {
+              margin-bottom: 20px / 450px * 100%;
+            }
+
+            p {
+            }
+          }
+        }
+
+        &.is-column3 {
+          // slide 1100
+          // items  940+44 984
+          // item   284+44 328
+          // padding 22
+
+          padding: 0 (50px-22px) / $innerWidth * 100%;
+
+          .item {
+            width: calc(100% / 3);
+            padding: 0 22px / 988px * 100%;
+
+            h4 {
+              margin-bottom: 20px / 284px * 100%;
+            }
+
+            p {
+            }
+          }
+        }
+
+        &.is-column4 {
+          // slide 1100
+          // items  940+40 980
+          // item   225+20
+          // padding 10
+
+          // padding: 0 10px / $innerWidth * 100%;
+          padding: 0;
+
+          .item {
+            width: calc(100% / 4);
+            padding: 0 10px / 988px * 100%;
+
+            h4 {
+              margin-bottom: 20px / 225px * 100%;
+            }
+
+            p {
+            }
+          }
         }
       }
 
       box-sizing: border-box;
       flex: 0 0 auto;
       width: 100%;
-    }
-
-    // Parts
-    // ==============================
-    * {
-      user-select: none;
-    }
-
-    img {
-      max-width: 100%;
-    }
-
-    h4 {
-      margin: 20px / $innerWidth * 100% 0;
-      text-align: center;
-      @include fontSizeRatio( map-get($fz, "h4") );
-      font-weight: bold;
-      color: map-get($color-brand, "text-sub");
     }
 
     .page {
@@ -268,6 +288,101 @@ export default {
       }
     }
 
+    // Parts
+    // ==============================
+    * {
+      user-select: none;
+    }
+
+    h4 {
+      margin-bottom: 20px / $innerWidth * 100%;
+      text-align: center;
+      @include fontSizeRatio( map-get($fz, "h4") );
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
+    }
+
+    ol,
+    ul {
+      text-align: left;
+      line-height: 1.5;
+
+      >li {
+        position: relative;
+        padding-left: 2em;
+        margin-top: 15px / $innerWidth * 100%;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+        }
+      }
+    }
+
+    ol {
+      counter-reset: ol;
+
+      >li {
+        counter-increment: ol;
+
+        &::before {
+          width: 1.5em;
+          text-align: right;
+          content: counter(ol) ".";
+        }
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    ul {
+
+      >li {
+
+        &::before {
+          $size: 4px;
+
+          content: "";
+          top: 0.5em;
+          display: block;
+          width: $size;
+          height: $size;
+          margin-left: 6px;
+          border-radius: 50%;
+          background-color: map-get($color-brand, "sub");
+        }
+      }
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    em {
+      font-weight: bold;
+      font-style: oblique;
+    }
+
+    strong {
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
+    }
+
+    a {
+      color: #0089ff;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    // Statement
+    // ==============================
     &.is-type1 {
       justify-content: space-between;
       padding: 80px / $width * 100%;
@@ -363,8 +478,10 @@ export default {
         .slide {
           &-header {
             position: absolute;
-            top: $padding / $height * 100%;
-            left: $padding / $width * 100%;
+            top: 0;
+            left: 0;
+            margin: $padding / $width * 100%;
+            margin-bottom: 0;
           }
         }
 
@@ -454,14 +571,6 @@ export default {
             @include fontSizeRatio( map-get($fz, "h3") );
             font-weight: bold;
           }
-        }
-
-        ol {
-          list-style-type: decimal;
-        }
-
-        ul {
-          list-style-type: disc;
         }
       }
     }

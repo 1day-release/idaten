@@ -41,6 +41,9 @@ export default {
     PreviewBg1,
     PreviewBg2
   },
+  created () {
+    this.$store.commit('slideId', this.$route.params.slideId)
+  },
   computed: {
     isActive () {
       return this.$store.getters.userSlideListState
@@ -48,8 +51,12 @@ export default {
     activePageNumber () {
       return this.$store.getters.activePageNumber
     }
+  },
+  watch: {
+    $route (to, from) {
+      this.$store.commit('slideId', this.$route.params.slideId)
+    }
   }
-
 }
 </script>
 
@@ -94,6 +101,8 @@ export default {
     &-contents {
       position: relative;
       z-index: 1;
+      width: 100%;
+      max-width: $pc-min-width * 0.35 + 20px;
       height: inherit;
     }
 

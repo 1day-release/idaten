@@ -49,6 +49,11 @@ export default {
       this.$store.commit('activePageNumber', 1)
     }
   },
+  watch: {
+    '$store.getters.markdown' () {
+      this.markdown = this.$store.getters.markdown
+    }
+  },
   mounted () {
     this.setCursorPositionEvent()
   }
@@ -57,16 +62,16 @@ export default {
 
 <style scoped lang="scss">
   $width: 100%;
-  $max-width: $pc-min-width * 0.65 + 20px;
+  $max-width: $pc-min-width * 0.65;
 
   .editor {
-    box-sizing: border-box;
     position: absolute;
     top: 40px;
     right: 40px;
     bottom: 70px;
     width: $width;
     max-width: $max-width;
+    padding: 0;
     padding-right: 20px;
     border: none;
     margin: auto;
