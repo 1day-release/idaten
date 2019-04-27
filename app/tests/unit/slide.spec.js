@@ -30,15 +30,59 @@ describe('サイズの途中変更', () => {
       maxWidth: 1112,
       maxHeight: 687
     })
-    expect(wrapper.vm.pageStyles['width']).toBe(1112)
+    const pageStyles = wrapper.vm.computePageStyles()
+    expect(pageStyles['width']).toBe(1112)
   })
 })
-/*
+
+describe('markdownの途中変更', () => {
+  it('markdown変更時に、モードスタイルが更新適応されるか', done => {
+    const wrapper = shallowMount(Slide, {
+      propsData: {
+        markdown: '# H1',
+        pageNumber: 1,
+        width: 1112
+      }
+    })
+    setTimeout(() => {
+      wrapper.setProps({
+        markdown: '## H2'
+      })
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.find('.page').attributes().style.indexOf(';min-height:')).toBeGreaterThanOrEqual(0)
+        done()
+      })
+    }, 200)
+  })
+
+  it('pageNumber変更時に、pageTypeが更新され、モードスタイルが更新適応されるか', done => {
+    const wrapper = shallowMount(Slide, {
+      propsData: {
+        markdown: `# H1
+## H2`,
+        pageNumber: 1,
+        width: 1112
+      }
+    })
+    setTimeout(() => {
+      wrapper.setProps({
+        pageNumber: 2
+      })
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.find('.page').attributes().class.indexOf('page is-type2')).toBeGreaterThanOrEqual(0)
+        expect(wrapper.find('.page').attributes().style.indexOf(';min-height:')).toBeGreaterThanOrEqual(0)
+        done()
+      })
+    }, 200)
+  })
+})
+
 describe('モードスタイルの適応', () => {
   it('比率可変モードスタイルが適応されるか', done => {
     const wrapper = shallowMount(Slide, {
       propsData: {
         markdown: '# H1',
+        pageNumber: 1,
         width: 1112
       }
     })
@@ -52,6 +96,7 @@ describe('モードスタイルの適応', () => {
     const wrapper = shallowMount(Slide, {
       propsData: {
         markdown: '# H1',
+        pageNumber: 1,
         maxWidth: 1112,
         maxHeight: 687
       }
@@ -62,7 +107,6 @@ describe('モードスタイルの適応', () => {
     })
   })
 })
-*/
 
 describe('比率可変モード(プロパティwidth指定)→font-size,min-heightが変化', () => {
   it('プロパティwidthが1112pxの場合、.pageのfont-sizeが18pxになるか', () => {
@@ -71,7 +115,8 @@ describe('比率可変モード(プロパティwidth指定)→font-size,min-heig
         width: 1112
       }
     })
-    expect(wrapper.vm.pageStyles['font-size']).toBe(18)
+    const pageStyles = wrapper.vm.computePageStyles()
+    expect(pageStyles['font-size']).toBe(18)
   })
 
   it('プロパティwidthが1112pxの場合、.pageのmin-heightが687pxになるか', () => {
@@ -80,7 +125,8 @@ describe('比率可変モード(プロパティwidth指定)→font-size,min-heig
         width: 1112
       }
     })
-    expect(wrapper.vm.pageStyles['min-height']).toBe(687)
+    const pageStyles = wrapper.vm.computePageStyles()
+    expect(pageStyles['min-height']).toBe(687)
   })
 
   it('プロパティwidthが500pxの場合、.pageのmin-heightが309px(500*0.618)になるか', () => {
@@ -89,7 +135,8 @@ describe('比率可変モード(プロパティwidth指定)→font-size,min-heig
         width: 500
       }
     })
-    expect(wrapper.vm.pageStyles['min-height']).toBe(309)
+    const pageStyles = wrapper.vm.computePageStyles()
+    expect(pageStyles['min-height']).toBe(309)
   })
 })
 
@@ -101,9 +148,10 @@ describe('比率固定モード(プロパティmax-widthおよびmax-height指�
         maxHeight: 687
       }
     })
-    expect(wrapper.vm.pageStyles['width']).toBe(1112)
-    expect(wrapper.vm.pageStyles['height']).toBe(687)
-    expect(wrapper.vm.pageStyles['font-size']).toBe(18)
+    const pageStyles = wrapper.vm.computePageStyles()
+    expect(pageStyles['width']).toBe(1112)
+    expect(pageStyles['height']).toBe(687)
+    expect(pageStyles['font-size']).toBe(18)
   })
 
   it('プロパティmax-widthが500px、max-heightが687pxの場合、.pageのwidthが500px、heightが309px(500*0.618)になり、font-sizeが8px(500/61.8)になるか', () => {
@@ -113,9 +161,10 @@ describe('比率固定モード(プロパティmax-widthおよびmax-height指�
         maxHeight: 687
       }
     })
-    expect(wrapper.vm.pageStyles['width']).toBe(500)
-    expect(wrapper.vm.pageStyles['height']).toBe(309)
-    expect(wrapper.vm.pageStyles['font-size']).toBe(8)
+    const pageStyles = wrapper.vm.computePageStyles()
+    expect(pageStyles['width']).toBe(500)
+    expect(pageStyles['height']).toBe(309)
+    expect(pageStyles['font-size']).toBe(8)
   })
 
   it('プロパティmax-widthが1112px、max-heightが309pxの場合、.pageのwidthが500px(309/0.618)、heightが309pxになり、font-sizeが8px(500/61.8)になるか', () => {
@@ -125,8 +174,9 @@ describe('比率固定モード(プロパティmax-widthおよびmax-height指�
         maxHeight: 309
       }
     })
-    expect(wrapper.vm.pageStyles['width']).toBe(500)
-    expect(wrapper.vm.pageStyles['height']).toBe(309)
-    expect(wrapper.vm.pageStyles['font-size']).toBe(8)
+    const pageStyles = wrapper.vm.computePageStyles()
+    expect(pageStyles['width']).toBe(500)
+    expect(pageStyles['height']).toBe(309)
+    expect(pageStyles['font-size']).toBe(8)
   })
 })

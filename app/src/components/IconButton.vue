@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link v-if="to" class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]" :to="to">
+    <router-link v-if="to && Object.keys(to).length" class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]" :to="to">
       <component :is="icon" />
       <span class="icon-button-balloon">
         {{balloonText}}
@@ -21,7 +21,10 @@ export default {
   name: 'IconButton',
   props: {
     svg: String,
-    to: Object,
+    to: {
+      type: [String, Object],
+      default: () => {}
+    },
     balloonPosition: String,
     balloonText: String,
     iconColor: String,

@@ -1,24 +1,26 @@
 <template>
-  <div class="presentation" @click="nextPage" @contextmenu.prevent="prevPage">
-    <div class="presentation-header">
-      <p class="presentation-close">
-        <a href="#">
-          <span class="presentation-close-button">Esc</span>で編集ページに戻る
-        </a>
-      </p>
-    </div>
-    <div class="presentation-body">
-      <Slide :markdown="markdown" :page-number="pageNumber" :max-width="pageMaxWidth" :max-height="pageMaxHeight"  />
-    </div>
-    <div class="presentation-footer">
-      <ul class="presentation-pager">
-        <li v-for="n in pageCount" :key="n"><a :class="{'is-now': n === pageNumber}" :href="'#' + n">{{n}}</a></li>
-      </ul>
-      <p class="presentation-logo">
-        <a href="/">
-          <BrandLogo class="is-gray" />
-        </a>
-      </p>
+  <div class="l-container is-full">
+    <div class="presentation">
+      <div class="presentation-header">
+        <p class="presentation-close">
+          <router-link to="/">
+            <span class="presentation-close-button">Esc</span>で編集ページに戻る
+          </router-link>
+        </p>
+      </div>
+      <div class="presentation-body" @click="nextPage" @contextmenu.prevent="prevPage">
+        <Slide :markdown="markdown" :page-number="pageNumber" :max-width="pageMaxWidth" :max-height="pageMaxHeight" />
+      </div>
+      <div class="presentation-footer">
+        <ul class="presentation-pager">
+          <li v-for="n in pageCount" :key="n"><router-link :to="'/presentation/' + n" :class="{'is-now': n === pageNumber}">{{n}}</router-link></li>
+        </ul>
+        <p class="presentation-logo">
+          <a href="/">
+            <BrandLogo class="is-gray" />
+          </a>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +47,8 @@ export default {
     }
   },
   created () {
+    this.pageNumber = parseInt(this.$route.params.pageNumber)
+
     if (this.$route.query.mdUrl) {
       fetch(this.$route.query.mdUrl).then(request => request.text()).then((markdown) => {
         this.markdown = markdown
@@ -52,13 +56,13 @@ export default {
     }
 
     const keyEvent = (event) => {
-      if (event.key === 'ArrowRight') {
+      if (event.key === 'ArrowRight' || event.key === 'Enter') {
         this.nextPage()
-      } else if (event.key === 'ArrowLeft') {
+      } else if (event.key === 'ArrowLeft' || event.key === 'Backspace') {
         this.prevPage()
       } else if (event.key === 'Escape') {
         window.removeEventListener('keydown', keyEvent)
-        this.$router.push({ name: 'Edit' })
+        this.$router.push({ path: '/' })
       }
     }
     window.addEventListener('keydown', keyEvent)
@@ -68,10 +72,14 @@ export default {
   },
   methods: {
     nextPage () {
-      if (this.pageNumber < this.pageCount) this.pageNumber++
+      if (this.pageNumber < this.pageCount) {
+        this.$router.push('/presentation/' + (this.pageNumber + 1))
+      }
     },
     prevPage () {
-      if (this.pageNumber > 1) this.pageNumber--
+      if (this.pageNumber > 1) {
+        this.$router.push('/presentation/' + (this.pageNumber - 1))
+      }
     },
     calculatePageMaxSize () {
       const leftRightMargin = 100
@@ -87,20 +95,14 @@ export default {
     markdown () {
       return this.$store.getters.markdown
     }
+  },
+  watch: {
+    $route (to, from) {
+      this.pageNumber = parseInt(this.$route.params.pageNumber)
+    }
   }
 }
 </script>
-
-<style lang="scss">
-  // html {
-  //   background-color: map-get($color-brand, "main");
-  // }
-
-  // #app {
-  //   min-width: 0;
-  //   min-height: 0;
-  // }
-</style>
 
 <style scoped lang="scss">
   $margin: 5%;

@@ -22,7 +22,7 @@ export default {
     },
     pageNumber: {
       type: Number,
-      default: 0
+      default: 1
     },
     html: {
       type: String,
@@ -82,22 +82,35 @@ export default {
     markedHtml () {
       return core.get(this.markdown, this.pageNumber)
     }
+  },
+  updated () {
+    this.computePageStyles()
   }
 }
 </script>
 
 <style scoped lang="scss">
+  $ratio: 0.618;
+
+  $width: 1112px;
+  $height: $width * $ratio;
+  $padding: 30px;
+
+  $innerWidth: $width - $padding * 2;
+  $innerHeight: $height - $padding * 2;
+
+  $base-fz: 18px;
+
   $fz: (
-               "p": 18px,
            "pager": 12px,
 
            "title": 40px,
        "sub-title": 20px,
               "to": 16px,
             "date": 16px,
-            "name": 16px,
+            "from": 16px,
 
-     "slide-title": 12px,
+     "cover-title": 12px,
               "h2": 40px,
 
    "section-title": 14px,
@@ -105,93 +118,351 @@ export default {
               "h4": 22px
   );
 
+  @mixin fontSizeRatio($font: 18px) {
+    font-size: $font / $base-fz * 100%;
+  }
+
   /deep/ .page {
     box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: auto;
-    min-height: 680px / 1110px * 100%;
+    // min-height: 680px / $width * 100%;
     color: #0f002b;
-    font-size: 18px;
+    font-size: map-get($fz, "p");
+    letter-spacing: 0.05em;
     background: #fff;
 
+    // Layout
+    // ==============================
+    .page {
+      &-header,
+      &-body,
+      &-footer {
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      &-header {
+      }
+
+      &-body {
+      }
+
+      &-footer {
+      }
+    }
+
+    em {
+      font-weight: bold;
+      font-style: oblique;
+    }
+
+    strong {
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
+    }
+
+    a {
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    // Modules
+    // ==============================
+    .content {
+      &s {
+      }
+
+      box-sizing: border-box;
+      margin: 40px / $innerWidth * 100% 0;
+      text-align: center;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.is-type1 {
+        padding: 0 35px / $innerWidth * 100%;
+      }
+
+      &.is-type2 {
+      }
+    }
+
+    .item {
+      &s {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        &.is-column2 .item {
+          $itemWidth: 100% / 2;
+
+          width: $itemWidth;
+          padding: 0 calc(40px / #{$itemWidth / 1%});
+        }
+
+        &.is-column3 .item {
+          $itemWidth: 100% / 3;
+
+          width: $itemWidth;
+          padding: 0 calc(45px / #{$itemWidth / 1%});
+        }
+      }
+
+      box-sizing: border-box;
+      flex: 0 0 auto;
+      width: 100%;
+    }
+
+    // Parts
+    // ==============================
     * {
       user-select: none;
     }
 
-    &.is-type1  /deep/ {
-      .to {
-      }
-
-      h1 {
-      }
-
-      .subtitle {
-      }
-
-      .date {
-      }
-
-      .from {
-      }
-      // padding: 5% 5%;
-      // box-sizing: border-box;
-
-      // p:nth-of-type(1) {
-      //   font-size: 16px;
-      // }
-
-      // h1 {
-      //   font-size: 30px;
-      //   margin-top: 25%;
-      //   margin-bottom: 2%;
-      // }
-
-      // p:nth-of-type(2) {
-      //   margin-bottom: 25%;
-      // }
-
-      // p:nth-of-type(3) {
-      //   color: #cbcdd6;
-      //   margin-bottom: 1%;
-      // }
-
-      // p:nth-of-type(4) {
-      //   color: #cbcdd6;
-      // }
+    img {
+      max-width: 100%;
     }
 
-    &.is-type2  /deep/ {
-      h2 {
-        margin-top: 30%;
-        font-size: 30px;
-        color: #000c36;
-        text-align: center;
+    h4 {
+      margin: 20px / $innerWidth * 100% 0;
+      text-align: center;
+      @include fontSizeRatio( map-get($fz, "h4") );
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
+    }
+
+    .page {
+      &-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include fontSizeRatio( map-get($fz, "pager") );
+        color: rgba( map-get($color-brand, "main"), 0.4 );
+
+        &::before,
+        &::after {
+          content: "";
+          width: 0.25em;
+          height: 1px;
+          margin: 0 0.5em;
+          background-color: rgba( map-get($color-brand, "main"), 0.4 );
+        }
+      }
+
+      &-total {
+        &::before {
+          content: "/";
+          margin: 0 0.5em;
+        }
       }
     }
 
-    &.is-type3  /deep/ {
-      padding: 10% 10%;
-      box-sizing: border-box;
+    &.is-type1 {
+      justify-content: space-between;
+      padding: 80px / $width * 100%;
 
-      h2 {
-        font-size: 30px;
-        color: #000c36;
-        text-align: center;
+      /deep/ {
+
+        .page {
+          &-header {
+          }
+
+          &-body {
+            font-weight: bold;
+          }
+
+          &-footer {
+            color: rgba( map-get($color-brand, "main"), 0.4);
+          }
+        }
+
+        .cover {
+          &-to {
+            @include fontSizeRatio( map-get($fz, "to") );
+          }
+
+          &-title {
+            margin: 15px / $height * 100% 0;
+            @include fontSizeRatio( map-get($fz, "title") );
+          }
+
+          &-subtitle {
+            @include fontSizeRatio( map-get($fz, "sub-title") );
+            color: map-get($color-brand, "text-sub");
+          }
+
+          &-date {
+            @include fontSizeRatio( map-get($fz, "date") );
+          }
+
+          &-from {
+            margin-top: 15px / $height * 100%;
+            @include fontSizeRatio( map-get($fz, "from") );
+          }
+        }
+      }
+    }
+
+    &.is-type2,
+    &.is-type3 {
+      justify-content: center;
+      align-items: center;
+      padding: (80px+20px+$padding)/$width*100% $padding/$width*100%;
+
+      /deep/ {
+        p {
+          text-align: center;
+          line-height: 1.5;
+        }
+
+        .slide {
+          &-header {
+
+            .cover {
+              &-title {
+                @include fontSizeRatio( map-get($fz, "cover-title") );
+                color: rgba( map-get($color-brand, "main"), 0.4 );
+              }
+            }
+          }
+        }
+
+        .page {
+          &-header {
+          }
+
+          &-body {
+          }
+
+          &-footer {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            margin-bottom: 30px / $height * 100%;
+          }
+        }
+      }
+    }
+
+    &.is-type2 {
+
+      /deep/ {
+        .slide {
+          &-header {
+            position: absolute;
+            top: $padding / $height * 100%;
+            left: $padding / $width * 100%;
+          }
+        }
+
+        .page {
+          &-header {
+          }
+
+          &-body {
+            margin-top: 20px / $innerHeight * 100%;
+          }
+
+          &-footer {
+          }
+        }
+
+        .childcover {
+          &-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            @include fontSizeRatio( map-get($fz, "h2") );
+            font-weight: bold;
+          }
+
+          &-number {
+            margin-bottom: 20px / $innerWidth * 100%;
+            font-size: 50%;
+            color: map-get($color-brand, "text-sub");
+          }
+        }
+
+        p {
+          @include fontSizeRatio( 20px );
+        }
+      }
+    }
+
+    &.is-type3 {
+      justify-content: flex-start;
+      padding-top: $padding / $width * 100%;
+
+      p {
+        @include fontSizeRatio( $base-fz );
       }
 
-      h3 {
-        margin-bottom: 5%;
-        font-size: 30px;
-        color: #000c36;
-        text-align: center;
-      }
+      /deep/ {
+        .slide {
+          &-header {
+            margin-bottom: 12px / $innerWidth * 100%;
+            align-self: self-start;
+          }
+        }
 
-      ol {
-        list-style-type: decimal;
-      }
+        .page {
+          &-header {
+            margin-bottom: 40px / $width * 100%;
+            text-align: center;
+          }
 
-      ul {
-        list-style-type: disc;
+          &-body {
+            overflow-y: auto;
+            height: 100%;
+          }
+
+          &-footer {
+          }
+        }
+
+        .childcover {
+          &-title {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 10px / $width * 100%;
+            @include fontSizeRatio( map-get($fz, "section-title") );
+          }
+
+          &-number {
+            margin-right: 0.3em;
+            @include fontSizeRatio( 12px );
+          }
+        }
+
+        .contents {
+          &-title {
+            line-height: 1.5;
+            @include fontSizeRatio( map-get($fz, "h3") );
+            font-weight: bold;
+          }
+        }
+
+        ol {
+          list-style-type: decimal;
+        }
+
+        ul {
+          list-style-type: disc;
+        }
       }
     }
   }

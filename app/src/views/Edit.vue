@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="l-container">
     <Header />
     <Main>
-      <div class="l-user-slide js-slidelist-container"  v-bind:class="{ 'is-active': isActive}" >
+      <div class="l-user-slide js-slidelist-container"  v-bind:class="{'is-active': isActive}" >
         <UserSlideList />
       </div>
       <Editor class="l-editor" />
       <div class="l-preview">
         <div class="preview-contents">
-          <Preview />
+          <Preview :active-page-number="activePageNumber" />
         </div>
         <div class="preview-bg">
           <PreviewBg1 />
@@ -43,8 +43,10 @@ export default {
   },
   computed: {
     isActive () {
-      console.log(this.$store.getters.userSlideListState)
       return this.$store.getters.userSlideListState
+    },
+    activePageNumber () {
+      return this.$store.getters.activePageNumber
     }
   }
 

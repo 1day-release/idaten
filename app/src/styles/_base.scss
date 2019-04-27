@@ -12,16 +12,16 @@
 }
 
 html {
-  font-family: $ff !important;
-  font-size: 10px !important;
-  background-color: map-get($color-brand, "base");
+  font-family: $ff;
+  font-size: 10px;
+  background-color: map-get($color-brand, "main");
 
   body {
     font-size: 1.3rem;
   }
 }
 
-#app {
+.l-container {
   position: relative;
   display: block;
   overflow: hidden;

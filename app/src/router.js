@@ -17,6 +17,15 @@ export default new Router({
     },
     {
       path: '/presentation',
+      redirect: {
+        path: '/presentation',
+        params: {
+          pageNumber: 1
+        }
+      }
+    },
+    {
+      path: '/presentation/:pageNumber',
       name: 'Presentation',
       component: Presentation
     },

@@ -1,0 +1,1647 @@
+{
+	"info": {
+		"_postman_id": "8565ca12-cdf5-4e7d-b535-48043137dcb2",
+		"name": "idaten-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "スライド作成",
+			"item": [
+				{
+					"name": "スライド作成 作成成功",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが201か\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"slide_idが存在するか\", function () {",
+									"    pm.expect(jsonData.slide_id.length).to.eql(64);",
+									"});",
+									"",
+									"pm.globals.set('created_slide_id', jsonData.slide_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover\",\n\t\"markdown\": \"# markdown\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド作成 認証失敗",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "727d6fa3-318c-4482-aafa-39f171f61bc2",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが403か\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"statusがForbiddenか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Forbidden');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover\",\n\t\"markdown\": \"# markdown\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド作成 不正なデータ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "727d6fa3-318c-4482-aafa-39f171f61bc2",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが400か\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"statusがBad Requestか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Bad Request');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "スライド一覧",
+			"item": [
+				{
+					"name": "スライド一覧 取得成功",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const slideId = pm.globals.get('created_slide_id');",
+									"let slide = {}",
+									"jsonData.forEach(data => {",
+									"    if (data.slide_id === slideId) slide = data",
+									"});",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが一致するか\", function () {",
+									"    pm.expect(slide.slide_id).to.eql(slideId);",
+									"});",
+									"",
+									"pm.test(\"coverが一致するか\", function () {",
+									"    pm.expect(slide.cover).to.eql('# cover');",
+									"});",
+									"",
+									"pm.test(\"share_modeが一致するか\", function () {",
+									"    pm.expect(slide.share_mode).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"created_atが適切か\", function () {",
+									"    pm.expect(!!slide.created_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"updated_atが適切か\", function () {",
+									"    pm.expect(!!slide.updated_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"updated_atで降順にソートされているか\", function () {",
+									"    let sortCorrectFlg = true;",
+									"    let before = null;",
+									"    jsonData.forEach(data => {",
+									"        if (!before) {",
+									"            before = data;",
+									"            return;",
+									"        }",
+									"        ",
+									"        if (!data.updated_at || new Date(before.updated_at) < new Date(data.updated_at)) {",
+									"            sortCorrectFlg = false;",
+									"        }",
+									"        ",
+									"        before = data;",
+									"    });",
+									"    ",
+									"    pm.expect(sortCorrectFlg).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド一覧 認証失敗",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "727d6fa3-318c-4482-aafa-39f171f61bc2",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが403か\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"statusがForbiddenか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Forbidden');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド一覧 認証失敗(認証方式を指定しない)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "727d6fa3-318c-4482-aafa-39f171f61bc2",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが403か\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"statusがForbiddenか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Forbidden');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "01f7689e-52a3-4cc7-82c6-d5cebc1023a2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "017a5935-42f7-4b39-a997-5f00d9f0d377",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "スライド取得",
+			"item": [
+				{
+					"name": "スライド取得 取得成功",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const slideId = pm.globals.get('created_slide_id');",
+									"const slide = jsonData;",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが一致するか\", function () {",
+									"    pm.expect(slide.slide_id).to.eql(slideId);",
+									"});",
+									"",
+									"pm.test(\"coverが一致するか\", function () {",
+									"    pm.expect(slide.cover).to.eql('# cover');",
+									"});",
+									"",
+									"pm.test(\"markdownが一致するか\", function () {",
+									"    pm.expect(slide.markdown).to.eql('# markdown');",
+									"});",
+									"",
+									"pm.test(\"share_modeが一致するか\", function () {",
+									"    pm.expect(slide.share_mode).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"created_atが適切か\", function () {",
+									"    pm.expect(!!slide.created_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"updated_atが適切か\", function () {",
+									"    pm.expect(!!slide.updated_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド取得 認証失敗",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "727d6fa3-318c-4482-aafa-39f171f61bc2",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが403か\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"statusがForbiddenか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Forbidden');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド取得 存在しないID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "727d6fa3-318c-4482-aafa-39f171f61bc2",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが404か\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"statusがNot Foundか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Not Found');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/0123456789",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"0123456789"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "スライド更新",
+			"item": [
+				{
+					"name": "スライド更新 更新成功",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが存在するか\", function () {",
+									"    pm.expect(jsonData.slide_id.length).to.eql(64);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover2\",\n\t\"markdown\": \"# markdown2\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド更新 更新の取得",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const slideId = pm.globals.get('created_slide_id');",
+									"const slide = jsonData;",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが一致するか\", function () {",
+									"    pm.expect(slide.slide_id).to.eql(slideId);",
+									"});",
+									"",
+									"pm.test(\"coverが一致するか\", function () {",
+									"    pm.expect(slide.cover).to.eql('# cover');",
+									"});",
+									"",
+									"pm.test(\"markdownが一致するか\", function () {",
+									"    pm.expect(slide.markdown).to.eql('# markdown2');",
+									"});",
+									"",
+									"pm.test(\"share_modeが一致するか\", function () {",
+									"    pm.expect(slide.share_mode).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"created_atが適切か\", function () {",
+									"    pm.expect(!!slide.created_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"updated_atが適切か\", function () {",
+									"    pm.expect(!!slide.updated_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド更新 存在しないID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが404か\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"statusがNot Foundか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Not Found');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover2\",\n\t\"markdown\": \"# markdown2\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/0123456789",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"0123456789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド更新 不正なデータ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが400か\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"statusがBad Requestか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Bad Request');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド更新 認証失敗",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが403か\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"statusがForbiddenか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Forbidden');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover2\",\n\t\"markdown\": \"# markdown2\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "スライド削除",
+			"item": [
+				{
+					"name": "スライド削除 削除成功",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが存在するか\", function () {",
+									"    pm.expect(jsonData.slide_id.length).to.eql(64);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド削除 更新の取得",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが404か\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"statusがNot Foundか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Not Found');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド削除 存在しないID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが404か\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"statusがNot Foundか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Not Found');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover2\",\n\t\"markdown\": \"# markdown2\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/0123456789",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"0123456789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "スライド削除 認証失敗",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが403か\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"statusがForbiddenか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Forbidden');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "share_flg:1(他者の閲覧)",
+			"item": [
+				{
+					"name": "share_flg:1 スライド作成",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.globals.set('created_slide_id', jsonData.slide_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover\",\n\t\"markdown\": \"# markdown\",\n\t\"share_mode\": 1\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "share_flg:1 スライド取得",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const slideId = pm.globals.get('created_slide_id');",
+									"const slide = jsonData;",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが一致するか\", function () {",
+									"    pm.expect(slide.slide_id).to.eql(slideId);",
+									"});",
+									"",
+									"pm.test(\"coverが一致するか\", function () {",
+									"    pm.expect(slide.cover).to.eql('# cover');",
+									"});",
+									"",
+									"pm.test(\"markdownが一致するか\", function () {",
+									"    pm.expect(slide.markdown).to.eql('# markdown');",
+									"});",
+									"",
+									"pm.test(\"share_modeが一致するか\", function () {",
+									"    pm.expect(slide.share_mode).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"created_atが適切か\", function () {",
+									"    pm.expect(!!slide.created_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"updated_atが適切か\", function () {",
+									"    pm.expect(!!slide.updated_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "share_flg:1 スライド更新",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが403か\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"statusがForbiddenか\", function () {",
+									"    pm.expect(jsonData.status).to.eql('Forbidden');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover2\",\n\t\"markdown\": \"# markdown2\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "share_flg:2(他者の更新)",
+			"item": [
+				{
+					"name": "share_flg:2 スライド作成",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.globals.set('created_slide_id', jsonData.slide_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover\",\n\t\"markdown\": \"# markdown\",\n\t\"share_mode\": 2\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "share_flg:2 スライド取得",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const slideId = pm.globals.get('created_slide_id');",
+									"const slide = jsonData;",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが一致するか\", function () {",
+									"    pm.expect(slide.slide_id).to.eql(slideId);",
+									"});",
+									"",
+									"pm.test(\"coverが一致するか\", function () {",
+									"    pm.expect(slide.cover).to.eql('# cover');",
+									"});",
+									"",
+									"pm.test(\"markdownが一致するか\", function () {",
+									"    pm.expect(slide.markdown).to.eql('# markdown');",
+									"});",
+									"",
+									"pm.test(\"share_modeが一致するか\", function () {",
+									"    pm.expect(slide.share_mode).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"created_atが適切か\", function () {",
+									"    pm.expect(!!slide.created_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"updated_atが適切か\", function () {",
+									"    pm.expect(!!slide.updated_at.match(/\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d/g).length).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "share_flg:2 スライド更新",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "408831ab-2845-4415-950a-7db5bfc30bb8",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"ステータスコードが200か\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"slide_idが存在するか\", function () {",
+									"    pm.expect(jsonData.slide_id.length).to.eql(64);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "INCORRECT_ACCESS_TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cover\": \"# cover2\",\n\t\"markdown\": \"# markdown2\",\n\t\"share_mode\": 0\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}/slides/{{created_slide_id}}",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"slides",
+								"{{created_slide_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "49435369-76d0-4402-bbab-15bfba75ba36",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "cdfcdd89-4b65-4499-bdda-5e1009a4b48c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

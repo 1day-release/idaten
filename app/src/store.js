@@ -24,11 +24,15 @@ export default new Vuex.Store({
 2. Ordered List2
 `
     })(),
+    activePageNumber: -1,
     userSlideListState: false
   },
   getters: {
     markdown: state => {
       return state.markdown
+    },
+    activePageNumber: state => {
+      return state.activePageNumber
     },
     userSlideListState: state => {
       return state.userSlideListState
@@ -38,6 +42,9 @@ export default new Vuex.Store({
     markdown (state, data) {
       localStorage.setItem('idaten.markdown', data)
       state.markdown = data
+    },
+    activePageNumber (state, data) {
+      state.activePageNumber = data
     },
     userSlideListState (state, data) {
       state.userSlideListState = data
