@@ -15,7 +15,7 @@
           <!--<Slide :max-width="slideMaxWidth" :max-height="slideMaxHeight" />-->
         </a>
       </li>
-      <li class="is_now">
+      <li class="is-now">
         <a class="slide-cover" href="#">
           <Slide />
         </a>
@@ -177,7 +177,7 @@ export default {
         width: inherit;
         padding: 10px 20px;
 
-        &:not(.is_now) {
+        &:not(.is-now) {
           transition-duration: $duration;
 
           &:hover {
@@ -185,7 +185,7 @@ export default {
           }
         }
 
-        &.is_now {
+        &.is-now {
           position: relative;
           background-color: map-get($color-brand, "main-bright");
 
