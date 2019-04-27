@@ -48,14 +48,12 @@ export default {
     $position: 20px;
     $padding: 40px;
 
-    box-sizing: border-box;
+    // box-sizing: border-box;
     position: relative;
     overflow-x: hidden;
     display: block;
-    width: calc(100% - #{$position * 2});
-    max-width: $pc-min-width * 0.35 - $position;
+    width: 100%;
     height: 100%;
-    margin-left: $position;
 
     &-list {
       box-sizing: border-box;
@@ -68,15 +66,61 @@ export default {
       width: auto;
       height: auto;
       max-height: 100%;
-      padding-right: 17px;
+      padding-right: $position + 17px;
+      padding-left: $position;
       margin: auto;
 
       >li {
+        position: relative;
         width: inherit;
-        padding-bottom: $padding;
+        margin-bottom: $padding;
+        box-shadow: 4px 4px 11px map-get($color-brand, "shadow");
+        transition-duration: $duration;
+
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          z-index: 10;
+          top: 0;
+          bottom: 0;
+
+          pointer-events: none;
+          opacity: 0;
+          transition-duration: inherit;
+        }
+
+        &::before {
+          right: calc(100% + 8px);
+          display: block;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 6px 5px;
+          border-left-width: 0;
+          border-color: transparent;
+          border-right-color: #fff;
+          margin: auto 0;
+
+        }
+
+        &::after {
+          right: 0;
+          left: 0;
+          border: 2px solid #d3d3d3;
+          margin: auto;
+        }
 
         &:first-child {
-          padding-top: $padding;
+          margin-top: $padding;
+        }
+
+        &.is-active {
+
+          &::before,
+          &::after {
+            opacity: 1;
+          }
         }
       }
     }

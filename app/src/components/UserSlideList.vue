@@ -15,13 +15,6 @@
           <Slide :markdown="slide.cover" :width="180" />
         </a>
       </li>
-      <!--
-      <li class="is_now">
-        <a class="slide-cover" href="#">
-          <Slide />
-        </a>
-      </li>
-      -->
     </ul>
   </div>
 </template>
@@ -176,7 +169,7 @@ export default {
         width: inherit;
         padding: 10px 20px;
 
-        &:not(.is_now) {
+        &:not(.is-now) {
           transition-duration: $duration;
 
           &:hover {
@@ -184,7 +177,7 @@ export default {
           }
         }
 
-        &.is_now {
+        &.is-now {
           position: relative;
           background-color: map-get($color-brand, "main-bright");
 
