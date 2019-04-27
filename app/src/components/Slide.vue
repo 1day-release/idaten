@@ -22,7 +22,7 @@ export default {
     },
     pageNumber: {
       type: Number,
-      default: 0
+      default: 1
     },
     html: {
       type: String,
@@ -43,7 +43,6 @@ export default {
   },
   mounted () {
     this.$watch('pageStyles', () => {}) // For detect props changing
-    this.$watch('markdown', () => { this.computePageStyles() })
   },
   methods: {
     computePageStyles () {
@@ -83,6 +82,9 @@ export default {
     markedHtml () {
       return core.get(this.markdown, this.pageNumber)
     }
+  },
+  updated () {
+    this.computePageStyles()
   }
 }
 </script>

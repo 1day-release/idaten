@@ -55,11 +55,11 @@ describe('markdownの途中変更', () => {
     }, 200)
   })
 
-  it('pageNumber変更時に、モードスタイルが更新適応されるか', done => {
+  it('pageNumber変更時に、pageTypeが更新され、モードスタイルが更新適応されるか', done => {
     const wrapper = shallowMount(Slide, {
       propsData: {
         markdown: `# H1
-        ## H2`,
+## H2`,
         pageNumber: 1,
         width: 1112
       }
@@ -69,6 +69,7 @@ describe('markdownの途中変更', () => {
         pageNumber: 2
       })
       wrapper.vm.$nextTick(() => {
+        expect(wrapper.find('.page').attributes().class.indexOf('page is-type2')).toBeGreaterThanOrEqual(0)
         expect(wrapper.find('.page').attributes().style.indexOf(';min-height:')).toBeGreaterThanOrEqual(0)
         done()
       })
