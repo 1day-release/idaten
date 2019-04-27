@@ -10,8 +10,8 @@
       </div>
     </div>
     <ul class="user-slide-list">
-      <li v-for="slide in slides">
-        <a class="slide-cover" href="javascript:void(0)" @click="selectSlide(slide.slide_id)" :class="{'is-now': slide.slide_id === activeSlideId}">
+      <li v-for="slide in slides" :class="{'is-now': slide.slide_id === activeSlideId}">
+        <a class="slide-cover" href="javascript:void(0)" @click="selectSlide(slide.slide_id)">
           <Slide :markdown="slide.cover" :width="180" />
         </a>
       </li>
