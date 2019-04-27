@@ -20,7 +20,7 @@
         </ul>
         <ul class="header-tool">
           <li>
-            <IconButton balloon-text="プレゼンモード" svg="@/assets/icon-presentation.svg" to="/presentation/1" />
+            <IconButton balloon-text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="`/presentation/${activeSlideId}/1`" />
           </li>
           <li>
             <div class="button-block">
@@ -71,10 +71,13 @@ export default {
     }
   },
   computed: {
+    activeSlideId () {
+      return this.$store.getters.slideId
+    }
   },
   methods: {
     showUserSlideList: function (e) {
-      console.log('test')
+      this.$store.commit('slides')
       this.$store.dispatch('changeStateUserSlideList', !this.$store.getters.userSlideListState)
     }
   }

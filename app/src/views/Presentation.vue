@@ -13,7 +13,7 @@
       </div>
       <div class="presentation-footer">
         <ul class="presentation-pager">
-          <li v-for="n in pageCount" :key="n"><router-link :to="'/presentation/' + n" :class="{'is-now': n === pageNumber}">{{n}}</router-link></li>
+          <li v-for="n in pageCount" :key="n"><router-link :to="`/presentation/${activeSlideId}/${n}`" :class="{'is-now': n === pageNumber}">{{n}}</router-link></li>
         </ul>
         <p class="presentation-logo">
           <a href="/">
@@ -47,6 +47,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('slideId', this.$route.params.slideId)
     this.pageNumber = parseInt(this.$route.params.pageNumber)
 
     if (this.$route.query.mdUrl) {
@@ -73,12 +74,12 @@ export default {
   methods: {
     nextPage () {
       if (this.pageNumber < this.pageCount) {
-        this.$router.push('/presentation/' + (this.pageNumber + 1))
+        this.$router.push('/presentation/' + this.activeSlideId + '/' + (this.pageNumber + 1))
       }
     },
     prevPage () {
       if (this.pageNumber > 1) {
-        this.$router.push('/presentation/' + (this.pageNumber - 1))
+        this.$router.push('/presentation/' + this.activeSlideId + '/' + (this.pageNumber - 1))
       }
     },
     calculatePageMaxSize () {
@@ -94,10 +95,14 @@ export default {
     },
     markdown () {
       return this.$store.getters.markdown
+    },
+    activeSlideId () {
+      return this.$store.getters.slideId
     }
   },
   watch: {
     $route (to, from) {
+      this.$store.commit('slideId', this.$route.params.slideId)
       this.pageNumber = parseInt(this.$route.params.pageNumber)
     }
   }
