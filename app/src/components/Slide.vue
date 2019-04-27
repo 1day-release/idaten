@@ -155,23 +155,6 @@ export default {
       }
     }
 
-    em {
-      font-weight: bold;
-      font-style: oblique;
-    }
-
-    strong {
-      font-weight: bold;
-      color: map-get($color-brand, "text-sub");
-    }
-
-    a {
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-
     // Modules
     // ==============================
     .content {
@@ -279,26 +262,6 @@ export default {
       width: 100%;
     }
 
-    // Parts
-    // ==============================
-    * {
-      user-select: none;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    h4 {
-      margin-bottom: 20px / $innerWidth * 100%;
-      text-align: center;
-      @include fontSizeRatio( map-get($fz, "h4") );
-      font-weight: bold;
-      color: map-get($color-brand, "text-sub");
-    }
-
     .page {
       &-number {
         display: flex;
@@ -325,6 +288,101 @@ export default {
       }
     }
 
+    // Parts
+    // ==============================
+    * {
+      user-select: none;
+    }
+
+    h4 {
+      margin-bottom: 20px / $innerWidth * 100%;
+      text-align: center;
+      @include fontSizeRatio( map-get($fz, "h4") );
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
+    }
+
+    ol,
+    ul {
+      text-align: left;
+      line-height: 1.5;
+
+      >li {
+        position: relative;
+        padding-left: 2em;
+        margin-top: 15px / $innerWidth * 100%;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+        }
+      }
+    }
+
+    ol {
+      counter-reset: ol;
+
+      >li {
+        counter-increment: ol;
+
+        &::before {
+          width: 1.5em;
+          text-align: right;
+          content: counter(ol) ".";
+        }
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    ul {
+
+      >li {
+
+        &::before {
+          $size: 4px;
+
+          content: "";
+          top: 0.5em;
+          display: block;
+          width: $size;
+          height: $size;
+          margin-left: 6px;
+          border-radius: 50%;
+          background-color: map-get($color-brand, "sub");
+        }
+      }
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    em {
+      font-weight: bold;
+      font-style: oblique;
+    }
+
+    strong {
+      font-weight: bold;
+      color: map-get($color-brand, "text-sub");
+    }
+
+    a {
+      color: #0089ff;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    // Statement
+    // ==============================
     &.is-type1 {
       justify-content: space-between;
       padding: 80px / $width * 100%;
@@ -513,14 +571,6 @@ export default {
             @include fontSizeRatio( map-get($fz, "h3") );
             font-weight: bold;
           }
-        }
-
-        ol {
-          list-style-type: decimal;
-        }
-
-        ul {
-          list-style-type: disc;
         }
       }
     }
