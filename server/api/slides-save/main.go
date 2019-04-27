@@ -125,7 +125,7 @@ func UpdateItemInput(svc *dynamodb.DynamoDB, getSlideID string, Email string, Ma
 	if err != nil {
 		return 400, `{"status": "Bad Request"}`
 	}
-	return 200, `{"updated_at":"` + nowDateTime + `"}`
+	return 200, `{"slide_id": "` + getSlideID + `","updated_at":"` + nowDateTime + `"}`
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {

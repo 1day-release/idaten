@@ -69,9 +69,9 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if len(bearerAccessTokenSplit) == 1 || err != nil || getSlideID == "" {
 		fmt.Println("get error:", err)
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body:       `{"status": "Forbidden"}`,
 			Headers:    responseHeader,
-			StatusCode: 400,
+			StatusCode: 403,
 		}, nil
 	}
 
@@ -114,7 +114,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       `{"status": "200"}`,
+		Body:       `{"slide_id": "` + getSlideID + `"}`,
 		Headers:    responseHeader,
 		StatusCode: 200,
 	}, nil
