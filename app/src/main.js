@@ -4,19 +4,13 @@ import router from './router'
 import store from './store'
 import mixin from './mixin'
 
-import VueResource from 'vue-resource'
-import VueMoment from 'vue-moment'
-// import VueAnalytics from 'vue-analytics'
+import VueAnalytics from 'vue-analytics'
 
 import 'reset-css'
 import 'source-code-pro/source-code-pro.css'
 
 Vue.mixin(mixin)
-
-Vue.use(VueResource)
-Vue.use(VueMoment)
-// Vue.use(VueAnalytics)
-
+Vue.use(VueAnalytics)
 Vue.config.productionTip = false
 
 require('@/styles/styles.scss')
