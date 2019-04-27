@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "idaten-core": "^1.3.0",
+    "moment": "^2.24.0",
     "reset-css": "^4.0.1",
     "source-code-pro": "git://github.com/adobe-fonts/source-code-pro.git#release",
     "vue": "^2.6.10",

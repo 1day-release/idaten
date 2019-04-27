@@ -41,6 +41,9 @@ export default {
     PreviewBg1,
     PreviewBg2
   },
+  created () {
+    this.$store.commit('slideId', this.$route.params.slideId)
+  },
   computed: {
     isActive () {
       return this.$store.getters.userSlideListState
@@ -48,8 +51,12 @@ export default {
     activePageNumber () {
       return this.$store.getters.activePageNumber
     }
+  },
+  watch: {
+    $route (to, from) {
+      this.$store.commit('slideId', this.$route.params.slideId)
+    }
   }
-
 }
 </script>
 
