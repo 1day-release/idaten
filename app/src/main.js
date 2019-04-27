@@ -10,7 +10,10 @@ import 'reset-css'
 import 'source-code-pro/source-code-pro.css'
 
 Vue.mixin(mixin)
-Vue.use(VueAnalytics)
+Vue.use(VueAnalytics, {
+  id: 'UA-135478557-4',
+  router
+})
 Vue.config.productionTip = false
 
 require('@/styles/styles.scss')
