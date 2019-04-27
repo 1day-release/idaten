@@ -98,6 +98,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		TableName: aws.String("idaten-slides"),
 		ExpressionAttributeNames: map[string]*string{
 			"#ID":        aws.String("slide_id"),
+			"#COVER":     aws.String("cover"),
 			"#MARKDOWN":  aws.String("markdown"),
 			"#SHAREMODE": aws.String("share_mode"),
 			"#CREATEDAT": aws.String("created_at"),
@@ -109,7 +110,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			},
 		},
 		KeyConditionExpression: aws.String("#ID = :id"),
-		ProjectionExpression:   aws.String("#ID, #MARKDOWN, #SHAREMODE, #CREATEDAT, #UPDATEDAT"),
+		ProjectionExpression:   aws.String("#ID, #COVER, #MARKDOWN, #SHAREMODE, #CREATEDAT, #UPDATEDAT"),
 	})
 	fmt.Println(result.Items)
 
@@ -117,40 +118,45 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		panic(fmt.Sprintf("Failed to unmarshal Record, %v", err))
 	}
 
-	var responseUserData ResponseUserData
+	var jsonData UserData
+	var ResponseStatusCode int
+	var jsonString string
 
-	for _, i := range result.Items {
-		item := UserData{}
+	if len(result.Items) == 0 {
+		ResponseStatusCode = 404
+		jsonString = `{"status": "Not Found"}`
+	} else {
+		for _, i := range result.Items {
+			ResponseStatusCode = 200
+			item := UserData{}
 
-		err = dynamodbattribute.UnmarshalMap(i, &item)
+			err = dynamodbattribute.UnmarshalMap(i, &item)
 
-		if err != nil {
-			fmt.Println("Got error unmarshalling:")
-			fmt.Println(err.Error())
-			os.Exit(1)
+			if err != nil {
+				fmt.Println("Got error unmarshalling:")
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+
+			jsonData = UserData{
+				SlideID:   item.SlideID,
+				Cover:     item.Cover,
+				Markdown:  item.Markdown,
+				ShareMode: item.ShareMode,
+				CreatedAt: item.CreatedAt,
+				UpdatedAt: item.UpdatedAt,
+			}
+
+			jsonBytes, _ := json.Marshal(jsonData)
+			jsonString = string(jsonBytes)
+			break
 		}
-
-		jsonData := UserData{
-			SlideID:   item.SlideID,
-			Markdown:  item.Markdown,
-			ShareMode: item.ShareMode,
-			CreatedAt: item.CreatedAt,
-			UpdatedAt: item.UpdatedAt,
-		}
-
-		responseUserData = append(responseUserData, jsonData)
-	}
-
-	jsonBytes, _ := json.Marshal(responseUserData)
-	jsonString := string(jsonBytes)
-	if jsonString == "null" {
-		jsonString = "[]"
 	}
 
 	return events.APIGatewayProxyResponse{
 		Body:       jsonString,
 		Headers:    responseHeader,
-		StatusCode: 200,
+		StatusCode: ResponseStatusCode,
 	}, nil
 }
 
@@ -160,13 +166,12 @@ func main() {
 
 type UserData struct {
 	SlideID   string `json:"slide_id"`
+	Cover     string `json:"cover"`
 	Markdown  string `json:"markdown"`
 	ShareMode int    `json:"share_mode"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
 }
-
-type ResponseUserData []UserData
 
 type UserAccessToken struct {
 	AccessToken string `json:"access_token"`
