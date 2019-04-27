@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -144,6 +145,8 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 		responseUserData = append(responseUserData, jsonData)
 	}
 
+	// created_atを降順にソートする
+	sort.SliceStable(responseUserData, func(i, j int) bool { return responseUserData[i].CreatedAt > responseUserData[j].CreatedAt })
 	jsonBytes, _ := json.Marshal(responseUserData)
 	jsonString := string(jsonBytes)
 	if jsonString == "null" {
