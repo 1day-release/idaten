@@ -1,5 +1,4 @@
 <template>
-
   <div class="user-slide">
     <div class="user-slide-head">
       <div class="user-slide-head-item" @click="showUserSlideList()">
@@ -11,6 +10,7 @@
     </div>
     <ul class="user-slide-list">
       <li v-for="slide in slides" :class="{'is-now': slide.slide_id === activeSlideId}">
+        <a class="slide-delete-button" href="javascript:void(0)">スライドを削除する</a>
         <a class="slide-cover" href="javascript:void(0)" @click="selectSlide(slide.slide_id)">
           <Slide :markdown="slide.cover" :width="180" />
         </a>
@@ -166,6 +166,7 @@ export default {
 
       >li {
         box-sizing: border-box;
+        position: relative;
         width: inherit;
         padding: 10px 20px;
 
@@ -174,6 +175,14 @@ export default {
 
           &:hover {
             background-color: rgba( map-get($color-brand, "main-bright"), 0.5 );
+          }
+        }
+
+        &:hover {
+
+          .slide-delete-button {
+            opacity: 1;
+            // pointer-events: auto;
           }
         }
 
@@ -201,8 +210,65 @@ export default {
     }
   }
 
-  .slide-cover {
-    display: block;
-    overflow: hidden;
+  .slide {
+    &-delete-button {
+      $size: 20px;
+      $borderWidth: 2px;
+      $borderColor: lighten(#f00, 30%);
+
+      box-sizing: border-box;
+      position: absolute;
+      z-index: 10;
+      top: 10px - $size/2;
+      right: 20px - $size/2;
+      display: block;
+      overflow: hidden;
+      width: $size;
+      height: $size;
+      border: $borderWidth solid $borderColor;
+      text-indent: 100%;
+      white-space: nowrap;
+      background-color: red;
+      // background-color: map-get($color-brand, "accent");
+      border-radius: 50%;
+      transition-duration: $duration;
+
+      opacity: 0;
+      pointer-events: none;
+
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: $borderWidth;
+        height: 50%;
+        margin: auto;
+        background-color: $borderColor;
+        transform-origin: center center;
+      }
+
+      &::before {
+        // left: calc(25% - #{$borderWidth/2});
+        transform: rotate(-45deg);
+        // transform-origin: left top;
+      }
+
+      &::after {
+        // right: calc(25% - #{$borderWidth/2});
+        transform: rotate(45deg);
+        // transform-origin: right top;
+      }
+    }
+
+    &-cover {
+      display: block;
+      overflow: hidden;
+      text-decoration: none;
+    }
   }
 </style>
