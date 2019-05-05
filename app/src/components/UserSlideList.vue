@@ -232,10 +232,8 @@ export default {
       // background-color: map-get($color-brand, "accent");
       border-radius: 50%;
       transition-duration: $duration;
-
       opacity: 0;
       pointer-events: none;
-
 
       &::before,
       &::after {

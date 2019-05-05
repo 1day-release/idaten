@@ -7,7 +7,7 @@
       </span>
     </router-link>
 
-    <router-link v-else class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]" sto="javascript:void(0)">
+    <router-link v-else class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]" to="javascript:void(0)">
       <component :is="icon" />
       <span class="icon-button-balloon">
         {{balloonText}}
@@ -42,7 +42,7 @@ export default {
     },
     iconColorClass () {
       if (this.iconColor) {
-        return ['is-'+this.iconColor]
+        return ['is-' + this.iconColor]
       } else {
         return []
       }
