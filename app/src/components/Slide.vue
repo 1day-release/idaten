@@ -491,6 +491,10 @@ export default {
 
           &-body {
             margin-top: 20px / $innerHeight * 100%;
+
+            p {
+              @include fontSizeRatio( 20px );
+            }
           }
 
           &-footer {
@@ -511,10 +515,6 @@ export default {
             font-size: 50%;
             color: map-get($color-brand, "text-sub");
           }
-        }
-
-        p {
-          @include fontSizeRatio( 20px );
         }
       }
     }
@@ -561,7 +561,7 @@ export default {
 
           &-number {
             margin-right: 0.3em;
-            @include fontSizeRatio( 12px );
+            font-size: 12px / map-get($fz, "section-title") * 100%;
           }
         }
 
