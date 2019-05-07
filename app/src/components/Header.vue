@@ -13,8 +13,16 @@
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-
               <IconButton balloon-position="left" balloon-text="スライドリスト" svg="@/assets/icon-slidelist.svg" />
+            </div>
+          </li>
+          <li>
+            <div class="save-status">
+              <p class="save-status-text">
+                <span>更新しました</span>
+                <span class="is-saving">更新中…</span>
+              </p>
+              <UpdateIcon class="save-status-icon" />
             </div>
           </li>
         </ul>
@@ -30,9 +38,9 @@
               <IconButton balloon-text="スライドをシェア" svg="@/assets/icon-link.svg" />
             </div>
           </li>
-          <!-- li>
+          <li>
             <IconButton balloon-text="設定" svg="@/assets/icon-setting.svg" />
-          </li -->
+          </li>
           <li class="is-separate is-login">
             <IconButton balloon-text="ログアウト" svg="@/assets/icon-logout.svg" />
           </li>
@@ -53,6 +61,7 @@ import BrandLogo from '@/components/BrandLogo.vue'
 import IconButton from '@/components/IconButton.vue'
 import TextButton from '@/components/TextButton.vue'
 import UserIcon from '@/components/UserIcon.vue'
+import UpdateIcon from '@/assets/icon-refresh.svg'
 import ButtonMask from '@/assets/icon-mask.svg'
 
 export default {
@@ -62,6 +71,7 @@ export default {
     IconButton,
     TextButton,
     UserIcon,
+    UpdateIcon,
     ButtonMask
   },
   props: {
@@ -183,15 +193,59 @@ export default {
 
       &:first-child {
         >li {
-          &:last-child {
-            padding-right: $padding + 1px;
-            padding-left: $padding;
+          // &:last-child {
+            // padding-right: $padding + 1px;
+            // padding-left: $padding;
 
-            &::after {
-              content: "";
-              right: 0;
+            // &::after {
+            //   content: "";
+            //   right: 0;
+            // }
+          // }
+        }
+      }
+    }
+  }
+
+  .save-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-text {
+      margin-right: 5px;
+      font-size: 1.0rem;
+      color: map-get($color-brand, "text-main");
+
+      >span {
+
+        &.is-saving {
+          display: none;
+        }
+      }
+    }
+
+    &-icon {
+      transform-origin: 58% 50%;
+    }
+
+    &.is-saving {
+      .save-status {
+        &-text {
+          >span {
+
+            &:not([class]) {
+              display: none;
+            }
+
+            &.is-saving {
+              display: block;
             }
           }
+        }
+
+        &-icon {
+          animation: spinLeft 1.3s linear infinite;
         }
       }
     }
