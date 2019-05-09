@@ -296,7 +296,7 @@ export default {
         }
 
         &-icon {
-          animation: spinLeft 1.3s linear infinite;
+          animation: spinLeft 1.4s linear infinite;
         }
       }
     }

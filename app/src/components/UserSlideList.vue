@@ -251,15 +251,11 @@ export default {
       }
 
       &::before {
-        // left: calc(25% - #{$borderWidth/2});
         transform: rotate(-45deg);
-        // transform-origin: left top;
       }
 
       &::after {
-        // right: calc(25% - #{$borderWidth/2});
         transform: rotate(45deg);
-        // transform-origin: right top;
       }
     }
 
