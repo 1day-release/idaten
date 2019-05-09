@@ -9,7 +9,7 @@
       </div>
     </div>
     <ul class="user-slide-list">
-      <li v-for="slide in slides" :class="{'is-now': slide.slide_id === activeSlideId}">
+      <li v-for="(slide, index) in slides" :key="index" :class="{'is-now': slide.slide_id === activeSlideId}">
         <a class="slide-delete-button" href="javascript:void(0)">スライドを削除する</a>
         <a class="slide-cover" href="javascript:void(0)" @click="selectSlide(slide.slide_id)">
           <Slide :markdown="slide.cover" :width="180" />

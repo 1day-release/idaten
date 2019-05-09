@@ -24,7 +24,7 @@ export default {
   computed: {
     buttonStylesClass () {
       if (this.styleClass) {
-        return ['is-'+this.styleClass]
+        return ['is-' + this.styleClass]
       } else {
         return []
       }

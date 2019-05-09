@@ -23,7 +23,6 @@ export default {
   },
   created () {
     fetch('https://script.google.com/macros/s/AKfycbxYk9NMXJbjxCdHMyTmoFH-mIVfoCgw2PXr_0NWIuFvp5dzfrE/exec').then(response => response.json()).then((data) => {
-      console.log(data)
       this.slideTestCases = data
     })
   }
