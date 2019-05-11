@@ -120,15 +120,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			"slide_id": {
 				S: aws.String(getSlideID),
 			},
-			"email": {
-				S: aws.String(idatenUserInfo.Email),
-			},
 		},
 		TableName: aws.String("idaten-slides"),
 	})
 	fmt.Println(err)
 
-	// データが無いときでも200を返してしまう
+	// データが無い場合には，NotFoundを返す
 	if err != nil {
 		fmt.Println("Got error calling DeleteItem")
 		fmt.Println(err.Error())
