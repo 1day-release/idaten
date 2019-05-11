@@ -87,7 +87,35 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 	svc := dynamodb.New(session)
 
-	input := &dynamodb.DeleteItemInput{
+	result, err := svc.Query(&dynamodb.QueryInput{
+		TableName: aws.String("idaten-slides"),
+		ExpressionAttributeNames: map[string]*string{
+			"#ID":        aws.String("slide_id"),
+			"#COVER":     aws.String("cover"),
+			"#MARKDOWN":  aws.String("markdown"),
+			"#SHAREMODE": aws.String("share_mode"),
+			"#CREATEDAT": aws.String("created_at"),
+			"#UPDATEDAT": aws.String("updated_at"),
+		},
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":id": {
+				S: aws.String(getSlideID),
+			},
+		},
+		KeyConditionExpression: aws.String("#ID = :id"),
+		ProjectionExpression:   aws.String("#ID, #COVER, #MARKDOWN, #SHAREMODE, #CREATEDAT, #UPDATEDAT"),
+	})
+
+	if len(result.Items) == 0 {
+		fmt.Println("Not find ID")
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Not Found"}`,
+			Headers:    responseHeader,
+			StatusCode: 404,
+		}, nil
+	}
+
+	_, err = svc.DeleteItem(&dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),
@@ -97,9 +125,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			},
 		},
 		TableName: aws.String("idaten-slides"),
-	}
-
-	_, err = svc.DeleteItem(input)
+	})
 	fmt.Println(err)
 
 	// データが無いときでも200を返してしまう
