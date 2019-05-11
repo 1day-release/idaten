@@ -144,15 +144,6 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	// idatenUserテーブルからユーザ情報を取得
 	lambdaResponse := athorizationIdatenUser(userAccessToken)
 
-	// lambdaresponseのコードが403の場合にはレスポンスを返す
-	if lambdaResponse.Code != 200 {
-		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Forbidden"}`,
-			Headers:    responseHeader,
-			StatusCode: lambdaResponse.Code,
-		}, nil
-	}
-
 	// Bodyの内容を取得
 	jsonBytes := ([]byte)(request.Body)
 	requestData := new(RequestData)
@@ -160,11 +151,20 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	//スライドIDを取得
 	getSlideID := strings.Split(request.Path, "/")[2]
 
+	// lambdaresponseのコードが403の場合にはレスポンスを返す
+	if lambdaResponse.Code != 200 && (requestData.ShareMode == 0 || requestData.ShareMode == 1) {
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Forbidden"}`,
+			Headers:    responseHeader,
+			StatusCode: lambdaResponse.Code,
+		}, nil
+	}
+
 	// lambdaresponseのメッセージからIdatenユーザ情報を取り出す
 	idatenUserInfo := new(IdatenUserInfo)
 	responseErr := json.Unmarshal([]byte(lambdaResponse.Message), idatenUserInfo)
+	fmt.Println("Bearer Token length: " + strconv.Itoa(len(bearerAccessTokenSplit)))
 	if len(bearerAccessTokenSplit) == 1 || err != nil || responseErr != nil || getSlideID == "" {
-		fmt.Println("get error:", err)
 		return events.APIGatewayProxyResponse{
 			Body:       `{"status": "Bad Request"}`,
 			Headers:    responseHeader,
@@ -175,6 +175,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	// 現在時刻を取得
 	nowDateTime := getNowTime()
 
+	// DynamoDBのセッションを作成
 	sess, err := session.NewSession(&aws.Config{
 		Region: aws.String("ap-northeast-1")},
 	)
