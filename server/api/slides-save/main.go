@@ -54,20 +54,16 @@ func getNowTime() string {
 }
 
 // FindGetItem ... find item include exist slide id
-func FindGetItem(svc *dynamodb.DynamoDB, getSlideID string, Email string) (int, string) {
+func FindGetItem(svc *dynamodb.DynamoDB, getSlideID string) (int, string) {
 	status := 200
 	jsonString := "ok"
 
 	fmt.Println(getSlideID)
-	fmt.Println(Email)
 	input := &dynamodb.GetItemInput{
 		TableName: aws.String("idaten-slides"),
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),
-			},
-			"email": {
-				S: aws.String(Email),
 			},
 		},
 	}
@@ -87,7 +83,7 @@ func FindGetItem(svc *dynamodb.DynamoDB, getSlideID string, Email string) (int, 
 }
 
 // UpdateItemInput ... update dynamodb table
-func UpdateItemInput(svc *dynamodb.DynamoDB, getSlideID string, Email string, MarkDown string, ShareMode string, nowDateTime string) (int, string) {
+func UpdateItemInput(svc *dynamodb.DynamoDB, getSlideID string, MarkDown string, ShareMode string, nowDateTime string) (int, string) {
 	input := &dynamodb.UpdateItemInput{
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			":markdown": {
@@ -111,9 +107,6 @@ func UpdateItemInput(svc *dynamodb.DynamoDB, getSlideID string, Email string, Ma
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),
-			},
-			"email": {
-				S: aws.String(Email),
 			},
 		},
 		ReturnValues:     aws.String("UPDATED_NEW"),
@@ -160,18 +153,6 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, nil
 	}
 
-	// lambdaresponseのメッセージからIdatenユーザ情報を取り出す
-	idatenUserInfo := new(IdatenUserInfo)
-	responseErr := json.Unmarshal([]byte(lambdaResponse.Message), idatenUserInfo)
-	fmt.Println("Bearer Token length: " + strconv.Itoa(len(bearerAccessTokenSplit)))
-	if len(bearerAccessTokenSplit) == 1 || err != nil || responseErr != nil || getSlideID == "" {
-		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
-			Headers:    responseHeader,
-			StatusCode: 400,
-		}, nil
-	}
-
 	// 現在時刻を取得
 	nowDateTime := getNowTime()
 
@@ -191,8 +172,42 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, nil
 	}
 
+	// share_modeが2（編集可能）である場合に更新する
+	if lambdaResponse.Code != 200 && requestData.ShareMode == 2 {
+		// find exist slide_id item
+		status, jsonString := FindGetItem(svc, getSlideID)
+		if status != 200 {
+			return events.APIGatewayProxyResponse{
+				Body:       jsonString,
+				Headers:    responseHeader,
+				StatusCode: status,
+			}, nil
+		}
+
+		// update Item
+		status, jsonString = UpdateItemInput(svc, getSlideID, requestData.MarkDown, strconv.Itoa(requestData.ShareMode), nowDateTime)
+
+		return events.APIGatewayProxyResponse{
+			Body:       jsonString,
+			Headers:    responseHeader,
+			StatusCode: status,
+		}, nil
+	}
+
+	// lambdaresponseのメッセージからIdatenユーザ情報を取り出す
+	idatenUserInfo := new(IdatenUserInfo)
+	responseErr := json.Unmarshal([]byte(lambdaResponse.Message), idatenUserInfo)
+	fmt.Println("Bearer Token length: " + strconv.Itoa(len(bearerAccessTokenSplit)))
+	if len(bearerAccessTokenSplit) == 1 || err != nil || responseErr != nil || getSlideID == "" {
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Bad Request"}`,
+			Headers:    responseHeader,
+			StatusCode: 400,
+		}, nil
+	}
+
 	// find exist slide_id item
-	status, jsonString := FindGetItem(svc, getSlideID, idatenUserInfo.Email)
+	status, jsonString := FindGetItem(svc, getSlideID)
 	if status != 200 {
 		return events.APIGatewayProxyResponse{
 			Body:       jsonString,
@@ -202,7 +217,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	// update Item
-	status, jsonString = UpdateItemInput(svc, getSlideID, idatenUserInfo.Email, requestData.MarkDown, strconv.Itoa(requestData.ShareMode), nowDateTime)
+	status, jsonString = UpdateItemInput(svc, getSlideID, requestData.MarkDown, strconv.Itoa(requestData.ShareMode), nowDateTime)
 
 	return events.APIGatewayProxyResponse{
 		Body:       jsonString,
