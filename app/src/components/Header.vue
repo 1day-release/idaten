@@ -36,6 +36,7 @@
               balloon-text="プレゼンモード"
               svg="@/assets/icon-presentation.svg"
               :to="`/presentation/${activeSlideId}/1`"
+              class="presentation-button"
             />
           </li>
           <li>

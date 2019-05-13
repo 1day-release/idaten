@@ -93,7 +93,7 @@ export default {
       const key = event.key
       if (key === 'ArrowRight' || key === 'Enter') {
         this.nextPage()
-      } else if (key === 'ArrowLeft' || key === 'Backspace') {
+      } else if (key === 'ArrowLeft' || key === 'Backspace' || key === 'Delete') {
         this.prevPage()
       } else if (key === 'Escape') {
         this.quit()
