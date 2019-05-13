@@ -12,6 +12,7 @@ describe('authModel', () => {
 })
 */
 
+/*
 import SlideModel from '@/models/slide'
 
 describe('slideModel', () => {
@@ -20,7 +21,6 @@ describe('slideModel', () => {
   it('constructor', () => {
   })
 
-  /*
   it('create', async () => {
     const result = await model.create({})
     expect(result).toBeTruthy()
@@ -51,5 +51,5 @@ describe('slideModel', () => {
     const result = await model.get(slideId)
     expect(result).toBeFalsy()
   })
-  */
 })
+*/

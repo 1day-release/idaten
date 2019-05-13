@@ -6,12 +6,14 @@ module.exports = {
       }
     }
   },
+
   devServer: {
     overlay: {
       warnings: false,
       errors: true
     }
   },
+
   chainWebpack: config => {
     const svgRule = config.module.rule('svg')
 

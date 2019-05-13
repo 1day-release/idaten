@@ -3,17 +3,39 @@
     <div class="presentation">
       <div class="presentation-header">
         <p class="presentation-close">
-          <a href="javascript:void(0)" @click="quit">
+          <a
+            href="javascript:void(0)"
+            @click="quit"
+          >
             <span class="presentation-close-button">Esc</span>で編集ページに戻る
           </a>
         </p>
       </div>
-      <div class="presentation-body" @click="nextPage" @contextmenu.prevent="prevPage">
-        <Slide :markdown="markdown" :page-number="pageNumber" :max-width="pageMaxWidth" :max-height="pageMaxHeight" />
+      <div
+        class="presentation-body"
+        @click="nextPage"
+        @contextmenu.prevent="prevPage"
+      >
+        <Slide
+          :markdown="markdown"
+          :page-number="pageNumber"
+          :max-width="pageMaxWidth"
+          :max-height="pageMaxHeight"
+        />
       </div>
       <div class="presentation-footer">
         <ul class="presentation-pager">
-          <li v-for="n in pageCount" :key="n"><router-link :to="`/presentation/${slideId}/${n}`" :class="{'is-now': n === pageNumber}">{{n}}</router-link></li>
+          <li
+            v-for="n in pageCount"
+            :key="n"
+          >
+            <router-link
+              :to="`/presentation/${slideId}/${n}`"
+              :class="{'is-now': n === pageNumber}"
+            >
+              {{ n }}
+            </router-link>
+          </li>
         </ul>
         <p class="presentation-logo">
           <a href="/">

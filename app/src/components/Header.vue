@@ -8,12 +8,16 @@
       </h1>
       <div class="header-tools">
         <ul class="header-tool">
-          <li v-on:click="showUserSlideList()">
+          <li @click="showUserSlideList()">
             <div class="button-block">
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-              <IconButton balloon-position="left" balloon-text="スライドリスト" svg="@/assets/icon-slidelist.svg" />
+              <IconButton
+                balloon-position="left"
+                balloon-text="スライドリスト"
+                svg="@/assets/icon-slidelist.svg"
+              />
             </div>
           </li>
           <li>
@@ -28,21 +32,37 @@
         </ul>
         <ul class="header-tool">
           <li>
-            <IconButton balloon-text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="`/presentation/${activeSlideId}/1`" />
+            <IconButton
+              balloon-text="プレゼンモード"
+              svg="@/assets/icon-presentation.svg"
+              :to="`/presentation/${activeSlideId}/1`"
+            />
           </li>
           <li>
             <div class="button-block">
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-              <IconButton balloon-text="スライドをシェア" svg="@/assets/icon-link.svg" />
+              <IconButton
+                balloon-text="スライドをシェア"
+                svg="@/assets/icon-link.svg"
+              />
             </div>
-            <PopupSetting id="popup-setting-share" style="right:-191px;">
+            <PopupSetting
+              id="popup-setting-share"
+              style="right:-191px;"
+            >
               <aside>
                 <dl class="setting-item">
                   <dt>ボードの共有設定</dt>
                   <dd>
-                    <input type="radio" class="input-radio" name="board-share" id="board-share-private" checked />
+                    <input
+                      type="radio"
+                      class="input-radio"
+                      name="board-share"
+                      id="board-share-private"
+                      checked
+                    >
                     <label for="board-share-private">
                       <span>
                         <strong class="color-text-sub">自分だけが</strong>アクセスできる
@@ -50,7 +70,12 @@
                     </label>
                   </dd>
                   <dd>
-                    <input type="radio" class="input-radio" name="board-share" id="board-share-view" />
+                    <input
+                      type="radio"
+                      class="input-radio"
+                      name="board-share"
+                      id="board-share-view"
+                    >
                     <label for="board-share-view">
                       <span>
                         リンクを知ってる全員が<strong class="color-text-sub">閲覧できる</strong>
@@ -58,7 +83,12 @@
                     </label>
                   </dd>
                   <dd>
-                    <input type="radio" class="input-radio" name="board-share" id="board-share-edit" />
+                    <input
+                      type="radio"
+                      class="input-radio"
+                      name="board-share"
+                      id="board-share-edit"
+                    >
                     <label for="board-share-edit">
                       <span>
                         リンクを知ってる全員が<strong class="color-text-sub">編集できる</strong>
@@ -66,24 +96,57 @@
                     </label>
                   </dd>
                 </dl>
-                <hr />
-                <input type="text" class="input-text" name="" id="" value="ここに今いるURLぶち込んでおくれーここに今いるURLぶち込んでおくれーここに今いるURLぶち込んでおくれー" />
+                <hr>
+                <input
+                  type="text"
+                  class="input-text"
+                  name=""
+                  id=""
+                  value="ここに今いるURLぶち込んでおくれーここに今いるURLぶち込んでおくれーここに今いるURLぶち込んでおくれー"
+                >
                 <ul class="button-list">
-                  <li><router-link class="submit-button" to="javascript:void(0)">リンクをコピー</router-link></li>
+                  <li>
+                    <router-link
+                      class="submit-button"
+                      to="javascript:void(0)"
+                    >
+                      リンクをコピー
+                    </router-link>
+                  </li>
                 </ul>
               </aside>
             </PopupSetting>
           </li>
           <li>
-            <IconButton balloon-text="設定" svg="@/assets/icon-setting.svg" />
-            <PopupSetting id="popup-setting-slide" style="right:-124px;">
+            <IconButton
+              balloon-text="設定"
+              svg="@/assets/icon-setting.svg"
+            />
+            <PopupSetting
+              id="popup-setting-slide"
+              style="right:-124px;"
+            >
               <aside>
                 <dl class="setting-item">
                   <dt>ボードの削除</dt>
                   <dd>
                     <ul class="button-list">
-                      <li><router-link class="submit-button is-red" to="javascript:void(0)">このボードを削除する</router-link></li>
-                      <li><router-link class="submit-button is-link" to="javascript:void(0)">キャンセル</router-link></li>
+                      <li>
+                        <router-link
+                          class="submit-button is-red"
+                          to="javascript:void(0)"
+                        >
+                          このボードを削除する
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          class="submit-button is-link"
+                          to="javascript:void(0)"
+                        >
+                          キャンセル
+                        </router-link>
+                      </li>
                     </ul>
                   </dd>
                 </dl>
@@ -91,13 +154,23 @@
             </PopupSetting>
           </li>
           <li class="is-separate is-login">
-            <IconButton balloon-text="ログアウト" svg="@/assets/icon-logout.svg" />
+            <IconButton
+              balloon-text="ログアウト"
+              svg="@/assets/icon-logout.svg"
+            />
           </li>
           <li class="is-login">
-            <UserIcon balloon-position="right" user-name="ワンデイ太郎" email="1day-release@gmail.com" />
+            <UserIcon
+              balloon-position="right"
+              user-name="ワンデイ太郎"
+              email="1day-release@gmail.com"
+            />
           </li>
           <li class="is-separate is-logout">
-            <TextButton text="ログイン" svg="" />
+            <TextButton
+              text="ログイン"
+              svg=""
+            />
           </li>
         </ul>
       </div>

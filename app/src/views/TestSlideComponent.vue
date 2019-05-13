@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div class="test-block" v-for="(testCase, index) in slideTestCases" :key="index">
-      <Slide :markdown="testCase.markdown" :page-number="testCase.pageNumber" :width="1112" />
+    <div
+      class="test-block"
+      v-for="(testCase, index) in slideTestCases"
+      :key="index"
+    >
+      <Slide
+        :markdown="testCase.markdown"
+        :page-number="testCase.pageNumber"
+        :width="1112"
+      />
     </div>
   </div>
 </template>

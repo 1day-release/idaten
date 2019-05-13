@@ -2,7 +2,10 @@
   <div class="l-container">
     <Header />
     <Main>
-      <div class="l-user-slide js-slidelist-container"  v-bind:class="{'is-active': isActive}" >
+      <div
+        class="l-user-slide js-slidelist-container"
+        :class="{'is-active': isActive}"
+      >
         <UserSlideList />
       </div>
       <Editor class="l-editor" />

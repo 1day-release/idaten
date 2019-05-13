@@ -1,7 +1,13 @@
 <template>
   <div>
-    <div v-if="html" v-html="html"></div>
-    <div v-else v-html="markedHtml"></div>
+    <div
+      v-if="html"
+      v-html="html"
+    />
+    <div
+      v-else
+      v-html="markedHtml"
+    />
   </div>
 </template>
 

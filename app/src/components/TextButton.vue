@@ -1,13 +1,23 @@
 <template>
   <div>
-    <router-link v-if="to && Object.keys(to).length" class="text-button" :class="buttonStylesClass" :to="to" target="_blank">
+    <router-link
+      v-if="to && Object.keys(to).length"
+      class="text-button"
+      :class="buttonStylesClass"
+      :to="to"
+      target="_blank"
+    >
       <component :is="icon" />
-      {{text}}
+      {{ text }}
     </router-link>
 
-    <div v-else class="text-button" :class="buttonStylesClass">
+    <div
+      v-else
+      class="text-button"
+      :class="buttonStylesClass"
+    >
       <component :is="icon" />
-      {{text}}
+      {{ text }}
     </div>
   </div>
 </template>

@@ -1,18 +1,48 @@
 <template>
   <div class="user-slide">
     <div class="user-slide-head">
-      <div class="user-slide-head-item" @click="showUserSlideList()">
-        <IconButton balloon-position="left" icon-color="light-gray" icon-reverse balloon-text="スライドリストを閉じる" svg="@/assets/icon-slidelist.svg"/>
+      <div
+        class="user-slide-head-item"
+        @click="showUserSlideList()"
+      >
+        <IconButton
+          balloon-position="left"
+          icon-color="light-gray"
+          icon-reverse
+          balloon-text="スライドリストを閉じる"
+          svg="@/assets/icon-slidelist.svg"
+        />
       </div>
-      <div class="user-slide-head-item" @click="createSlide">
-        <TextButton style-class="ghost" text="新規スライド作成" svg="@/assets/icon-update.svg" />
+      <div
+        class="user-slide-head-item"
+        @click="createSlide"
+      >
+        <TextButton
+          style-class="ghost"
+          text="新規スライド作成"
+          svg="@/assets/icon-update.svg"
+        />
       </div>
     </div>
     <ul class="user-slide-list">
-      <li v-for="(slide, index) in slides" :key="index" :class="{'is-now': slide.slide_id === activeSlideId}">
-        <a class="slide-delete-button" href="javascript:void(0)">スライドを削除する</a>
-        <a class="slide-cover" href="javascript:void(0)" @click="selectSlide(slide.slide_id)">
-          <Slide :markdown="slide.cover" :width="180" />
+      <li
+        v-for="(slide, index) in slides"
+        :key="index"
+        :class="{'is-now': slide.slide_id === activeSlideId}"
+      >
+        <a
+          class="slide-delete-button"
+          href="javascript:void(0)"
+        >スライドを削除する</a>
+        <a
+          class="slide-cover"
+          href="javascript:void(0)"
+          @click="selectSlide(slide.slide_id)"
+        >
+          <Slide
+            :markdown="slide.cover"
+            :width="180"
+          />
         </a>
       </li>
     </ul>

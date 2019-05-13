@@ -1,6 +1,6 @@
 <template>
   <div class="popup-setting">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
