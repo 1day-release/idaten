@@ -1,7 +1,13 @@
 <template>
   <div>
-    <div v-if="html" v-html="html"></div>
-    <div v-else v-html="markedHtml"></div>
+    <div
+      v-if="html"
+      v-html="html"
+    />
+    <div
+      v-else
+      v-html="markedHtml"
+    />
   </div>
 </template>
 
@@ -491,6 +497,10 @@ export default {
 
           &-body {
             margin-top: 20px / $innerHeight * 100%;
+
+            p {
+              @include fontSizeRatio( 20px );
+            }
           }
 
           &-footer {
@@ -512,20 +522,12 @@ export default {
             color: map-get($color-brand, "text-sub");
           }
         }
-
-        p {
-          @include fontSizeRatio( 20px );
-        }
       }
     }
 
     &.is-type3 {
       justify-content: flex-start;
       padding-top: $padding / $width * 100%;
-
-      p {
-        @include fontSizeRatio( $base-fz );
-      }
 
       /deep/ {
         .slide {
@@ -544,6 +546,10 @@ export default {
           &-body {
             overflow-y: auto;
             height: 100%;
+
+            p {
+              @include fontSizeRatio( $base-fz );
+            }
           }
 
           &-footer {
@@ -561,7 +567,7 @@ export default {
 
           &-number {
             margin-right: 0.3em;
-            @include fontSizeRatio( 12px );
+            font-size: 12px / map-get($fz, "section-title") * 100%;
           }
         }
 

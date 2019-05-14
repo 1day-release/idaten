@@ -8,39 +8,170 @@
       </h1>
       <div class="header-tools">
         <ul class="header-tool">
-          <li v-on:click="showUserSlideList()">
+          <li @click="showUserSlideList()">
             <div class="button-block">
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-
-              <IconButton balloon-position="left" balloon-text="スライドリスト" svg="@/assets/icon-slidelist.svg" />
+              <IconButton
+                balloon-position="left"
+                balloon-text="スライドリスト"
+                svg="@/assets/icon-slidelist.svg"
+              />
+            </div>
+          </li>
+          <li>
+            <div class="save-status">
+              <p class="save-status-text">
+                <span>更新しました</span>
+                <span class="is-saving">更新中…</span>
+              </p>
+              <UpdateIcon class="save-status-icon" />
             </div>
           </li>
         </ul>
         <ul class="header-tool">
           <li>
-            <IconButton balloon-text="プレゼンモード" svg="@/assets/icon-presentation.svg" :to="`/presentation/${activeSlideId}/1`" />
+            <IconButton
+              balloon-text="プレゼンモード"
+              svg="@/assets/icon-presentation.svg"
+              :to="`/presentation/${activeSlideId}/1`"
+              class="presentation-button"
+            />
           </li>
           <li>
             <div class="button-block">
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
               </div>
-              <IconButton balloon-text="スライドをシェア" svg="@/assets/icon-link.svg" />
+              <IconButton
+                balloon-text="スライドをシェア"
+                svg="@/assets/icon-link.svg"
+              />
             </div>
+            <PopupSetting
+              id="popup-setting-share"
+              style="right:-191px;"
+            >
+              <aside>
+                <dl class="setting-item">
+                  <dt>ボードの共有設定</dt>
+                  <dd>
+                    <input
+                      type="radio"
+                      class="input-radio"
+                      name="board-share"
+                      id="board-share-private"
+                      checked
+                    >
+                    <label for="board-share-private">
+                      <span>
+                        <strong class="color-text-sub">自分だけが</strong>アクセスできる
+                      </span>
+                    </label>
+                  </dd>
+                  <dd>
+                    <input
+                      type="radio"
+                      class="input-radio"
+                      name="board-share"
+                      id="board-share-view"
+                    >
+                    <label for="board-share-view">
+                      <span>
+                        リンクを知ってる全員が<strong class="color-text-sub">閲覧できる</strong>
+                      </span>
+                    </label>
+                  </dd>
+                  <dd>
+                    <input
+                      type="radio"
+                      class="input-radio"
+                      name="board-share"
+                      id="board-share-edit"
+                    >
+                    <label for="board-share-edit">
+                      <span>
+                        リンクを知ってる全員が<strong class="color-text-sub">編集できる</strong>
+                      </span>
+                    </label>
+                  </dd>
+                </dl>
+                <hr>
+                <input
+                  type="text"
+                  class="input-text"
+                  name=""
+                  id=""
+                  value="ここに今いるURLぶち込んでおくれーここに今いるURLぶち込んでおくれーここに今いるURLぶち込んでおくれー"
+                >
+                <ul class="button-list">
+                  <li>
+                    <router-link
+                      class="submit-button"
+                      to="javascript:void(0)"
+                    >
+                      リンクをコピー
+                    </router-link>
+                  </li>
+                </ul>
+              </aside>
+            </PopupSetting>
           </li>
           <li>
-            <IconButton balloon-text="設定" svg="@/assets/icon-setting.svg" />
+            <IconButton
+              balloon-text="設定"
+              svg="@/assets/icon-setting.svg"
+            />
+            <PopupSetting
+              id="popup-setting-slide"
+              style="right:-124px;"
+            >
+              <aside>
+                <dl class="setting-item">
+                  <dt>ボードの削除</dt>
+                  <dd>
+                    <ul class="button-list">
+                      <li>
+                        <router-link
+                          class="submit-button is-red"
+                          to="javascript:void(0)"
+                        >
+                          このボードを削除する
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          class="submit-button is-link"
+                          to="javascript:void(0)"
+                        >
+                          キャンセル
+                        </router-link>
+                      </li>
+                    </ul>
+                  </dd>
+                </dl>
+              </aside>
+            </PopupSetting>
           </li>
           <li class="is-separate is-login">
-            <IconButton balloon-text="ログアウト" svg="@/assets/icon-logout.svg" />
+            <IconButton
+              balloon-text="ログアウト"
+              svg="@/assets/icon-logout.svg"
+            />
           </li>
           <li class="is-login">
-            <UserIcon balloon-position="right" user-name="ワンデイ太郎" email="1day-release@gmail.com" />
+            <UserIcon
+              balloon-position="right"
+              user-name="ワンデイ太郎"
+              email="1day-release@gmail.com"
+            />
           </li>
           <li class="is-separate is-logout">
-            <TextButton text="ログイン" svg="" />
+            <TextButton
+              text="ログイン"
+              svg=""
+            />
           </li>
         </ul>
       </div>
@@ -53,7 +184,9 @@ import BrandLogo from '@/components/BrandLogo.vue'
 import IconButton from '@/components/IconButton.vue'
 import TextButton from '@/components/TextButton.vue'
 import UserIcon from '@/components/UserIcon.vue'
+import UpdateIcon from '@/assets/icon-refresh.svg'
 import ButtonMask from '@/assets/icon-mask.svg'
+import PopupSetting from '@/components/PopupSetting.vue'
 
 export default {
   name: 'Header',
@@ -62,7 +195,9 @@ export default {
     IconButton,
     TextButton,
     UserIcon,
-    ButtonMask
+    UpdateIcon,
+    ButtonMask,
+    PopupSetting
   },
   props: {
   },
@@ -183,15 +318,59 @@ export default {
 
       &:first-child {
         >li {
-          &:last-child {
-            padding-right: $padding + 1px;
-            padding-left: $padding;
+          // &:last-child {
+            // padding-right: $padding + 1px;
+            // padding-left: $padding;
 
-            &::after {
-              content: "";
-              right: 0;
+            // &::after {
+            //   content: "";
+            //   right: 0;
+            // }
+          // }
+        }
+      }
+    }
+  }
+
+  .save-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-text {
+      margin-right: 5px;
+      font-size: 1.0rem;
+      color: map-get($color-brand, "text-main");
+
+      >span {
+
+        &.is-saving {
+          display: none;
+        }
+      }
+    }
+
+    &-icon {
+      transform-origin: 58% 50%;
+    }
+
+    &.is-saving {
+      .save-status {
+        &-text {
+          >span {
+
+            &:not([class]) {
+              display: none;
+            }
+
+            &.is-saving {
+              display: block;
             }
           }
+        }
+
+        &-icon {
+          animation: spinLeft 1.4s linear infinite;
         }
       }
     }

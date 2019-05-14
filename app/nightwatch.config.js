@@ -8,7 +8,7 @@ module.exports = deepmerge({
     chrome: {
       desiredCapabilities: {
         chromeOptions: {
-          args: ['--headless']
+          // args: ['--headless']
         }
       }
     }

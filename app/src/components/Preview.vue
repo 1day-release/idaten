@@ -1,8 +1,16 @@
 <template>
   <div class="preview">
     <ul class="preview-list">
-      <li v-for="n in pageCount" :key="n" :class="{'is-active': activePageNumber === n}">
-        <Slide :markdown="markdown" :page-number="n" :width="347" />
+      <li
+        v-for="n in pageCount"
+        :key="n"
+        :class="{'is-active': activePageNumber === n}"
+      >
+        <Slide
+          :markdown="markdown"
+          :page-number="n"
+          :width="347"
+        />
       </li>
     </ul>
   </div>

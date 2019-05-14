@@ -1,8 +1,17 @@
 <template>
   <div>
-    <textarea class="editor" v-model="markdown" @input="editorInput" />
+    <textarea
+      class="editor"
+      v-model="markdown"
+      @input="editorInput"
+    />
     <div class="popups">
-      <PopupText id="popups-logout" class="popup">デモモードです。ログインをしないと、「共有」「保存」などの機能を使えません。<a href="#">ログイン</a>してください。</PopupText>
+      <PopupText
+        id="popups-logout"
+        class="popup"
+      >
+        デモモードです。ログインをしないと、「共有」「保存」などの機能を使えません。<a href="#">ログイン</a>してください。
+      </PopupText>
     </div>
   </div>
 </template>

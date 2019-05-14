@@ -1,18 +1,28 @@
 <template>
   <div>
-    <router-link v-if="to && Object.keys(to).length" class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]" :to="to">
+    <router-link
+      v-if="to && Object.keys(to).length"
+      class="icon-button"
+      :class="[balloonPositionClass, iconColorClass, iconReverseClass]"
+      :to="to"
+    >
       <component :is="icon" />
       <span class="icon-button-balloon">
-        {{balloonText}}
+        {{ balloonText }}
       </span>
     </router-link>
 
-    <div v-else class="icon-button" :class="[balloonPositionClass, iconColorClass, iconReverseClass]">
+    <router-link
+      v-else
+      class="icon-button"
+      :class="[balloonPositionClass, iconColorClass, iconReverseClass]"
+      to="javascript:void(0)"
+    >
       <component :is="icon" />
       <span class="icon-button-balloon">
-        {{balloonText}}
+        {{ balloonText }}
       </span>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -42,7 +52,7 @@ export default {
     },
     iconColorClass () {
       if (this.iconColor) {
-        return ['is-'+this.iconColor]
+        return ['is-' + this.iconColor]
       } else {
         return []
       }

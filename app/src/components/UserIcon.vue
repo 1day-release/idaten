@@ -1,9 +1,15 @@
 <template>
-  <div class="user" :class="balloonClass">
+  <div
+    class="user"
+    :class="balloonClass"
+  >
     <span class="user-icon">
-      <img src="//placehold.jp/150x150.png" alt="">
+      <img
+        src="//placehold.jp/150x150.png"
+        alt=""
+      >
     </span>
-    <span class="user-balloon">{{userName}}&nbsp;&lt;{{email}}&gt;<!-- name --></span>
+    <span class="user-balloon">{{ userName }}&nbsp;&lt;{{ email }}&gt;<!-- name --></span>
   </div>
 </template>
 

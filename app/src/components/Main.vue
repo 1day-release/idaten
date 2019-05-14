@@ -1,6 +1,6 @@
 <template>
   <main role="main">
-    <slot></slot>
+    <slot />
   </main>
 </template>
 

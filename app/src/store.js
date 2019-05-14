@@ -75,7 +75,8 @@ export default new Vuex.Store({
 ### Slide2
 1. Ordered List1
 2. Ordered List2
-`}
+`
+      }
       slideModel.create(slide)
       commit('slides')
     }

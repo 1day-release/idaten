@@ -2,6 +2,11 @@
 
 @import "_variables";
 
+// Animation
+// ===============================================
+@import "mixin/_animation.scss";
+
 // Layout
 // ===============================================
 @import "_base";
+@import "components/_form";

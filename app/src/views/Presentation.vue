@@ -3,17 +3,39 @@
     <div class="presentation">
       <div class="presentation-header">
         <p class="presentation-close">
-          <router-link to="/">
+          <a
+            href="javascript:void(0)"
+            @click="quit"
+          >
             <span class="presentation-close-button">Esc</span>で編集ページに戻る
-          </router-link>
+          </a>
         </p>
       </div>
-      <div class="presentation-body" @click="nextPage" @contextmenu.prevent="prevPage">
-        <Slide :markdown="markdown" :page-number="pageNumber" :max-width="pageMaxWidth" :max-height="pageMaxHeight" />
+      <div
+        class="presentation-body"
+        @click="nextPage"
+        @contextmenu.prevent="prevPage"
+      >
+        <Slide
+          :markdown="markdown"
+          :page-number="pageNumber"
+          :max-width="pageMaxWidth"
+          :max-height="pageMaxHeight"
+        />
       </div>
       <div class="presentation-footer">
         <ul class="presentation-pager">
-          <li v-for="n in pageCount" :key="n"><router-link :to="`/presentation/${activeSlideId}/${n}`" :class="{'is-now': n === pageNumber}">{{n}}</router-link></li>
+          <li
+            v-for="n in pageCount"
+            :key="n"
+          >
+            <router-link
+              :to="`/presentation/${slideId}/${n}`"
+              :class="{'is-now': n === pageNumber}"
+            >
+              {{ n }}
+            </router-link>
+          </li>
         </ul>
         <p class="presentation-logo">
           <a href="/">
@@ -26,12 +48,13 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 import Slide from '@/components/Slide.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import IdatenCore from 'idaten-core'
+import SlideModel from '@/models/slide'
+
 const core = new IdatenCore()
+const slideModel = new SlideModel()
 
 export default {
   name: 'Presentation',
@@ -41,69 +64,67 @@ export default {
   },
   data () {
     return {
-      pageNumber: 1,
+      markdown: '',
       pageMaxWidth: 0,
       pageMaxHeight: 0
     }
   },
   created () {
-    this.$store.commit('slideId', this.$route.params.slideId)
-    this.pageNumber = parseInt(this.$route.params.pageNumber)
-
-    if (this.$route.query.mdUrl) {
-      fetch(this.$route.query.mdUrl).then(request => request.text()).then((markdown) => {
-        this.markdown = markdown
-      })
-    }
-
-    const keyEvent = (event) => {
-      if (event.key === 'ArrowRight' || event.key === 'Enter') {
-        this.nextPage()
-      } else if (event.key === 'ArrowLeft' || event.key === 'Backspace') {
-        this.prevPage()
-      } else if (event.key === 'Escape') {
-        window.removeEventListener('keydown', keyEvent)
-        this.$router.push({ path: '/' })
-      }
-    }
-    window.addEventListener('keydown', keyEvent)
-
-    window.addEventListener('resize', this.calculatePageMaxSize)
+    this.addWindowEvents()
+    this.fetchMarkdown()
     this.calculatePageMaxSize()
   },
   methods: {
-    nextPage () {
-      if (this.pageNumber < this.pageCount) {
-        this.$router.push('/presentation/' + this.activeSlideId + '/' + (this.pageNumber + 1))
-      }
+    addWindowEvents () {
+      window.addEventListener('resize', this.calculatePageMaxSize)
+      window.addEventListener('keydown', this.keyEvents)
     },
-    prevPage () {
-      if (this.pageNumber > 1) {
-        this.$router.push('/presentation/' + this.activeSlideId + '/' + (this.pageNumber - 1))
-      }
+    removeWindowEvents () {
+      window.removeEventListener('resize', this.calculatePageMaxSize)
+      window.removeEventListener('keydown', this.keyEvents)
     },
     calculatePageMaxSize () {
       const leftRightMargin = 100
       const topBottomMargin = 120
       this.pageMaxWidth = window.innerWidth - leftRightMargin
       this.pageMaxHeight = window.innerHeight - topBottomMargin
+    },
+    keyEvents (event) {
+      const key = event.key
+      if (key === 'ArrowRight' || key === 'Enter') {
+        this.nextPage()
+      } else if (key === 'ArrowLeft' || key === 'Backspace' || key === 'Delete') {
+        this.prevPage()
+      } else if (key === 'Escape') {
+        this.quit()
+      }
+    },
+    fetchMarkdown () {
+      const slide = slideModel.get(this.slideId)
+      this.markdown = slide.markdown
+    },
+    nextPage () {
+      if (this.pageNumber >= this.pageCount) return
+      this.$router.push(`/presentation/${this.slideId}/${(this.pageNumber + 1)}`)
+    },
+    prevPage () {
+      if (this.pageNumber <= 1) return
+      this.$router.push(`/presentation/${this.slideId}/${(this.pageNumber - 1)}`)
+    },
+    quit () {
+      this.removeWindowEvents()
+      this.$router.push({ path: '/' })
     }
   },
   computed: {
     pageCount () {
       return core.countPage(this.markdown)
     },
-    markdown () {
-      return this.$store.getters.markdown
+    slideId () {
+      return this.$route.params.slideId
     },
-    activeSlideId () {
-      return this.$store.getters.slideId
-    }
-  },
-  watch: {
-    $route (to, from) {
-      this.$store.commit('slideId', this.$route.params.slideId)
-      this.pageNumber = parseInt(this.$route.params.pageNumber)
+    pageNumber () {
+      return parseInt(this.$route.params.pageNumber)
     }
   }
 }

@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div class="test-block" v-for="(testCase, index) in slideTestCases" :key="index">
-      <Slide :markdown="testCase.markdown" :page-number="testCase.pageNumber" :width="1112" />
+    <div
+      class="test-block"
+      v-for="(testCase, index) in slideTestCases"
+      :key="index"
+    >
+      <Slide
+        :markdown="testCase.markdown"
+        :page-number="testCase.pageNumber"
+        :width="1112"
+      />
     </div>
   </div>
 </template>
@@ -23,7 +31,6 @@ export default {
   },
   created () {
     fetch('https://script.google.com/macros/s/AKfycbxYk9NMXJbjxCdHMyTmoFH-mIVfoCgw2PXr_0NWIuFvp5dzfrE/exec').then(response => response.json()).then((data) => {
-      console.log(data)
       this.slideTestCases = data
     })
   }
