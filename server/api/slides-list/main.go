@@ -145,8 +145,8 @@ func slidesList(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRe
 		responseUserData = append(responseUserData, jsonData)
 	}
 
-	// created_atを降順にソートする
-	sort.SliceStable(responseUserData, func(i, j int) bool { return responseUserData[i].CreatedAt > responseUserData[j].CreatedAt })
+	// updated_atを降順にソートする
+	sort.SliceStable(responseUserData, func(i, j int) bool { return responseUserData[i].UpdatedAt > responseUserData[j].UpdatedAt })
 	jsonBytes, _ := json.Marshal(responseUserData)
 	jsonString := string(jsonBytes)
 	if jsonString == "null" {
