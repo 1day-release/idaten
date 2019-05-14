@@ -7,3 +7,6 @@ server/package-lock.json
 server/bin
 
 .DS_Store
+
+# Google API Conf file
+server/api/users-login/google_api.yml

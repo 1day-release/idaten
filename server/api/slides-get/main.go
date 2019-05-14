@@ -70,19 +70,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, nil
 	}
 
-	// idatenUserテーブルからユーザ情報を取得
-	lambdaResponse := athorizationIdatenUser(userAccessToken)
-
-	// lambdaresponseのコードが403の場合にはレスポンスを返す
-	if lambdaResponse.Code != 200 {
-		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Forbidden"}`,
-			Headers:    responseHeader,
-			StatusCode: lambdaResponse.Code,
-		}, nil
-	}
-
-	// DynamoDBのテーブルと接続
+	// DynamoDBのテーブルと接続してスライド情報を取得
 	session, err := session.NewSession(&aws.Config{
 		Region: aws.String("ap-northeast-1")},
 	)
@@ -122,15 +110,16 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	var ResponseStatusCode int
 	var jsonString string
 
+	// DynamoDBから取得した情報をstructに格納（Authorizationをする前に取得）
+	userItem := UserData{}
 	if len(result.Items) == 0 {
 		ResponseStatusCode = 404
 		jsonString = `{"status": "Not Found"}`
 	} else {
 		for _, i := range result.Items {
 			ResponseStatusCode = 200
-			item := UserData{}
 
-			err = dynamodbattribute.UnmarshalMap(i, &item)
+			err = dynamodbattribute.UnmarshalMap(i, &userItem)
 
 			if err != nil {
 				fmt.Println("Got error unmarshalling:")
@@ -139,18 +128,30 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			}
 
 			jsonData = UserData{
-				SlideID:   item.SlideID,
-				Cover:     item.Cover,
-				Markdown:  item.Markdown,
-				ShareMode: item.ShareMode,
-				CreatedAt: item.CreatedAt,
-				UpdatedAt: item.UpdatedAt,
+				SlideID:   userItem.SlideID,
+				Cover:     userItem.Cover,
+				Markdown:  userItem.Markdown,
+				ShareMode: userItem.ShareMode,
+				CreatedAt: userItem.CreatedAt,
+				UpdatedAt: userItem.UpdatedAt,
 			}
 
 			jsonBytes, _ := json.Marshal(jsonData)
 			jsonString = string(jsonBytes)
 			break
 		}
+	}
+
+	// idatenUserテーブルからユーザ情報を取得
+	lambdaResponse := athorizationIdatenUser(userAccessToken)
+
+	// lambdaresponseのコードが403の場合とShareModeが0（非公開）にはレスポンスを返す
+	if lambdaResponse.Code != 200 && userItem.ShareMode == 0 {
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Forbidden"}`,
+			Headers:    responseHeader,
+			StatusCode: lambdaResponse.Code,
+		}, nil
 	}
 
 	return events.APIGatewayProxyResponse{
