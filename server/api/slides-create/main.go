@@ -137,8 +137,11 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	item := PutItem{
 		SlideID:   slideID,
 		Email:     idatenUserInfo.Email,
+		Cover:     requestData.Cover,
+		MarkDown:  requestData.MarkDown,
 		ShareMode: requestData.ShareMode,
 		CreatedAt: nowDateTime,
+		UpdatedAt: nowDateTime,
 	}
 	av, err := dynamodbattribute.MarshalMap(item)
 
@@ -171,7 +174,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	return events.APIGatewayProxyResponse{
 		Body:       jsonString,
 		Headers:    responseHeader,
-		StatusCode: 200,
+		StatusCode: 201,
 	}, nil
 }
 
@@ -181,14 +184,19 @@ func main() {
 
 type RequestData struct {
 	Email     string `json:"email"`
+	Cover     string `json:"cover"`
+	MarkDown  string `json:"markdown"`
 	ShareMode int    `json:"share_mode"`
 }
 
 type PutItem struct {
 	SlideID   string `json:"slide_id"`
 	Email     string `json:"email"`
+	Cover     string `json:"cover"`
+	MarkDown  string `json:"markdown"`
 	ShareMode int    `json:"share_mode"`
 	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
 }
 
 type ResponseSlideID struct {
