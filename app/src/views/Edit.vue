@@ -1,5 +1,5 @@
 <template>
-  <div class="l-container">
+  <div class="l-container is-logout">
     <Header />
     <Main>
       <div
@@ -32,6 +32,7 @@ import Editor from '@/components/Editor.vue'
 import Preview from '@/components/Preview.vue'
 import PreviewBg1 from '@/assets/preview-bg1.svg'
 import PreviewBg2 from '@/assets/preview-bg2.svg'
+import queryString from 'query-string'
 
 export default {
   name: 'Edit',
@@ -45,6 +46,22 @@ export default {
     PreviewBg2
   },
   created () {
+    const parsed = queryString.parse(location.search)
+    if (parsed.state === 'idaten' && parsed.code) {
+      fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          code: parsed.code
+        })
+      }).then(response => response.json()).then(result => {
+        localStorage.setItem('idaten.access-token', result.access_token)
+        location.reload()
+      })
+    }
     this.$store.commit('slideId', this.$route.params.slideId)
   },
   computed: {
