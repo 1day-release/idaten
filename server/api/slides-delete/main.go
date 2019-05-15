@@ -69,9 +69,9 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if len(bearerAccessTokenSplit) == 1 || err != nil || getSlideID == "" {
 		fmt.Println("get error:", err)
 		return events.APIGatewayProxyResponse{
-			Body:       `{"status": "Bad Request"}`,
+			Body:       `{"status": "Forbidden"}`,
 			Headers:    responseHeader,
-			StatusCode: 400,
+			StatusCode: 403,
 		}, nil
 	}
 
@@ -87,22 +87,45 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 	svc := dynamodb.New(session)
 
-	input := &dynamodb.DeleteItemInput{
+	result, err := svc.Query(&dynamodb.QueryInput{
+		TableName: aws.String("idaten-slides"),
+		ExpressionAttributeNames: map[string]*string{
+			"#ID":        aws.String("slide_id"),
+			"#COVER":     aws.String("cover"),
+			"#MARKDOWN":  aws.String("markdown"),
+			"#SHAREMODE": aws.String("share_mode"),
+			"#CREATEDAT": aws.String("created_at"),
+			"#UPDATEDAT": aws.String("updated_at"),
+		},
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":id": {
+				S: aws.String(getSlideID),
+			},
+		},
+		KeyConditionExpression: aws.String("#ID = :id"),
+		ProjectionExpression:   aws.String("#ID, #COVER, #MARKDOWN, #SHAREMODE, #CREATEDAT, #UPDATEDAT"),
+	})
+
+	if len(result.Items) == 0 {
+		fmt.Println("Not find ID")
+		return events.APIGatewayProxyResponse{
+			Body:       `{"status": "Not Found"}`,
+			Headers:    responseHeader,
+			StatusCode: 404,
+		}, nil
+	}
+
+	_, err = svc.DeleteItem(&dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"slide_id": {
 				S: aws.String(getSlideID),
 			},
-			"email": {
-				S: aws.String(idatenUserInfo.Email),
-			},
 		},
 		TableName: aws.String("idaten-slides"),
-	}
-
-	_, err = svc.DeleteItem(input)
+	})
 	fmt.Println(err)
 
-	// データが無いときでも200を返してしまう
+	// データが無い場合には，NotFoundを返す
 	if err != nil {
 		fmt.Println("Got error calling DeleteItem")
 		fmt.Println(err.Error())
@@ -114,7 +137,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       `{"status": "200"}`,
+		Body:       `{"slide_id": "` + getSlideID + `"}`,
 		Headers:    responseHeader,
 		StatusCode: 200,
 	}, nil

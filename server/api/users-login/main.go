@@ -137,12 +137,15 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	// Googleサーバに問い合わせるための要素
+	// Codeの文字列を置換
+	code := strings.Replace(requestClientData.Code, "%2F", "/", 1)
 	requestGoogleData := &RequestGoogleClientData{
-		Code:         requestClientData.Code,
+		Code:         code,
 		ClientID:     os.Getenv("ClientID"),
 		ClientSecret: os.Getenv("ClientSecret"),
-		RedirectURL:  "https://api.idaten.1day-release.com/auth/login",
-		GrantType:    "authorization_code",
+		RedirectURL:  "https://idaten.1day-release.com",
+		//RedirectURL:  "https://api.idaten.1day-release.com",
+		GrantType: "authorization_code",
 	}
 
 	responseGoogleServerData := connectToGoogle(*requestGoogleData)
