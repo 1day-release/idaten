@@ -1,9 +1,12 @@
 <template>
   <div>
-    <textarea
-      class="editor"
+    <markdown-editor
       v-model="markdown"
+      class="editor"
       @input="editorInput"
+      @click.native="activePageNumber"
+      @keydown.native="activePageNumber"
+      ref="simplemde"
     />
     <div class="popups">
       <PopupText
@@ -17,6 +20,7 @@
 </template>
 
 <script>
+import MarkdownEditor from 'vue-simplemde/src/markdown-editor'
 import PopupText from '@/components/PopupText.vue'
 import IdatenCore from 'idaten-core'
 const core = new IdatenCore()
@@ -24,6 +28,7 @@ const core = new IdatenCore()
 export default {
   name: 'Editor',
   components: {
+    MarkdownEditor,
     PopupText
   },
   props: {
@@ -37,25 +42,17 @@ export default {
     editorInput () {
       this.$store.commit('markdown', this.markdown)
     },
-    setCursorPositionEvent () {
-      const editor = this.$el.querySelector('.editor')
-      const setPageNumber = () => {
-        setTimeout(() => {
-          const cursorStart = editor.selectionStart
-          const corsorPosition = this.markdown.slice(0, cursorStart).split('\n').length || -1
-          const lineNumbers = core.getPageLineNumbers(this.markdown)
-          let activePageNumber = 1
-          lineNumbers.forEach((number, index) => {
-            if (number < corsorPosition) {
-              activePageNumber = index + 2
-            }
-          })
-          this.$store.commit('activePageNumber', activePageNumber)
-        }, 50)
-      }
-      editor.addEventListener('keydown', setPageNumber, false)
-      editor.addEventListener('click', setPageNumber, false)
-      this.$store.commit('activePageNumber', 1)
+    activePageNumber () {
+      const codemirror = this.$refs.simplemde.simplemde.codemirror
+      const activeLineNumber = codemirror.getCursor('start').line + 1
+      const lineNumbers = core.getPageLineNumbers(this.markdown)
+      let activePageNumber = 1
+      lineNumbers.forEach((number, index) => {
+        if (number < activeLineNumber) {
+          activePageNumber = index + 2
+        }
+      })
+      this.$store.commit('activePageNumber', activePageNumber)
     }
   },
   watch: {
@@ -64,10 +61,22 @@ export default {
     }
   },
   mounted () {
-    this.setCursorPositionEvent()
+    this.$store.commit('activePageNumber', 1)
   }
 }
 </script>
+
+<style lang="scss">
+  @import '../simplemde-theme-dark.min.css';
+  .editor {
+    .editor-toolbar, .CodeMirror {
+      background-color: transparent;
+    }
+    .CodeMirror {
+      height: 75vh; // 暫定
+    }
+  }
+</style>
 
 <style scoped lang="scss">
   $width: 100%;
