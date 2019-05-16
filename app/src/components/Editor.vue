@@ -74,6 +74,7 @@ export default {
     }
     .CodeMirror {
       height: 75vh; // 暫定
+      font-size: 12px;
     }
   }
 </style>
