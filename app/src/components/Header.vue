@@ -8,7 +8,7 @@
       </h1>
       <div class="header-tools">
         <ul class="header-tool">
-          <li @click="showUserSlideList()">
+          <li>
             <div class="button-block">
               <div class="button-mask is-logout js-popup-trigger js-popup-timeout">
                 <ButtonMask />
@@ -17,6 +17,8 @@
                 balloon-position="left"
                 balloon-text="スライドリスト"
                 svg="@/assets/icon-slidelist.svg"
+                class="user-slide-list-button"
+                @click.native="showUserSlideList"
               />
             </div>
           </li>
@@ -107,12 +109,12 @@
                 >
                 <ul class="button-list">
                   <li>
-                    <router-link
+                    <a
                       class="submit-button"
-                      to="javascript:void(0)"
+                      href="javascript:void(0)"
                     >
                       リンクをコピー
-                    </router-link>
+                    </a>
                   </li>
                 </ul>
               </aside>
@@ -133,20 +135,20 @@
                   <dd>
                     <ul class="button-list">
                       <li>
-                        <router-link
+                        <a
                           class="submit-button is-red"
-                          to="javascript:void(0)"
+                          href="javascript:void(0)"
                         >
                           このボードを削除する
-                        </router-link>
+                        </a>
                       </li>
                       <li>
-                        <router-link
+                        <a
                           class="submit-button is-link"
-                          to="javascript:void(0)"
+                          href="javascript:void(0)"
                         >
                           キャンセル
-                        </router-link>
+                        </a>
                       </li>
                     </ul>
                   </dd>
@@ -158,6 +160,7 @@
             <IconButton
               balloon-text="ログアウト"
               svg="@/assets/icon-logout.svg"
+              class="logout-button"
             />
           </li>
           <li class="is-login">
@@ -171,6 +174,8 @@
             <TextButton
               text="ログイン"
               svg=""
+              class="login-button"
+              @click.native="login"
             />
           </li>
         </ul>
@@ -211,9 +216,13 @@ export default {
     }
   },
   methods: {
-    showUserSlideList: function (e) {
+    showUserSlideList () {
       this.$store.commit('slides')
       this.$store.dispatch('changeStateUserSlideList', !this.$store.getters.userSlideListState)
+    },
+    login () {
+      const redirectURI = location.origin
+      location.href = `https://accounts.google.com/o/oauth2/auth?client_id=87857787925-1ojg7q93r5fabr94uqfs9e0165tmrh1m.apps.googleusercontent.com&scope=openid email profile &response_type=code&redirect_uri=${redirectURI}&state=idaten&access_type=offline&approval_prompt=force`
     }
   }
 }

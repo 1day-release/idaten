@@ -12,7 +12,7 @@
       </span>
     </router-link>
 
-    <router-link
+    <a
       v-else
       class="icon-button"
       :class="[balloonPositionClass, iconColorClass, iconReverseClass]"
@@ -22,7 +22,7 @@
       <span class="icon-button-balloon">
         {{ balloonText }}
       </span>
-    </router-link>
+    </a>
   </div>
 </template>
 
