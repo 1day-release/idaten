@@ -10,7 +10,7 @@
     />
     <div class="popups">
       <PopupText
-        id="popups-logout"
+        id="popup-logout"
         class="popup"
       >
         デモモードです。ログインをしないと、「共有」「保存」などの機能を使えません。ログインしてください。
@@ -68,30 +68,62 @@ export default {
 
 <style lang="scss">
   @import '../simplemde-theme-dark.min.css';
+
   .editor {
+
     .editor-toolbar, .CodeMirror {
+      border: none;
       background-color: transparent;
     }
+
+    .editor-toolbar {
+      flex: 0 0 auto;
+      padding: 2px 10px 5px;
+
+      &::before,
+      &::after {
+        content: none;
+      }
+
+      a {
+        width: 26px;
+        height: 26px;
+        font-size: 1.2rem;
+      }
+
+      i {
+        &.separator {
+          position: relative;
+          top: -1px;
+          margin: 0 10px;
+          font-size: 1.0rem;
+        }
+      }
+    }
+
+    .editor-statusbar {
+      display: none;
+    }
+
     .CodeMirror {
-      height: 75vh; // 暫定
+      padding-right: 20px;
+      // padding-right: 0;
+      padding-left: 0;
       font-size: 12px;
+
+      &-scroll {
+      }
     }
   }
 </style>
 
 <style scoped lang="scss">
-  $width: 100%;
-  $max-width: $pc-min-width * 0.65;
-
   .editor {
-    position: absolute;
-    top: 40px;
-    right: 40px;
-    bottom: 70px;
-    width: $width;
-    max-width: $max-width;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
     padding: 0;
-    padding-right: 20px;
     border: none;
     margin: auto;
     line-height: 1.8;
@@ -102,20 +134,27 @@ export default {
     resize: none;
     outline: none;
 
-    @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
+    // @include scrollBarRight(7px, 7px, rgba(#fff, 0.3), rgba(#fff, 0.1));
   }
 
   .popups {
-    position: absolute;
-    right: 40px;
-    bottom: 20px;
-    width: $width;
-    max-width: $max-width;
-    height: 30px;
+    position: relative;
+    flex: 0 0 auto;
+    margin-top: 20px;
   }
 
   .popup {
-    position: absolute;
-    right: 0;
+    position: relative;
+  }
+
+  #popup-logout {
+    display: none;
+    white-space: nowrap;
+
+    .l-container.is-logout & {
+      top: 0;
+      display: flex;
+      opacity: 1;
+    }
   }
 </style>

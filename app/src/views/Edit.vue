@@ -8,7 +8,9 @@
       >
         <UserSlideList />
       </div>
-      <Editor class="l-editor" />
+      <div class="l-editor">
+        <Editor class="editor-contents" />
+      </div>
       <div class="l-preview">
         <div class="preview-contents">
           <Preview :active-page-number="activePageNumber" />
@@ -102,11 +104,28 @@ export default {
   }
 
   .l-editor {
-    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
     width: 65%;
     height: calc(100vh - #{$pc-header-height});
     color: map-get($color-brand, "text-white");
     background-color: map-get($color-brand, "main");
+  }
+
+  .editor-contents {
+    flex: 0 0 auto;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    width: 100%;
+    max-width: $pc-min-width * 0.65 + 80px;
+    height: 100%;
+    padding: 20px;
+    padding-right: 40px;
   }
 
   .l-preview {
