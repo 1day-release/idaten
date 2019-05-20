@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Edit from './views/Edit.vue'
 import Presentation from './views/Presentation.vue'
+import Embed from './views/Embed.vue'
 import TestSlideComponent from './views/TestSlideComponent.vue'
 
 import SlideModel from '@/models/slide'
@@ -34,6 +35,17 @@ export default new Router({
       path: '/presentation/:slideId/:pageNumber',
       name: 'Presentation',
       component: Presentation
+    },
+    {
+      path: '/embed',
+      redirect: {
+        path: '/embed/' + slideModel.list()[0].slide_id + '/1'
+      }
+    },
+    {
+      path: '/embed/:slideId/:pageNumber',
+      name: 'Embed',
+      component: Embed
     },
     {
       path: '/test-slide-component',
