@@ -107,7 +107,7 @@ export default {
     display: flex;
     justify-content: flex-end;
     overflow: hidden;
-    width: 65%;
+    width: calc(100% - #{$pc-min-width * 0.35 + 20px});
     height: calc(100vh - #{$pc-header-height});
     color: map-get($color-brand, "text-white");
     background-color: map-get($color-brand, "main");
@@ -122,16 +122,15 @@ export default {
     justify-content: space-between;
     overflow: hidden;
     width: 100%;
-    max-width: $pc-min-width * 0.65 + 80px;
     height: 100%;
-    padding: 20px;
-    padding-right: 40px;
+    padding: 20px 40px;
+    padding-left: 0;
   }
 
   .l-preview {
     position: relative;
     overflow: hidden;
-    width: 35%;
+    width: $pc-min-width * 0.35 + 20px;
     height: calc(100vh - #{$pc-header-height});
     background-color: map-get($color-brand, "sub-dark");
   }

@@ -78,7 +78,8 @@ export default {
 
     .editor-toolbar {
       flex: 0 0 auto;
-      padding: 2px 10px 5px;
+      display: flex;
+      padding: 2px 20px 5px 90px;
 
       &::before,
       &::after {
@@ -86,19 +87,26 @@ export default {
       }
 
       a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 26px;
         height: 26px;
         font-size: 1.2rem;
+        transition-duration: $duration / 2;
+
+        &::before {
+          line-height: 1.0;
+        }
       }
 
       i {
         &.separator {
-          position: relative;
-          top: -1px;
           margin: 0 10px;
           font-size: 1.0rem;
         }
       }
+
     }
 
     .editor-statusbar {
@@ -107,11 +115,52 @@ export default {
 
     .CodeMirror {
       padding-right: 20px;
-      // padding-right: 0;
       padding-left: 0;
       font-size: 12px;
 
-      &-scroll {
+      &-code {
+        counter-reset: line;
+      }
+
+      &-line {
+        display: flex;
+        align-items: flex-start;
+        counter-increment: line;
+
+        &::before {
+          flex: 0 0 auto;
+          content: counter(line);
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          width: 3.0em;
+          height: 20px;
+          padding-right: 0.75em;
+          padding-left: 40px;
+          margin-right: 0.75em;
+          text-align: right;
+          opacity: 0.5;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+        }
+
+        >span {
+          display: block;
+          height: auto;
+          min-height: 20px;
+        }
+
+        .cm-header-1,
+        .cm-header-2,
+        .cm-header-3 {
+          line-height: 1.5;
+        }
+
+        &.is-active {
+          &::before {
+            background-color: rgba(#fff, 0.2);
+          }
+        }
       }
     }
   }
@@ -123,6 +172,7 @@ export default {
     flex-direction: column;
     overflow: hidden;
     width: 100%;
+    height: 100%;
     padding: 0;
     border: none;
     margin: auto;
@@ -150,6 +200,7 @@ export default {
   #popup-logout {
     display: none;
     white-space: nowrap;
+    margin: 0 auto;
 
     .l-container.is-logout & {
       top: 0;
