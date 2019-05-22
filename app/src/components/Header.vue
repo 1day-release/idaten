@@ -171,12 +171,10 @@
             />
           </li>
           <li class="is-separate is-logout">
-            <TextButton
-              text="ログイン"
-              svg=""
-              class="login-button"
-              @click.native="login"
-            />
+            <router-link class="login-button" to="javascript:void(0)">
+              <GoogleIcon />
+              <span>Sign in with Google</span>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -187,22 +185,23 @@
 <script>
 import BrandLogo from '@/components/BrandLogo.vue'
 import IconButton from '@/components/IconButton.vue'
-import TextButton from '@/components/TextButton.vue'
+// import TextButton from '@/components/TextButton.vue'
 import UserIcon from '@/components/UserIcon.vue'
 import UpdateIcon from '@/assets/icon-refresh.svg'
 import ButtonMask from '@/assets/icon-mask.svg'
 import PopupSetting from '@/components/PopupSetting.vue'
+import GoogleIcon from '@/assets/icon-google.svg'
 
 export default {
   name: 'Header',
   components: {
     BrandLogo,
     IconButton,
-    TextButton,
     UserIcon,
     UpdateIcon,
     ButtonMask,
-    PopupSetting
+    PopupSetting,
+    GoogleIcon
   },
   props: {
   },
@@ -324,20 +323,6 @@ export default {
           }
         }
       }
-
-      &:first-child {
-        >li {
-          // &:last-child {
-            // padding-right: $padding + 1px;
-            // padding-left: $padding;
-
-            // &::after {
-            //   content: "";
-            //   right: 0;
-            // }
-          // }
-        }
-      }
     }
   }
 
@@ -420,6 +405,65 @@ export default {
     }
   }
 
-  .user {
+  .login-button {
+    $borderWidth: 2px;
+    $color: #c7dafc;
+
+    position: relative;
+    display: flex;
+    border: 0 solid $color;
+    margin: 0;
+    font-family: $ff-roboto;
+    color: rgba(#000, 0.54);
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-decoration: none;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(#000, 0.25);
+    transition-duration: $duration;
+
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      top: -#{$borderWidth};
+      right: -#{$borderWidth};
+      bottom: -#{$borderWidth};
+      left: -#{$borderWidth};
+      border: $borderWidth solid $color;
+      margin: auto;
+      border-radius: 3px + $borderWidth;
+      transition-duration: inherit;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:hover {
+      border-width: $borderWidth;
+      margin: -#{$borderWidth};
+      box-shadow: none;
+      border-radius: 0;
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &:active {
+      background-color: #eee;
+    }
+
+    svg {
+      width: 42px;
+      height: 42px;
+      background-color: inherit;
+    }
+
+    >span {
+      align-self: center;
+      padding: 14px 10px;
+      padding-right: 24px;
+      background-color: inherit;
+    }
   }
 </style>

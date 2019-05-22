@@ -20,9 +20,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: auto;
+    width: min-content;
     height: 30px;
-    padding: 5px 15px;
+    padding: 5px 30px;
     border: 1px solid map-get($color-brand, "accent");
     border-radius: 15px;
     opacity: 0;
