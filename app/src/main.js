@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import mixin from './mixin'
 
+import './firebaseApp'
+
 import VueAnalytics from 'vue-analytics'
 
 import 'reset-css'

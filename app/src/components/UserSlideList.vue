@@ -3,7 +3,7 @@
     <div class="user-slide-head">
       <div
         class="user-slide-head-item"
-        @click="showUserSlideList()"
+        @click="hideUserSlideList()"
       >
         <IconButton
           balloon-position="left"
@@ -28,19 +28,20 @@
       <li
         v-for="(slide, index) in slides"
         :key="index"
-        :class="{'is-now': slide.slide_id === activeSlideId}"
+        :class="{'is-now': slide.id === activeSlideId}"
       >
         <a
           class="slide-delete-button"
-          href="javascript:void(0)"
+          href="javascript:void(0)a"
+          @click="deleteSlide(slide.id, slide.id === activeSlideId)"
         >スライドを削除する</a>
         <a
           class="slide-cover"
           href="javascript:void(0)"
-          @click="selectSlide(slide.slide_id)"
+          @click="selectSlide(slide.id)"
         >
           <Slide
-            :markdown="slide.cover"
+            :markdown="slide.markdown"
             :width="180"
           />
         </a>
@@ -79,16 +80,27 @@ export default {
     }
   },
   methods: {
-    showUserSlideList () {
-      this.$store.commit('slides')
-      this.$store.dispatch('changeStateUserSlideList', !this.$store.getters.userSlideListState)
+    hideUserSlideList () {
+      this.$store.commit('userSlideListState', false)
     },
     selectSlide (slideId) {
-      this.$router.push('/' + slideId)
-      this.showUserSlideList()
+      this.$store.dispatch('setSlideId', slideId)
+      this.hideUserSlideList()
     },
-    createSlide () {
-      this.$store.dispatch('createSlide')
+    async createSlide () {
+      const slideId = await this.$store.dispatch('createSlide')
+      this.$store.dispatch('setSlideId', slideId)
+      this.hideUserSlideList()
+    },
+    async deleteSlide (slideId, ownFlg) {
+      if (!window.confirm('選択したスライドを削除しますか?')) return
+      await this.$store.dispatch('deleteSlide', slideId)
+      await this.$store.dispatch('reloadList')
+      if (ownFlg) {
+        const slideId = this.$store.getters.slides[0].id
+        this.$store.dispatch('setSlideId', slideId)
+        this.$router.push('/' + slideId)
+      }
     }
   }
 }
@@ -263,7 +275,7 @@ export default {
       border-radius: 50%;
       transition-duration: $duration;
       opacity: 0;
-      pointer-events: none;
+      // pointer-events: none;
 
       &::before,
       &::after {

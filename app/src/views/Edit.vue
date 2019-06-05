@@ -1,5 +1,8 @@
 <template>
-  <div class="l-container is-logout">
+  <div
+    class="l-container"
+    :class="{'is-logout': isLogout}"
+  >
     <Header />
     <Main>
       <div
@@ -25,8 +28,8 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import firebase from 'firebase/app'
+
 import Header from '@/components/Header.vue'
 import Main from '@/components/Main.vue'
 import UserSlideList from '@/components/UserSlideList.vue'
@@ -34,7 +37,6 @@ import Editor from '@/components/Editor.vue'
 import Preview from '@/components/Preview.vue'
 import PreviewBg1 from '@/assets/preview-bg1.svg'
 import PreviewBg2 from '@/assets/preview-bg2.svg'
-import queryString from 'query-string'
 
 export default {
   name: 'Edit',
@@ -47,24 +49,35 @@ export default {
     PreviewBg1,
     PreviewBg2
   },
-  created () {
-    const parsed = queryString.parse(location.search)
-    if (parsed.state === 'idaten' && parsed.code) {
-      fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          code: parsed.code
-        })
-      }).then(response => response.json()).then(result => {
-        localStorage.setItem('idaten.access-token', result.access_token)
-        location.reload()
-      })
+  data () {
+    return {
+      isLogout: true
     }
-    this.$store.commit('slideId', this.$route.params.slideId)
+  },
+  created () {
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (!user) {
+        this.$router.push('/0')
+        return
+      }
+
+      this.isLogout = false
+      if (this.$route.params.slideId === '0') {
+        await this.$store.dispatch('reloadList')
+        let slideId = ''
+        if (this.$store.getters.slides.length === 0) {
+          slideId = await this.$store.dispatch('createSlide')
+        } else {
+          slideId = this.$store.getters.slides[0].id
+        }
+        this.$store.dispatch('setSlideId', slideId)
+        this.$router.push('/' + slideId)
+      }
+    })
+
+    // this.$store.commit('slideId', this.$route.params.slideId)
+    this.$store.dispatch('setSlideId', this.$route.params.slideId)
+    window.pthis = this
   },
   computed: {
     isActive () {
@@ -78,6 +91,8 @@ export default {
     $route (to, from) {
       this.$store.commit('slideId', this.$route.params.slideId)
     }
+  },
+  methods: {
   }
 }
 </script>

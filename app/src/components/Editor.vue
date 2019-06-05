@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     editorInput () {
-      this.$store.commit('markdown', this.markdown)
+      this.$store.dispatch('updateMarkdown', this.markdown)
     },
     activePageNumber () {
       const codemirror = this.$refs.simplemde.simplemde.codemirror

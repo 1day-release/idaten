@@ -1,14 +1,10 @@
-import moment from 'moment'
+import firebase from 'firebase/app'
+import firebaseApp from '@/firebaseApp'
 
-const slidesStorageName = 'idaten.slides'
-export default class Slide {
-  constructor () {
-    const slides = this.list()
-    if (!slides) {
-      localStorage.setItem(slidesStorageName, JSON.stringify([]))
-      this.create({
-        cover: '# サンプルについて',
-        markdown: `# サンプルについて
+const db = firebase.firestore(firebaseApp)
+
+const defaultSlide = {
+  markdown: `# サンプルについて
 サブタイトル : サブタイトル
 日付 : 2019-01-01
 宛名 : 〇〇様
@@ -19,74 +15,85 @@ export default class Slide {
 ### Slide2
 1. Ordered List1
 2. Ordered List2
-`,
-        share_mode: 0
+`
+}
+
+const storageName = 'idaten.markdown'
+export default class Slide {
+  constructor () {
+    const storage = localStorage.getItem(storageName)
+    if (!storage) {
+      localStorage.setItem(storageName, JSON.stringify(defaultSlide))
+    }
+  }
+
+  async list () {
+    return new Promise((resolve) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) return resolve([])
+        db.collection('slides').where('uid', '==', user.uid).get().then((docs) => {
+          const slides = []
+          docs.forEach((doc) => {
+            let slide = doc.data()
+            slide.id = doc.id
+            slides.push(slide)
+          })
+          resolve(slides)
+        })
       })
-    }
-  }
-
-  list () {
-    const slides = JSON.parse(localStorage.getItem(slidesStorageName))
-    return slides
-  }
-
-  get (id) {
-    const slides = this.list()
-
-    let result = null
-    slides.forEach(slide => {
-      if (slide.slide_id === id) result = slide
     })
-    return result
   }
 
-  create (data) {
-    let slides = this.list()
-
-    const id = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(64)))).substring(0, 64).replace(/\//g, '0') // Create random 64 characters text
-    slides.push({
-      slide_id: id,
-      cover: data.cover,
-      markdown: data.markdown,
-      share_mode: data.share_mode,
-      create_at: moment().format('YYYY-MM-DD HH:mm:ss'),
-      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+  async get (id) {
+    return new Promise((resolve) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) return resolve(JSON.parse(localStorage.getItem(storageName)))
+        db.collection('slides').doc(id).get().then((doc) => {
+          resolve(doc.data())
+        })
+      })
     })
-    localStorage.setItem(slidesStorageName, JSON.stringify(slides))
-
-    return {
-      slide_id: id
-    }
   }
 
-  update (id, data) {
-    let slideData = this.get(id)
+  async create (data) {
+    if (!data) data = defaultSlide
 
-    if (data.cover) slideData.cover = data.cover
-    if (data.markdown) slideData.markdown = data.markdown
-    if (data.share_mode) slideData.share_mode = data.share_mode
-    slideData.updated_at = moment().format('YYYY-MM-DD HH:mm:ss')
-
-    let slides = this.list()
-    slides.forEach((slide, slideIndex) => {
-      if (slide.slide_id === id) slides[slideIndex] = slideData
+    return new Promise((resolve) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        const id = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(64)))).substring(0, 64).replace(/\//g, '0') // Create random 64 characters text
+        db.collection('slides').doc(id).set({
+          uid: user.uid,
+          markdown: data.markdown
+        }).then((doc) => {
+          resolve(id)
+        })
+      })
     })
-    localStorage.setItem(slidesStorageName, JSON.stringify(slides))
-
-    return {
-      slide_id: id
-    }
   }
 
-  delete (id) {
-    let slides = this.list()
-    slides.forEach((slide, slideIndex) => {
-      if (slide.slide_id === id) slide.splice(slideIndex, 1)
+  async update (id, data) {
+    return new Promise((resolve) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          localStorage.setItem(storageName, JSON.stringify(data))
+          return resolve()
+        }
+        db.collection('slides').doc(id).update({
+          markdown: data.markdown
+        }).then((doc) => {
+          resolve()
+        })
+      })
     })
-    localStorage.setItem(slidesStorageName, JSON.stringify(slides))
+  }
 
-    return {
-      slide_id: id
-    }
+  async delete (id) {
+    return new Promise((resolve) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        db.collection('slides').doc(id).delete().then((doc) => {
+          resolve()
+        })
+      })
+    })
   }
 }

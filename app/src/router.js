@@ -5,9 +5,6 @@ import Presentation from './views/Presentation.vue'
 import Embed from './views/Embed.vue'
 import TestSlideComponent from './views/TestSlideComponent.vue'
 
-import SlideModel from '@/models/slide'
-const slideModel = new SlideModel()
-
 Vue.use(Router)
 
 export default new Router({
@@ -16,32 +13,35 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: {
-        path: '/' + slideModel.list()[0].slide_id
-      }
+      name: 'Edit',
+      component: Edit
     },
     {
       path: '/:slideId',
       name: 'Edit',
       component: Edit
     },
+    /*
     {
       path: '/presentation',
       redirect: {
         path: '/presentation/' + slideModel.list()[0].slide_id + '/1'
       }
     },
+    */
     {
       path: '/presentation/:slideId/:pageNumber',
       name: 'Presentation',
       component: Presentation
     },
+    /*
     {
       path: '/embed',
       redirect: {
         path: '/embed/' + slideModel.list()[0].slide_id + '/1'
       }
     },
+    */
     {
       path: '/embed/:slideId/:pageNumber',
       name: 'Embed',

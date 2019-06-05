@@ -13,8 +13,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    slides: slideModel.list(),
-    slide: {},
+    slides: [],
+    slide: {
+      markdown: ''
+    },
     slideId: '',
     activePageNumber: -1,
     userSlideListState: false
@@ -38,17 +40,18 @@ export default new Vuex.Store({
   },
   mutations: {
     slides (state, data) {
-      state.slides = slideModel.list()
+      state.slides = data
+    },
+    slide (state, data) {
+      state.slide = data
+      state.slide.markdown = data.markdown
+    },
+    slideId (state, data) {
+      state.slideId = data
     },
     markdown (state, data) {
       state.slide.markdown = data
       state.slide.cover = core.splitPages(data)[0]
-      slideModel.update(state.slideId, state.slide)
-    },
-    slideId (state, data) {
-      state.slideId = data
-      state.slide = slideModel.get(data)
-      state.markdown = state.slide.markdown
     },
     activePageNumber (state, data) {
       state.activePageNumber = data
@@ -58,27 +61,32 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    changeStateUserSlideList ({ commit }, state) {
-      commit('userSlideListState', state)
+    async reloadList ({ commit }) {
+      const slides = await slideModel.list()
+      commit('slides', slides)
     },
-    createSlide ({ commit }, state) {
-      const slide = {
-        cover: '# サンプルについて',
-        markdown: `# サンプルについて
-サブタイトル : サブタイトル
-日付 : 2019-01-01
-宛名 : 〇〇様
-製作者 : 〇〇
-
-## Slide1
-
-### Slide2
-1. Ordered List1
-2. Ordered List2
-`
-      }
-      slideModel.create(slide)
-      commit('slides')
+    async setSlideId ({ commit }, slideId) {
+      const slide = await slideModel.get(slideId)
+      commit('slideId', slideId)
+      commit('slide', slide)
+      commit('markdown', slide.markdown)
+    },
+    async updateMarkdown ({ commit, state }, markdown) {
+      commit('markdown', markdown)
+      await slideModel.update(state.slideId, state.slide)
+    },
+    async createSlide ({ commit }) {
+      const slideId = await slideModel.create()
+      return slideId
+    },
+    async deleteSlide ({ commit }, slideId) {
+      await slideModel.delete(slideId)
+    },
+    selectFirstSlide ({ commit, state, dispatch }) {
+      const slideId = state.slides[0].id
+      dispatch('setSlideId', slideId)
+      return slideId
+      // await slideModel.delete(slideId)
     }
   }
 })

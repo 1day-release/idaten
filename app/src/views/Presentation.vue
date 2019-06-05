@@ -99,8 +99,8 @@ export default {
         this.quit()
       }
     },
-    fetchMarkdown () {
-      const slide = slideModel.get(this.slideId)
+    async fetchMarkdown () {
+      const slide = await slideModel.get(this.slideId)
       this.markdown = slide.markdown
     },
     nextPage () {

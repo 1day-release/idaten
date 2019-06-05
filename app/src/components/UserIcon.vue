@@ -5,11 +5,11 @@
   >
     <span class="user-icon">
       <img
-        src="//placehold.jp/150x150.png"
+        :src="image"
         alt=""
       >
     </span>
-    <span class="user-balloon">{{ userName }}&nbsp;&lt;{{ email }}&gt;<!-- name --></span>
+    <span class="user-balloon">{{ name }}&nbsp;&lt;{{ email }}&gt;<!-- name --></span>
   </div>
 </template>
 
@@ -18,8 +18,9 @@ export default {
   name: 'UserIcon',
   props: {
     balloonPosition: String,
-    userName: String,
-    email: String
+    name: String,
+    email: String,
+    image: String
   },
   computed: {
     balloonClass () {

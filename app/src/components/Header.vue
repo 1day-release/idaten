@@ -161,20 +161,26 @@
               balloon-text="ログアウト"
               svg="@/assets/icon-logout.svg"
               class="logout-button"
+              @click.native="logout"
             />
           </li>
           <li class="is-login">
             <UserIcon
               balloon-position="right"
-              user-name="ワンデイ太郎"
-              email="1day-release@gmail.com"
+              :name="user.displayName"
+              :email="user.email"
+              :image="user.photoURL"
             />
           </li>
           <li class="is-separate is-logout">
-            <router-link class="login-button" to="javascript:void(0)">
+            <a
+              class="login-button"
+              href="javascript:void(0)"
+              @click="login"
+            >
               <GoogleIcon />
               <span>Sign in with Google</span>
-            </router-link>
+            </a>
           </li>
         </ul>
       </div>
@@ -183,6 +189,7 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
 import BrandLogo from '@/components/BrandLogo.vue'
 import IconButton from '@/components/IconButton.vue'
 // import TextButton from '@/components/TextButton.vue'
@@ -207,6 +214,11 @@ export default {
   },
   data () {
     return {
+      user: {
+        email: '',
+        displayName: '',
+        photoURL: ''
+      }
     }
   },
   computed: {
@@ -214,14 +226,25 @@ export default {
       return this.$store.getters.slideId
     }
   },
+  created () {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) return
+      this.user = user
+    })
+  },
   methods: {
-    showUserSlideList () {
-      this.$store.commit('slides')
-      this.$store.dispatch('changeStateUserSlideList', !this.$store.getters.userSlideListState)
+    async showUserSlideList () {
+      await this.$store.dispatch('reloadList')
+      this.$store.commit('userSlideListState', true)
     },
     login () {
-      const redirectURI = location.origin
-      location.href = `https://accounts.google.com/o/oauth2/auth?client_id=87857787925-1ojg7q93r5fabr94uqfs9e0165tmrh1m.apps.googleusercontent.com&scope=openid email profile &response_type=code&redirect_uri=${redirectURI}&state=idaten&access_type=offline&approval_prompt=force`
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithRedirect(provider)
+    },
+    logout () {
+      firebase.auth().signOut().then(_ => {
+        location.href = '/'
+      })
     }
   }
 }
