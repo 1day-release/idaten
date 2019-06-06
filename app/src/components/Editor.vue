@@ -7,6 +7,7 @@
       @click.native="activePageNumber"
       @keydown.native="activePageNumber"
       ref="simplemde"
+      :configs="mdeConfigs"
     />
     <div class="popups">
       <PopupText
@@ -35,7 +36,12 @@ export default {
   },
   data () {
     return {
-      markdown: this.$store.getters.markdown
+      markdown: this.$store.getters.markdown,
+      mdeConfigs: {
+        toolbar: [
+          'bold', 'italic', 'heading', '|', 'code', 'quote', 'unordered-list', 'ordered-list', '|', 'link', 'table'
+        ]
+      }
     }
   },
   methods: {
