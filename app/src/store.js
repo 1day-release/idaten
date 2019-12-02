@@ -19,7 +19,9 @@ export default new Vuex.Store({
     },
     slideId: '',
     activePageNumber: -1,
-    userSlideListState: false
+    userSlideListState: false,
+    statusMessage: '更新しました',
+    statusProcessing: false
   },
   getters: {
     slides: state => {
@@ -36,6 +38,12 @@ export default new Vuex.Store({
     },
     userSlideListState: state => {
       return state.userSlideListState
+    },
+    statusMessage: state => {
+      return state.statusMessage
+    },
+    statusProcessing: state => {
+      return state.statusProcessing
     }
   },
   mutations: {
@@ -58,6 +66,12 @@ export default new Vuex.Store({
     },
     userSlideListState (state, data) {
       state.userSlideListState = data
+    },
+    statusMessage (state, data) {
+      state.statusMessage = data
+    },
+    statusProcessing (state, data) {
+      state.statusProcessing = data
     }
   },
   actions: {
@@ -87,6 +101,15 @@ export default new Vuex.Store({
       dispatch('setSlideId', slideId)
       return slideId
       // await slideModel.delete(slideId)
+    },
+    setStatus ({ commit, state, dispatch }, message) {
+      if (message) {
+        commit('statusProcessing', true)
+        commit('statusMessage', message)
+      } else {
+        commit('statusProcessing', false)
+        commit('statusMessage', '更新しました')
+      }
     }
   }
 })

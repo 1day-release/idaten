@@ -23,12 +23,11 @@
             </div>
           </li>
           <li>
-            <div class="save-status">
-              <p class="save-status-text">
-                <span>更新しました</span>
-                <span class="is-saving">更新中…</span>
+            <div class="status is-login" :class="{'is-saving': statusProcessing}">
+              <p class="status-text">
+                <span>{{statusMessage}}</span>
               </p>
-              <UpdateIcon class="save-status-icon" />
+              <UpdateIcon class="status-icon" />
             </div>
           </li>
         </ul>
@@ -224,7 +223,13 @@ export default {
   computed: {
     activeSlideId () {
       return this.$store.getters.slideId
-    }
+    },
+    statusMessage () {
+      return this.$store.getters.statusMessage
+    },
+    statusProcessing () {
+      return this.$store.getters.statusProcessing
+    },
   },
   created () {
     firebase.auth().onAuthStateChanged((user) => {
@@ -349,7 +354,7 @@ export default {
     }
   }
 
-  .save-status {
+  .status {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -358,13 +363,6 @@ export default {
       margin-right: 5px;
       font-size: 1.0rem;
       color: map-get($color-brand, "text-main");
-
-      >span {
-
-        &.is-saving {
-          display: none;
-        }
-      }
     }
 
     &-icon {
@@ -372,20 +370,7 @@ export default {
     }
 
     &.is-saving {
-      .save-status {
-        &-text {
-          >span {
-
-            &:not([class]) {
-              display: none;
-            }
-
-            &.is-saving {
-              display: block;
-            }
-          }
-        }
-
+      .status {
         &-icon {
           animation: spinLeft 1.4s linear infinite;
         }

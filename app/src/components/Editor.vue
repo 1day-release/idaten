@@ -47,6 +47,11 @@ export default {
   methods: {
     editorInput () {
       this.$store.dispatch('updateMarkdown', this.markdown)
+
+      this.$store.dispatch('setStatus', '更新中')
+      setTimeout(() => {
+        this.$store.dispatch('setStatus', '')
+      }, 800)
     },
     activePageNumber () {
       const codemirror = this.$refs.simplemde.simplemde.codemirror

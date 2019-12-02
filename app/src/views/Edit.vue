@@ -55,24 +55,25 @@ export default {
     }
   },
   created () {
+    this.$store.dispatch('setStatus', 'ログイン中')
     firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) {
         this.$router.push('/0')
-        return
-      }
-
-      this.isLogout = false
-      if (this.$route.params.slideId === '0') {
-        await this.$store.dispatch('reloadList')
-        let slideId = ''
-        if (this.$store.getters.slides.length === 0) {
-          slideId = await this.$store.dispatch('createSlide')
-        } else {
-          slideId = this.$store.getters.slides[0].id
+      } else {
+        this.isLogout = false
+        if (this.$route.params.slideId === '0') {
+          await this.$store.dispatch('reloadList')
+          let slideId = ''
+          if (this.$store.getters.slides.length === 0) {
+            slideId = await this.$store.dispatch('createSlide')
+          } else {
+            slideId = this.$store.getters.slides[0].id
+          }
+          this.$store.dispatch('setSlideId', slideId)
+          this.$router.push('/' + slideId)
         }
-        this.$store.dispatch('setSlideId', slideId)
-        this.$router.push('/' + slideId)
       }
+      this.$store.dispatch('setStatus', '')
     })
 
     // this.$store.commit('slideId', this.$route.params.slideId)
